@@ -93,10 +93,21 @@ namespace Plugin.Prefs
 
         public static ModifiedActions GetBinds()
         {
-            UKBindings Json = JsonConvert.DeserializeObject<UKBindings>(File.ReadAllText($"{PluginInfo.GamePath}\\Preferences\\Binds.json"));
             var Binds = new ModifiedActions();
 
-            if (Json == null) return Binds;
+            // the game only writes Binds.json after the plugin loads on a fresh install, so fall back to defaults
+            string BindsPath = $"{PluginInfo.GamePath}\\Preferences\\Binds.json";
+            if (!File.Exists(BindsPath)) return Binds;
+
+            UKBindings Json;
+            try { Json = JsonConvert.DeserializeObject<UKBindings>(File.ReadAllText(BindsPath)); }
+            catch (System.Exception E) when (E is IOException || E is JsonException)
+            {
+                Systems.Vars.Log.LogWarning("Unable to read Binds.json, using default keys: " + E.Message);
+                return Binds;
+            }
+
+            if (Json == null || Json.Actions == null) return Binds;
 
             // What this does is basically scroll thru all the properties in the Binds object
             // For each property in Binds scroll through all the properties in the Json.Actions obejct

@@ -36,9 +36,14 @@ namespace Plugin
             Log = Logger;
             Debug.unityLogger.filterLogType = LogType.Warning;
 
-            Prefs.ConfigMaster.Init();
-            PatchStuff();
-            SceneWorker.Init();
+            // a setup failure must not stop VR init, or the game falls back to SteamVR theater mode
+            try
+            {
+                Prefs.ConfigMaster.Init();
+                PatchStuff();
+                SceneWorker.Init();
+            }
+            catch (Exception e) { Log.LogError("VRTRAKILL setup failed: " + e); }
 
             StartCoroutine(InitVRWhenReady());
         }
