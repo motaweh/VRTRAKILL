@@ -159,9 +159,10 @@ namespace Plugin.Systems.VRCamera.Patches
         {
             rightEyeRender.SetPortalOcclusion(enabled);
         }
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(PortalRenderV2), nameof(PortalRenderV2.SetupRenderData))]
-        static void PortalRenderFix(PortalRenderV2 __instance)
+        //Setup copies the stereo eye into portalCam, which is rendered manually so must stay mono
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(PortalRenderV2), nameof(PortalRenderV2.Setup))]
+        static void KeepPortalCameraMonoAfterSetup(PortalRenderV2 __instance)
         {
             if (__instance.portalCam) __instance.portalCam.stereoTargetEye = StereoTargetEyeMask.None;
         }
