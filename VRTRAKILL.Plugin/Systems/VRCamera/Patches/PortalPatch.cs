@@ -170,7 +170,8 @@ namespace Plugin.Systems.VRCamera.Patches
         [HarmonyPatch(typeof(PortalRenderV2), nameof(PortalRenderV2.Render))]
         static void PortalRenderFix2(PortalRenderV2 __instance)
         {
-            if (__instance.portalCam) //Essentially just checking if we are configured
+            //Setup returns before Initialize when the scene has no portals, so the textures stay null
+            if (__instance.portalCam && __instance.portalCompositeOcclusionData != null)
             {
                 //All the globals that get overwritten
                 Shader.SetGlobalTexture(__instance.portalDepthID, __instance.pph.depthBuffer);

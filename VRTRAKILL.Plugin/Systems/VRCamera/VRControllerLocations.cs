@@ -40,6 +40,7 @@ namespace VRBasePlugin.Systems.VRCamera
             if (_left != null) GameObject.DestroyImmediate(_left.gameObject);
             _left = new GameObject("Left").transform;
             _left.SetParent(transform);
+            _left.gameObject.SetActive(false); //OnEnable would bind the default "Pose" action before poseAction is set
             SteamVR_Behaviour_Pose l = _left.gameObject.AddComponent<SteamVR_Behaviour_Pose>();
             l.poseAction = SteamVR_Actions._default.LeftPose;
             l.inputSource = SteamVR_Input_Sources.LeftHand;
@@ -47,6 +48,7 @@ namespace VRBasePlugin.Systems.VRCamera
             if (_right != null) GameObject.DestroyImmediate(_right.gameObject);
             _right = new GameObject("Right").transform;
             _right.SetParent(transform);
+            _right.gameObject.SetActive(false);
             SteamVR_Behaviour_Pose r = _right.gameObject.AddComponent<SteamVR_Behaviour_Pose>();
             r.poseAction = SteamVR_Actions._default.RightPose;
             r.inputSource = SteamVR_Input_Sources.RightHand;
