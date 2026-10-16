@@ -416,10 +416,6 @@
     <Content Include="CopyToGameRoot\ULTRAKILL\BepInEx\patchers\AssetsTools.NET.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="CopyToGameRoot\ULTRAKILL\BepInEx\patchers\VRPatcher.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="CopyToGameRoot\ULTRAKILL\BepInEx\patchers\VRPatcher.dll" />
     <Content Include="CopyToGameRoot\ULTRAKILL\BepInEx\plugins\VRTRAKILL\Newtonsoft.Json.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
