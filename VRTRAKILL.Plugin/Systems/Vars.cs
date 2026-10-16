@@ -35,8 +35,9 @@ namespace Plugin.Systems
         #region Checks n' Shits
         public static bool IsMainMenu
             => OptionsManager.Instance?.mainMenu ?? false;
+        // polled every frame from the Intro on; Instance there spends the game's one-shot Find and the menu's OptionsManager is never found
         public static bool IsPaused
-            => OptionsManager.Instance?.paused ?? false;
+            => MonoSingleton.GetInstance(typeof(OptionsManager)) is OptionsManager O && O != null && O.paused;
         public static bool IsWeaponWheelPresent
         => WeaponWheel.Instance?.isActiveAndEnabled ?? false;
         public static bool IsPlayerUsingShop
