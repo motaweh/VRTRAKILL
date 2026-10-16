@@ -128,6 +128,15 @@
             },
             {
                "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/escape"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/options"
+            },
+            {
+               "inputs" : {
                   "position" : {
                      "output" : "/actions/default/in/iterateweapon"
                   }
