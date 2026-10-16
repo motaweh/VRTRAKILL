@@ -177,7 +177,6 @@
     </Reference>
     <Reference Include="Unity.XR.OpenVR">
       <HintPath>..\lib\Unity.XR.OpenVR.dll</HintPath>
-      <Aliases>UnityXROpenVR</Aliases>
     </Reference>
     <Reference Include="Unity.XR.CoreUtils">
       <HintPath>..\lib\Unity.XR.CoreUtils.dll</HintPath>

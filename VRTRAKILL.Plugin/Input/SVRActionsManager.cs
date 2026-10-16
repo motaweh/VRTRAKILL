@@ -55,9 +55,10 @@ namespace Plugin.Systems.Input
             //if (string.IsNullOrEmpty(Direction))
             //    return SVRAI.GetLocalizedOriginPart(SteamVR_Input_Sources.Any, EVRInputStringBits.VRInputString_InputSource);
             //else return $"{Direction} {SVRAI.GetLocalizedOriginPart(SteamVR_Input_Sources.Any, EVRInputStringBits.VRInputString_InputSource)}";
+            // GetLocalizedOriginPart's params array is emitted as a SteamVR-scoped EVRInputStringBits typeref that fails to load
             if (string.IsNullOrEmpty(Direction))
-                return SVRAI.GetLocalizedOriginPart(SteamVR_Input_Sources.Any);
-            else return $"{Direction} {SVRAI.GetLocalizedOriginPart(SteamVR_Input_Sources.Any)}";
+                return SVRAI.GetLocalizedOrigin(SteamVR_Input_Sources.Any);
+            else return $"{Direction} {SVRAI.GetLocalizedOrigin(SteamVR_Input_Sources.Any)}";
         }
 
         // Simulate keyboard input
