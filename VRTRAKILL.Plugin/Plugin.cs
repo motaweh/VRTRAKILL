@@ -25,6 +25,11 @@ namespace Plugin
     public sealed partial class Plugin : BaseUnityPlugin
     {
         internal static ManualLogSource Log { get; private set; }
+        private static XRGeneralSettings generalSettings;
+        private static XRManagerSettings managerSettings;
+        private static OpenVRLoader xrLoader;
+        private const int VRInitAttempts = 90;
+        private const float VRInitRetryDelay = 2f;
 
         public void Awake()
         {
@@ -35,7 +40,19 @@ namespace Plugin
             PatchStuff();
             SceneWorker.Init();
 
-            InitVRLoader();
+            StartCoroutine(InitVRWhenReady());
+        }
+
+        // SteamVR may still be starting when the game boots, so keep retrying instead of giving up
+        private IEnumerator InitVRWhenReady()
+        {
+            for (int attempt = 1; attempt <= VRInitAttempts; attempt++)
+            {
+                if (InitVRLoader(attempt == 1)) yield break;
+                if (attempt == 1) Log.LogWarning("OpenVR is not ready yet, retrying until SteamVR responds.");
+                yield return new WaitForSecondsRealtime(VRInitRetryDelay);
+            }
+            Log.LogError("OpenVR did not respond after three minutes. Keep SteamVR open and restart the game.");
         }
 
         private void PatchStuff()
@@ -69,41 +86,85 @@ namespace Plugin
             }.PatchAll();
         }
 
-        public static void InitVRLoader()
+        public static bool InitVRLoader(bool logFailure = true)
         {
-            Log.LogMessage("INITILIZING");
-            SteamVR_Actions.PreInitialize();
-
-            var generalSettings = ScriptableObject.CreateInstance<XRGeneralSettings>();
-            var managerSettings = ScriptableObject.CreateInstance<XRManagerSettings>();
-            var xrLoader = ScriptableObject.CreateInstance<OpenVRLoader>();
-
-            var settings = OpenVRSettings.GetSettings();
-            settings.StereoRenderingMode = OpenVRSettings.StereoRenderingModes.MultiPass;
-            
-            generalSettings.Manager = managerSettings;
-
-            ((List<XRLoader>)managerSettings.activeLoaders).Clear();
-            ((List<XRLoader>)managerSettings.activeLoaders).Add(xrLoader);
-            managerSettings.InitializeLoaderSync();
-
-            Log.LogMessage("Active loader: " + managerSettings.activeLoader);
-
-            SteamVR.Initialize(true);
-            Log.LogMessage("SteamVR initialized. Active: " + SteamVR.active + " Connected: " + SteamVR.initializedState);
-
-            XRLoader loader = XRGeneralSettings.Instance.Manager.activeLoader;
-            if (loader != null)
+            try
             {
+                Log.LogMessage("INITILIZING");
+                SteamVR_Actions.PreInitialize();
+
+                generalSettings = ScriptableObject.CreateInstance<XRGeneralSettings>();
+                managerSettings = ScriptableObject.CreateInstance<XRManagerSettings>();
+                xrLoader = ScriptableObject.CreateInstance<OpenVRLoader>();
+
+                var settings = OpenVRSettings.GetSettings();
+                if (settings == null) throw new InvalidOperationException("OpenVR settings not found.");
+                settings.StereoRenderingMode = OpenVRSettings.StereoRenderingModes.MultiPass;
+
+                generalSettings.Manager = managerSettings;
+
+                // the game has no serialized XR loader asset, so fill the list directly (TrySetLoaders rejects runtime loaders)
+                var activeLoaders = managerSettings.activeLoaders as List<XRLoader>;
+                if (activeLoaders == null) throw new InvalidOperationException("XR loader list is not writable.");
+                activeLoaders.Clear();
+                activeLoaders.Add(xrLoader);
+                managerSettings.InitializeLoaderSync();
+
+                Log.LogMessage("Active loader: " + managerSettings.activeLoader);
+
+                XRLoader loader = managerSettings.activeLoader;
+                if (loader == null)
+                {
+                    // activeLoader can stay unset for a manager created at runtime; initialize the loader directly
+                    if (SteamVR.initializedState != SteamVR.InitializedStates.InitializeSuccess)
+                    {
+                        try { SteamVR.Initialize(true); }
+                        catch (Exception e) { Log.LogDebug("SteamVR init deferred: " + e.Message); }
+                    }
+                    if (!xrLoader.Initialize())
+                        throw new InvalidOperationException("OpenVR loader failed to initialize (SteamVR: " + SteamVR.initializedState + ").");
+                    loader = xrLoader;
+                }
+
+                if (SteamVR.initializedState != SteamVR.InitializedStates.InitializeSuccess)
+                    SteamVR.Initialize(true);
+                Log.LogMessage("SteamVR initialized. Active: " + SteamVR.active + " Connected: " + SteamVR.initializedState);
+
                 Log.LogMessage("Initilizing:" + loader.Start());
+
+                var display = loader.GetLoadedSubsystem<XRDisplaySubsystem>();
+                if (display == null) throw new InvalidOperationException("OpenVR display subsystem is missing.");
+                if (!display.running) display.Start();
+
+                SteamVR_Input.Initialize();
+                Systems.Input.SVRActionsManager.Init();
+                Log.LogMessage("DONE");
+                return true;
             }
-            else Log.LogError("ERROR AAA");
+            catch (Exception e)
+            {
+                CleanupVRLoader();
+                if (logFailure) Log.LogWarning("OpenVR is not available yet: " + e.GetType().Name + " - " + e.Message);
+                return false;
+            }
+        }
 
-            managerSettings.activeLoader.GetLoadedSubsystem<XRDisplaySubsystem>().Start();
+        private static void CleanupVRLoader()
+        {
+            try
+            {
+                if (managerSettings != null && managerSettings.activeLoader != null)
+                    managerSettings.DeinitializeLoader();
+            }
+            catch (Exception e) { Log?.LogDebug("OpenVR cleanup deferred: " + e.Message); }
 
-            SteamVR_Input.Initialize();
-            Systems.Input.SVRActionsManager.Init();
-            Log.LogMessage("DONE");
+            if (xrLoader != null) Destroy(xrLoader);
+            if (managerSettings != null) Destroy(managerSettings);
+            if (generalSettings != null) Destroy(generalSettings);
+
+            xrLoader = null;
+            managerSettings = null;
+            generalSettings = null;
         }
     }
 }
