@@ -35,7 +35,7 @@ internal class CameraControllerTranspiler
         yield return AccessTools.Method(typeof(Shotgun), nameof(Shotgun.Update));
         yield return AccessTools.Method(typeof(Shotgun), nameof(Shotgun.ShootSinks));
         //Weird stuff at start
-        yield return AccessTools.Method(typeof(Shotgun), nameof(Shotgun.ShootSaw));
+        yield return AccessTools.Method(typeof(Shotgun), nameof(Shotgun.ShootSaw), new[] { typeof(bool) }); //ShootSaw() is now just a wrapper
 
         //chainsaw2 should it be from position?
         yield return AccessTools.Method(typeof(ShotgunHammer), nameof(ShotgunHammer.ImpactRoutine));
@@ -45,7 +45,7 @@ internal class CameraControllerTranspiler
         yield return AccessTools.Method(typeof(ShotgunHammer), nameof(ShotgunHammer.ImpactEffects));
         //Etc.
         yield return AccessTools.Method(typeof(ShotgunHammer), nameof(ShotgunHammer.ThrowNade));
-        yield return AccessTools.Method(typeof(ShotgunHammer), nameof(ShotgunHammer.ShootSaw));
+        yield return AccessTools.Method(typeof(ShotgunHammer), nameof(ShotgunHammer.ShootSaw), new[] { typeof(bool) }); //ShootSaw() is now just a wrapper
         //But not this one
         yield return AccessTools.Method(typeof(ShotgunHammer), nameof(ShotgunHammer.Update));
 
