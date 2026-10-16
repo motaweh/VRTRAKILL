@@ -51,10 +51,14 @@ namespace Plugin.Systems.UI.Patches
         [HarmonyPatch(typeof(CanvasController), nameof(CanvasController.OnEnable))]
         static void DeployGTFOTW(CanvasController __instance)
         {
+            // OnEnable runs again on every re-enable, don't stack copies
+            if (__instance.transform.Find("VRTRAKILL_GetOutOfTheWall") != null)
+                return;
+
             if (Assets.UI_GTFOTW == null) Assets.LoadAllCustomAssets();
             GameObject UI_GTFOTW = Object.Instantiate(Assets.UI_GTFOTW, Vector3.zero, Quaternion.identity, __instance.transform);
-
-            Assets.UI_GTFOTW.transform.localScale = Vector3.zero;
+            UI_GTFOTW.name = "VRTRAKILL_GetOutOfTheWall";
+            UI_GTFOTW.transform.localScale = Vector3.zero;
 
             // Sets it's index to 0 so that it's above everything else
             UI_GTFOTW.transform.SetSiblingIndex(0);
