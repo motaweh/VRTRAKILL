@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Plugin.Systems.UI.Patches
 {
@@ -9,6 +10,8 @@ namespace Plugin.Systems.UI.Patches
         {
             Canvas C = __instance.gameObject.AddComponent<Canvas>();
             UIConverter.ConvertCanvas(C, DontAddComponent: true);
+            // CameraFrustumTargeter.LateUpdate reads this canvas's scaler for its auto-aim offset; a ~0 reference keeps the offset at 0
+            __instance.gameObject.AddComponent<CanvasScaler>().referenceResolution = Vector2.zero;
 
             __instance.transform.localScale /= 2;
             __instance.transform.localEulerAngles = Vector3.zero;
