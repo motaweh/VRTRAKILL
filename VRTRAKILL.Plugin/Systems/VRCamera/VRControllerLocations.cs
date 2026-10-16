@@ -53,11 +53,35 @@ namespace VRBasePlugin.Systems.VRCamera
             r.poseAction = SteamVR_Actions._default.RightPose;
             r.inputSource = SteamVR_Input_Sources.RightHand;
 
-            l.gameObject.SetActive(false);
-            r.gameObject.SetActive(false);
-            yield return null;
-            l.gameObject.SetActive(true);
-            r.gameObject.SetActive(true);
+            // OnEnable reads the pose at once, which logs NoData while SteamVR Input still has no pose for the hand
+            float waitStart = Time.realtimeSinceStartup; bool warnedL = false, warnedR = false;
+            while (!l.gameObject.activeSelf || !r.gameObject.activeSelf)
+            {
+                yield return null;
+                if (!SteamVR_Input.initialized || SteamVR_Input.isStartupFrame || OpenVR.Input == null) continue;
+
+                EnableWhenPoseReady(l, ref warnedL, waitStart);
+                EnableWhenPoseReady(r, ref warnedR, waitStart);
+            }
+        }
+
+        private const float PoseWaitWarnTime = 10f;
+        private static InputPoseActionData_t probeData;
+
+        // raw probe so the wait itself logs nothing; any error other than NoData enables the pose so SteamVR reports it
+        private static void EnableWhenPoseReady(SteamVR_Behaviour_Pose Pose, ref bool Warned, float WaitStart)
+        {
+            if (Pose.gameObject.activeSelf) return;
+
+            EVRInputError error = OpenVR.Input.GetPoseActionDataForNextFrame(Pose.poseAction.handle, SteamVR_Settings.instance.trackingSpace,
+                ref probeData, (uint)System.Runtime.InteropServices.Marshal.SizeOf(typeof(InputPoseActionData_t)), SteamVR_Input_Source.GetHandle(Pose.inputSource));
+            if (error != EVRInputError.NoData) { Pose.gameObject.SetActive(true); return; }
+
+            if (!Warned && Time.realtimeSinceStartup - WaitStart > PoseWaitWarnTime)
+            {
+                Warned = true;
+                Vars.Log.LogWarning($"No SteamVR pose data for {Pose.inputSource} after {PoseWaitWarnTime}s (NoData). Hand tracking starts once the controller reports a pose.");
+            }
         }
 
         private bool IsTurning; private float SnapTurnTimer;

@@ -1,4 +1,6 @@
-﻿using BepInEx;
+﻿extern alias UnityXROpenVR; // its Valve.VR copy clashes with SteamVR.dll
+
+using BepInEx;
 using BepInEx.Logging;
 using UnityEngine;
 using Valve.VR;
@@ -7,7 +9,7 @@ using VRTRAKILL.Utilities;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
 using UnityEngine.XR.OpenXR;
-using Unity.XR.OpenVR;
+using UnityXROpenVR::Unity.XR.OpenVR;
 using System.Collections.Generic;
 using System;
 using System.Text;
