@@ -32,9 +32,10 @@ namespace Plugin.Systems.Controllers
 
             if (Vars.Config.UIInteraction.ControllerBased)
             {
-                UI.UIConverter.UIEventCamera.transform.parent = Vars.NonDominantHand.transform;
-                UI.UIConverter.UIEventCamera.transform.position = Vector3.zero;
-                UI.UIConverter.UIEventCamera.transform.rotation = Vars.NonDominantHand.transform.rotation;
+                // local zero keeps the ray on the hand wherever the hand is at creation
+                UI.UIConverter.UIEventCamera.transform.SetParent(GunOffset.transform, false);
+                UI.UIConverter.UIEventCamera.transform.localPosition = Vector3.zero;
+                UI.UIConverter.UIEventCamera.transform.localRotation = Quaternion.identity;
             }
         }
 

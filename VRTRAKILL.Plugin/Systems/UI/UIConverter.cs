@@ -75,6 +75,7 @@ namespace Plugin.Systems.UI
             {
                 ColorBlock block = Button.colors;
                 block.highlightedColor = Color.red;
+                block.selectedColor = Color.red; // stick selection must be as visible as laser hover
                 Button.colors = block;
             }
 

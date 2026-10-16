@@ -21,6 +21,11 @@ namespace Plugin.Systems.Controllers
 
         public SteamVR_Input_Sources source;
 
+        // registered per hand so UI code never auto-creates a singleton before the hands exist
+        private static VRControllersSystem Left, Right;
+        public static VRControllersSystem Get(SteamVR_Input_Sources Hand)
+            => Hand == SteamVR_Input_Sources.LeftHand ? Left : Hand == SteamVR_Input_Sources.RightHand ? Right : null;
+
         LineRenderer LR; Vector3 EndPosition;
         public float DefaultLength => Vars.Config.CBS.CrosshairDistance;
 
@@ -61,13 +66,16 @@ namespace Plugin.Systems.Controllers
         {
             if (LR == null) return;
 
-            if (Vars.IsPlayerFrozen || Vars.IsPlayerUsingShop) LR.enabled = true;
-            else LR.enabled = false;
+            // only the hand that owns the UI pointer shows its laser
+            bool Pointer = Vars.Config.UIInteraction.ControllerBased
+                ? source == UI.UIInteraction.ActiveHand
+                : gameObject.HasComponent<VRArmsSystem>();
+            LR.enabled = Pointer && (Vars.IsPlayerFrozen || Vars.IsPlayerUsingShop);
 
             if (LR.enabled)
             {
                 LR.SetPosition(0, GunOffset.transform.position);
-                LR.SetPosition(1, EndPosition);
+                LR.SetPosition(1, Vars.Config.UIInteraction.ControllerBased && UI.UIInteraction.HasHit ? UI.UIInteraction.HitPoint : EndPosition);
             }
         }
 
@@ -76,8 +84,9 @@ namespace Plugin.Systems.Controllers
             RenderModel = RenderModel ?? transform.Find("Model").gameObject;
 
             SetupOffsets();
+            if (source == SteamVR_Input_Sources.LeftHand) Left = this; else Right = this;
 
-            if (Vars.Config.UIInteraction.ControllerLines.Enabled && gameObject.HasComponent<VRArmsSystem>())
+            if (Vars.Config.UIInteraction.ControllerLines.Enabled)
                 SetupControllerLines();
         }
         public void Update()
