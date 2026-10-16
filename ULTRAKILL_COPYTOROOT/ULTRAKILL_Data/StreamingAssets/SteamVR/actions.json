@@ -182,6 +182,10 @@
       "binding_url": "bindings_logitech_stylus.json"
     },
     {
+      "controller_type": "playstation_vr2_sense",
+      "binding_url": "bindings_playstation_vr2_sense.json"
+    },
+    {
       "controller_type": "vive_cosmos",
       "binding_url": "binding_vive_cosmos.json"
     },
