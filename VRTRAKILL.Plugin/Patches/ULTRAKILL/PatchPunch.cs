@@ -120,7 +120,7 @@ namespace Plugin.Patches.ULTRAKILL;
             if (Physics.Raycast(Vars.NonDominantHand.transform.position, direction, out var hitInfo,
                                 2f, LayerMaskDefaults.Get(LMD.EnvironmentAndBigEnemies))) position = hitInfo.point - direction * 0.1f;
 
-            Object.Instantiate(__instance.blastWave, position, Vars.NonDominantHand.transform.rotation);
+            Object.Instantiate(__instance.blastWave, position, Vars.NonDominantHand.transform.rotation).GetComponentInChildren<Explosion>().playerProjectileForceDirection = direction.normalized;
         }
         return false;
     }
@@ -134,7 +134,7 @@ namespace Plugin.Patches.ULTRAKILL;
 
         if ((bool)MonoSingleton<CameraFrustumTargeter>.Instance && (bool)MonoSingleton<CameraFrustumTargeter>.Instance.CurrentTarget && MonoSingleton<CameraFrustumTargeter>.Instance.IsAutoAimed)
         {
-            vector = MonoSingleton<CameraFrustumTargeter>.Instance.CurrentTarget.bounds.center - MonoSingleton<CameraController>.Instance.transform.position;
+            vector = MonoSingleton<CameraFrustumTargeter>.Instance.CurrentTargetAimPosition - MonoSingleton<CameraController>.Instance.transform.position;
         }
         if (Physics.Raycast(Vars.NDHC.transform.position, vector, out var hitInfo, float.PositiveInfinity, LayerMaskDefaults.Get(LMD.Enemies), QueryTriggerInteraction.Ignore))
             __result = hitInfo.point;
