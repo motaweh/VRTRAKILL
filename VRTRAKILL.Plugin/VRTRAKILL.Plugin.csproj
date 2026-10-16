@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -101,6 +101,10 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="netstandard">
+      <HintPath>..\lib\Unity\netstandard.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.InputSystem">
       <HintPath>..\lib\Unity\Unity.InputSystem.dll</HintPath>
       <Private>False</Private>
@@ -161,16 +165,8 @@
       <HintPath>..\lib\Unity\UnityEngine.VRModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityOpenXR">
-      <HintPath>..\lib\UnityOpenXR.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="UnityEngine.XRModule">
       <HintPath>..\lib\UnityEngine.XRModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="openxr_loader">
-      <HintPath>..\lib\openxr_loader.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.XR.Management">
@@ -279,7 +275,6 @@
     <Compile Include="Input\InputMap.cs" />
     <Compile Include="Input\InputVars.cs" />
     <Compile Include="Input\SVRActionsManager.cs" />
-    <Compile Include="obj\Release\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="Patches\Controllers\A.cs" />
     <Compile Include="Patches\Misc\A.cs" />
     <Compile Include="Patches\Controllers\PatchControllerAdder.cs" />
@@ -454,8 +449,4 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>copy /Y "C:\Work\VRTRAKILL_REVAMP\VRTRAKILL.Plugin\obj\Release\VRTRAKILL.dll" "C:\Users\matth\Desktop\ULTRAKILL_VR\BepInEx\plugins\VRTRAKILL\VRTRAKILL.dll"
-start "" "C:\Users\matth\Desktop\ULTRAKILL_VR\ULTRAKILL.exe"</PostBuildEvent>
-  </PropertyGroup>
 </Project>
