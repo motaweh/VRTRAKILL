@@ -5,7 +5,6 @@ using Plugin.Systems.VRAvatar.Armature;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace Plugin.Patches.ULTRAKILL;

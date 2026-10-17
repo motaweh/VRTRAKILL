@@ -1,5 +1,4 @@
 ﻿using Plugin.Systems;
-using ULTRAKILL.Portal;
 using UnityEngine;
 
 namespace Plugin.Patches.ULTRAKILL;

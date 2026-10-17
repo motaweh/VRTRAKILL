@@ -2,8 +2,6 @@
 using WindowsInput;
 using WindowsInput.Native;
 using Plugin.Systems.Input;
-using UnityEngine.InputSystem.Utilities;
-using UnityEngine.InputSystem;
 using Plugin.Systems;
 
 namespace Plugin.Prefs

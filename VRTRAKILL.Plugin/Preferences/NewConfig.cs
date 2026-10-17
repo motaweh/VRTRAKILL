@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.IO;
-using Plugin.Systems;
 
 #pragma warning disable IDE1006 // Naming Styles
 namespace Plugin.Prefs

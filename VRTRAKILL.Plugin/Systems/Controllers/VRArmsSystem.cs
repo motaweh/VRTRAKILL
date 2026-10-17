@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Plugin.Patches.ULTRAKILL;
 
 namespace Plugin.Systems.Controllers
 {
@@ -12,7 +11,7 @@ namespace Plugin.Systems.Controllers
         public Vector3 ArmIKOffset = new Vector3(0, .05f, -.11f);
 
         private Vector3 _PreviousPosition, _CurrentVelocity; public float Speed = 0; // for punch detection
-        private Vector3 LastPosition, Velocity; // for direction
+        private Vector3 LastPosition; // for direction
         private IEnumerator CalculateSpeed()
         {
             _PreviousPosition = transform.position;
@@ -46,7 +45,6 @@ namespace Plugin.Systems.Controllers
 
             if (LastPosition != transform.position)
             {
-                Velocity = (transform.position - LastPosition).normalized;
                 Vars.punchDirection = Vars.NonDominantHand.transform.forward;
                 LastPosition = transform.position;
             }

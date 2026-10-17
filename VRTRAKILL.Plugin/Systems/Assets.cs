@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Valve.VR;
 
 namespace Plugin.Systems
 {

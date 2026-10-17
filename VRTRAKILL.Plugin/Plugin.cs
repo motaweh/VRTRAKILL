@@ -9,11 +9,7 @@ using UnityEngine.XR.Management;
 using Unity.XR.OpenVR;
 using System.Collections.Generic;
 using System;
-using System.Text;
-using UnityEngine.SceneManagement;
 using System.Collections;
-using HarmonyLib;
-using System.CodeDom;
 
 namespace Plugin
 {

@@ -10,8 +10,7 @@ internal sealed class PatchGunHands
     [HarmonyPatch(typeof(Shotgun))]
     static class ShotgunH
     {
-        static Vector3 Position = new Vector3(-.5f, -.95f, -.45f),
-                       Rotation = new Vector3(0, 180, 0),
+        static Vector3 Rotation = new Vector3(0, 180, 0),
                        Scale = new Vector3(15, 15, 15);
 
         [HarmonyPostfix]
@@ -72,8 +71,7 @@ internal sealed class PatchGunHands
     [HarmonyPatch(typeof(Railcannon))]
     static class RailgunH
     {
-        static Vector3 Position = new Vector3(-.1f, -.325f, -.025f),
-                       Rotation = new Vector3(30, 180, 0),
+        static Vector3 Rotation = new Vector3(30, 180, 0),
                        Scale = new Vector3(3.5f, 3.5f, 3.5f);
 
         [HarmonyPostfix]

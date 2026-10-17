@@ -1,6 +1,5 @@
 ﻿using Plugin.Patches.ULTRAKILL;
 using Plugin.Systems.VRCamera.Patches;
-using ULTRAKILL.Portal;
 using UnityEngine;
 using Valve.VR;
 using VRBasePlugin.Systems.VRCamera;

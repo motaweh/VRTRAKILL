@@ -9,9 +9,9 @@ namespace Plugin.Systems
     internal static class SceneWorker
     {
         public static void Init()
-        => SceneManager.activeSceneChanged += (_, y) => SceneChanged(y);
+        => SceneManager.activeSceneChanged += (_, _) => SceneChanged();
 
-        private static void SceneChanged(Scene S)
+        private static void SceneChanged()
         {
             VRTRAKILL.Utilities.Unity.EnableOffscreenRendering();
 

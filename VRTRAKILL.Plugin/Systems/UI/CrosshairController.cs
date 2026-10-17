@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using VRTRAKILL.Utilities;
 
 namespace Plugin.Systems.UI
 {

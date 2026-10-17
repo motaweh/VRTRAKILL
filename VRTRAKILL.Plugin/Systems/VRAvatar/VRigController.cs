@@ -2,7 +2,6 @@
 using VRTRAKILL.Utilities;
 using Plugin.Util.Libraries.EZhex1991.EZSoftBone;
 using UnityEngine;
-using Valve.VR;
 
 namespace Plugin.Systems.VRAvatar
 {

@@ -119,10 +119,7 @@ internal class PatchGunTransform
     {
         static Vector3 Position = new Vector3(-.3f, .3f, -.1f),
                        Rotation = new Vector3(),
-                       Scale = new Vector3(.65f, .65f, .65f),
-                       AltPosition = new Vector3(),
-                       AltRotation = new Vector3(),
-                       AltScale = new Vector3();
+                       Scale = new Vector3(.65f, .65f, .65f);
 
         [HarmonyPostfix]
         [HarmonyPatch(nameof(RocketLauncher.Start))]

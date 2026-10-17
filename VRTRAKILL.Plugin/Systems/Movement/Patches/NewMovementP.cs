@@ -1,7 +1,4 @@
 ﻿using HarmonyLib;
-using ULTRAKILL.Cheats;
-using UnityEngine;
-using Plugin.Systems.Input;
 
 namespace Plugin.Systems.Movement.Patches
 {

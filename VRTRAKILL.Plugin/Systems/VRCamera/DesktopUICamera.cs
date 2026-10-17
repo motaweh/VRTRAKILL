@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Plugin.Util;
 
 namespace Plugin.Systems.VRCamera
 {

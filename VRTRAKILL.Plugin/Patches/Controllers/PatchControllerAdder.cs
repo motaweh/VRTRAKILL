@@ -1,10 +1,8 @@
 ﻿using HarmonyLib;
 using Plugin.Systems;
-using Plugin.Systems.Arms;
 using Plugin.Systems.Controllers;
 using UnityEngine;
 using Valve.VR;
-using VRBasePlugin.Systems.VRCamera;
 
 namespace Plugin.Patches.Controllers;
 
@@ -17,7 +15,7 @@ internal sealed class PatchControllerAdder
     {
         __instance.gameObject.SetActive(false);
 
-        GameObject LHGO = CreateController("Left Controller", SteamVR_Input_Sources.LeftHand);
+        GameObject LHGO = CreateController("Left Controller");
 
         VRControllersSystem LCon = LHGO.AddComponent<VRControllersSystem>();
         LCon.RenderModelOffsetPos = new Vector3(.055f, -.1f, -.1f);
@@ -25,7 +23,7 @@ internal sealed class PatchControllerAdder
         LCon.RenderModelOffsetScale = new Vector3(.65f, .65f, .65f);
         LCon.source = SteamVR_Input_Sources.LeftHand;
 
-        GameObject RHGO = CreateController("Right Controller", SteamVR_Input_Sources.RightHand);
+        GameObject RHGO = CreateController("Right Controller");
 
         VRControllersSystem RCon = RHGO.AddComponent<VRControllersSystem>();
         RCon.RenderModelOffsetPos = new Vector3(-.015f, -.105f, -.15f);
@@ -58,7 +56,7 @@ internal sealed class PatchControllerAdder
         __instance.gameObject.SetActive(true);
     }
 
-    private static GameObject CreateController(string Name, SteamVR_Input_Sources Source)
+    private static GameObject CreateController(string Name)
     {
         return new GameObject(Name) { layer = (int)Layers.IgnoreRaycast };
     }

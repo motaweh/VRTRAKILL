@@ -269,9 +269,6 @@
     <None Include="CopyToGameRoot\ULTRAKILL\BepInEx\patchers\classdata.tpk">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="CopyToGameRoot\ULTRAKILL\BepInEx\patchers\classdata.tpk">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Content Include="CopyToGameRoot\ULTRAKILL\BepInEx\plugins\VRTRAKILL\icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

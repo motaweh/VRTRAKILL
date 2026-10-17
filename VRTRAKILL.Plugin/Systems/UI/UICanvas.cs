@@ -1,5 +1,4 @@
-﻿using Unity.XR.CoreUtils;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace Plugin.Systems.UI

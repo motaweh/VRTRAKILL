@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
-using Plugin.Systems;
 using Plugin.Systems.VRAvatar;
-using UnityEngine;
 
 namespace Plugin.Patches.ULTRAKILL;
 

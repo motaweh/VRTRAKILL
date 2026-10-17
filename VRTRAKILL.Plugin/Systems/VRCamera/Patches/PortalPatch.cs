@@ -1,14 +1,7 @@
 ﻿using HarmonyLib;
-using Plugin.Systems.VRCamera.Patches;
 using System;
-using System.IO;
-using System.Runtime.CompilerServices;
 using ULTRAKILL.Portal;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
-using UnityEngine.XR;
-using Valve.VR.InteractionSystem;
 
 namespace Plugin.Systems.VRCamera.Patches
 {

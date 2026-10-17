@@ -1,13 +1,10 @@
 ﻿using HarmonyLib;
 using Plugin.Systems.Input;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using ULTRAKILL.Cheats;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Plugin.Systems.Movement.Patches;
 [HarmonyPatch]

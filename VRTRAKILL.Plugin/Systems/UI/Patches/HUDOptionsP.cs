@@ -1,11 +1,6 @@
 ﻿using HarmonyLib;
-using Plugin.Systems.VRCamera.Patches;
-using ULTRAKILL.Portal;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using UnityEngine.XR;
-using VRTRAKILL.Utilities;
 
 namespace Plugin.Systems.UI.Patches
 {
