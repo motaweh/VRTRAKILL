@@ -6,14 +6,17 @@ using Valve.VR;
 
 namespace Plugin.Patches.Controllers;
 
-[HarmonyPatch(typeof(RumbleManager))] internal sealed class PatchControllerHaptics
+[HarmonyPatch(typeof(RumbleManager))]
+internal sealed class PatchControllerHaptics
 {
     static readonly SteamVR_Action_Vibration HapticAction = SteamVR_Actions._default.Haptic;
     // RumbleManager.OnDisable runs at quit after OpenVR shut down (OpenVR.Input is null -> NRE in Execute)
     static bool Quitting;
     static PatchControllerHaptics() { Application.quitting += () => Quitting = true; }
 
-    [HarmonyPrefix] [HarmonyPatch(nameof(RumbleManager.Update))] static bool Update(RumbleManager __instance)
+    [HarmonyPrefix]
+    [HarmonyPatch(nameof(RumbleManager.Update))]
+    static bool Update(RumbleManager __instance)
     {
         __instance.discardedKeys.Clear();
         foreach (KeyValuePair<RumbleKey, PendingVibration> pendingVibration in __instance.pendingVibrations)

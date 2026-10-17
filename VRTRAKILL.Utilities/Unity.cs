@@ -16,7 +16,7 @@ namespace VRTRAKILL.Utilities
             GM.layer = Layer;
             if (GM.transform.childCount > 0)
                 for (int i = 0; i < GM.transform.childCount; i++)
-                    try { RecursiveChangeLayer(GM.transform.GetChild(i).gameObject, Layer); } catch {}
+                    try { RecursiveChangeLayer(GM.transform.GetChild(i).gameObject, Layer); } catch { }
         }
 
         public static RaycastHit ForwardRaycast(this Transform T, float Length, int? Layer = null)

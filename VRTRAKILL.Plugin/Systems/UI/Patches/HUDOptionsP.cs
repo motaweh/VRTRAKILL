@@ -9,7 +9,8 @@ using VRTRAKILL.Utilities;
 
 namespace Plugin.Systems.UI.Patches
 {
-    [HarmonyPatch] internal class HUDOptionsP
+    [HarmonyPatch]
+    internal class HUDOptionsP
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(CanvasController), nameof(CanvasController.Awake))]
@@ -71,12 +72,16 @@ namespace Plugin.Systems.UI.Patches
             GTFOTW.DetectorTransform = Vars.MainCamera.transform;
         }
 
-        [HarmonyPostfix] [HarmonyPatch(typeof(ScreenZone), nameof(ScreenZone.OnTriggerEnter))] static void ConvertThing()
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ScreenZone), nameof(ScreenZone.OnTriggerEnter))]
+        static void ConvertThing()
         {
             UIConverter.RecursiveConvertCanvas();
         }
 
-        [HarmonyPostfix] [HarmonyPatch(typeof(FlashImage), nameof(FlashImage.Flash))] static void FlashImageTweak(FlashImage __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(FlashImage), nameof(FlashImage.Flash))]
+        static void FlashImageTweak(FlashImage __instance)
         {
             if (__instance.gameObject.name.Contains("White") || __instance.gameObject.name.Contains("Black"))
                 __instance.transform.localScale *= 20;

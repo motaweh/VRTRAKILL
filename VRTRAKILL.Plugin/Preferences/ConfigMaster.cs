@@ -13,7 +13,7 @@ namespace Plugin.Prefs
         public static string ConfigPath = $"{PluginInfo.PluginPath}\\VRTRAKILL_Config.json";
 
         public static VirtualKeyCode?
-            KShoot = null, KAltShoot = null, KPunch = null ,
+            KShoot = null, KAltShoot = null, KPunch = null,
 
             KJump = null, KSlide = null, KDash = null,
 
@@ -22,7 +22,7 @@ namespace Plugin.Prefs
 
             KSwapHand = null,
             KWhiplash = null,
-            
+
             KSlot0 = null, KSlot1 = null, KSlot2 = null,
             KSlot3 = null, KSlot4 = null, KSlot5 = null,
             KSlot6 = null, KSlot7 = null, KSlot8 = null, KSlot9 = null;

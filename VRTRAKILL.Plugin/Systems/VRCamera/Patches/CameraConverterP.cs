@@ -15,7 +15,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Plugin.Systems.VRCamera.Patches
 {
-    [HarmonyPatch] public class CameraConverterP
+    [HarmonyPatch]
+    public class CameraConverterP
     {
         // adapted from HuskVR
         public static Camera DesktopWorldCam, DesktopUICam;
@@ -42,16 +43,20 @@ namespace Plugin.Systems.VRCamera.Patches
             rightEye.transform.SetParent(cc.transform.parent);
             rightEye.stereoTargetEye = StereoTargetEyeMask.Right;
         }
-        [HarmonyPrefix] [HarmonyPatch(typeof(CameraController), nameof(CameraController.Start))] static void ConvertCameras(CameraController __instance)
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(CameraController), nameof(CameraController.Start))]
+        static void ConvertCameras(CameraController __instance)
         {
-            while (__instance.cam == null && __instance.hudCamera == null) {}
+            while (__instance.cam == null && __instance.hudCamera == null) { }
 
             // deactivate, not destroy: destroying it breaks the game
             GameObject.Find("Virtual Camera").SetActive(false);
 
             __instance.cam.enabled = false;
         }
-        [HarmonyPostfix] [HarmonyPatch(typeof(NewMovement), nameof(NewMovement.GetHurt))] public static void FixWeirdDeathThing(NewMovement __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(NewMovement), nameof(NewMovement.GetHurt))]
+        public static void FixWeirdDeathThing(NewMovement __instance)
         {
             if (__instance.dead)
             {
@@ -60,7 +65,9 @@ namespace Plugin.Systems.VRCamera.Patches
             }
 
         }
-        [HarmonyPostfix] [HarmonyPatch(typeof(NewMovement), nameof(NewMovement.Start))] static void ScaleObjects(NewMovement __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(NewMovement), nameof(NewMovement.Start))]
+        static void ScaleObjects(NewMovement __instance)
         {
             __instance.gameObject.AddComponent<VRPlayer.VRKeybindsController>();
 
@@ -151,12 +158,14 @@ namespace Plugin.Systems.VRCamera.Patches
             }
         }
 
-        [HarmonyPrefix] [HarmonyPatch(typeof(CameraController), nameof(CameraController.Transform))]
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(CameraController), nameof(CameraController.Transform))]
         static void TransformBefore(CameraController __instance, ref float __state)
         {
             __state = __instance.rotationY;
         }
-        [HarmonyPostfix] [HarmonyPatch(typeof(CameraController), nameof(CameraController.Transform))]
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(CameraController), nameof(CameraController.Transform))]
         static void TransformAfter(CameraController __instance, ref float __state)
         {
             InputVars.TurnOffset += __instance.rotationY - __state;
@@ -166,7 +175,7 @@ namespace Plugin.Systems.VRCamera.Patches
         [HarmonyPatch(typeof(CameraController), nameof(CameraController.GetDefaultPos))]
         static bool GetDefaultPos(ref Vector3 __result)
         {
-            if(Controllers.VRGunsSystem.Instance == null) __result = Vector3.zero;
+            if (Controllers.VRGunsSystem.Instance == null) __result = Vector3.zero;
             __result = Vars.DominantHand.transform.position;
             return false;
         }

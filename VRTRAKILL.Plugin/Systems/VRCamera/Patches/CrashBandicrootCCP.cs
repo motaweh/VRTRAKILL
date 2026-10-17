@@ -6,7 +6,8 @@ using Valve.VR;
 
 namespace Plugin.Systems.VRCamera.Patches
 {
-    [HarmonyPatch] internal class CrashBandicrootCCP
+    [HarmonyPatch]
+    internal class CrashBandicrootCCP
     {
 
     }

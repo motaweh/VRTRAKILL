@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace Plugin.Systems.UI.Patches
 {
-    [HarmonyPatch] internal sealed class HudP
+    [HarmonyPatch]
+    internal sealed class HudP
     {
         [HarmonyPostfix]
         [HarmonyPatch(typeof(HudController), nameof(HudController.Start))]
@@ -18,7 +19,9 @@ namespace Plugin.Systems.UI.Patches
                 __instance.transform.localEulerAngles = Vector3.zero;
             }
         }
-        [HarmonyPrefix] [HarmonyPatch(typeof(HUDPos), nameof(HUDPos.CheckPos))] static void RetransformElements(HUDPos __instance)
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(HUDPos), nameof(HUDPos.CheckPos))]
+        static void RetransformElements(HUDPos __instance)
         {
             if (__instance.GetComponent<Canvas>() == null) return;
             UIConverter.ConvertCanvas(__instance.GetComponent<Canvas>(), Force: true, DontAddComponent: true);
@@ -36,21 +39,25 @@ namespace Plugin.Systems.UI.Patches
                     break;
 
                 case "StyleCanvas":
-                    __instance.defaultPos = new Vector3(260, 40, -240)*0.1f;
+                    __instance.defaultPos = new Vector3(260, 40, -240) * 0.1f;
                     __instance.defaultRot = new Vector3(356, 45, 357);
 
-                    __instance.reversePos = new Vector3(-260, 40, -240)*0.1f;
+                    __instance.reversePos = new Vector3(-260, 40, -240) * 0.1f;
                     __instance.reverseRot = new Vector3(0, -45, 0);
                     break;
             }
         }
-        [HarmonyPostfix] [HarmonyPatch(typeof(FinalRank), nameof(FinalRank.Start))] static void CFinalRank(FinalRank __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(FinalRank), nameof(FinalRank.Start))]
+        static void CFinalRank(FinalRank __instance)
         {
             UIConverter.ConvertCanvas(__instance.transform.parent.GetComponent<Canvas>(), Force: true);
             __instance.transform.localPosition = Vector3.zero;
-            __instance.transform.localScale = new Vector3(8, 4, 4)*0.3f;
+            __instance.transform.localScale = new Vector3(8, 4, 4) * 0.3f;
         }
-        [HarmonyPostfix] [HarmonyPatch(typeof(ScreenBlood), nameof(ScreenBlood.Start))] static void CScreenBlood(ScreenBlood __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ScreenBlood), nameof(ScreenBlood.Start))]
+        static void CScreenBlood(ScreenBlood __instance)
         {
             // makes blood splatters bigger for aesthetic reasons
             __instance.transform.localScale *= 10;

@@ -8,9 +8,12 @@ using VRBasePlugin.Systems.VRCamera;
 
 namespace Plugin.Patches.Controllers;
 
-[HarmonyPatch(typeof(NewMovement))] internal sealed class PatchControllerAdder
+[HarmonyPatch(typeof(NewMovement))]
+internal sealed class PatchControllerAdder
 {
-    [HarmonyPostfix] [HarmonyPatch(nameof(NewMovement.Start))] public static void AddHands(NewMovement __instance)
+    [HarmonyPostfix]
+    [HarmonyPatch(nameof(NewMovement.Start))]
+    public static void AddHands(NewMovement __instance)
     {
         __instance.gameObject.SetActive(false);
 

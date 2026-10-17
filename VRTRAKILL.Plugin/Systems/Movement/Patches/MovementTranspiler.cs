@@ -29,7 +29,7 @@ internal class MovementTranspiler
                 .MatchForward(false,
                     new CodeMatch(i => i.opcode == OpCodes.Ldfld && i.operand is FieldInfo f && f == AccessTools.Field(typeof(PlayerInput), "Move")),
                     new CodeMatch(i => i.opcode == OpCodes.Callvirt && i.operand is MethodInfo m && m.Name == "ReadValue"))
-                .Repeat(matcher => 
+                .Repeat(matcher =>
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(MovementTranspiler), nameof(GetReplacementMove))))
                     .RemoveInstruction())
                 .InstructionEnumeration();

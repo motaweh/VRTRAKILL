@@ -4,9 +4,12 @@ using UnityEngine;
 namespace Plugin.Patches.ULTRAKILL;
 
 // the game's offsets put the third and later dual-wield copies far from the hand
-[HarmonyPatch(typeof(DualWieldPickup))] internal class DuelWieldP
+[HarmonyPatch(typeof(DualWieldPickup))]
+internal class DuelWieldP
 {
-    [HarmonyPrefix] [HarmonyPatch(nameof(DualWieldPickup.PickedUp))] static bool FixTransform(DualWieldPickup __instance)
+    [HarmonyPrefix]
+    [HarmonyPatch(nameof(DualWieldPickup.PickedUp))]
+    static bool FixTransform(DualWieldPickup __instance)
     {
         if (!MonoSingleton<GunControl>.Instance) return false;
 

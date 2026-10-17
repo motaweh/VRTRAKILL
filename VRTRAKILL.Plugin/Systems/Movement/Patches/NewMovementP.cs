@@ -1,4 +1,4 @@
-﻿﻿using HarmonyLib;
+﻿using HarmonyLib;
 using ULTRAKILL.Cheats;
 using UnityEngine;
 using Plugin.Systems.Input;

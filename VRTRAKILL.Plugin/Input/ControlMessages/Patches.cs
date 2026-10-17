@@ -2,15 +2,20 @@
 
 namespace Plugin.Systems.Input.ControlMessages
 {
-    [HarmonyPatch] internal static class Patches
+    [HarmonyPatch]
+    internal static class Patches
     {
-        [HarmonyPrefix] [HarmonyPatch(typeof(HudMessage), nameof(HudMessage.PlayMessage))] static void PlayMessage(HudMessage __instance, bool hasToBeEnabled = false)
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(HudMessage), nameof(HudMessage.PlayMessage))]
+        static void PlayMessage(HudMessage __instance, bool hasToBeEnabled = false)
         {
             if (ConvertTextToVR(__instance.message, __instance.message2) == "Error"
             && (!string.IsNullOrEmpty(__instance.message) || !string.IsNullOrEmpty(__instance.message2))) return;
             else __instance.ChangeMessage(ConvertTextToVR(__instance.message, __instance.message2));
         }
-        [HarmonyPostfix] [HarmonyPatch(typeof(TextBinds), nameof(TextBinds.OnEnable))] static void TBOnEnable(TextBinds __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(TextBinds), nameof(TextBinds.OnEnable))]
+        static void TBOnEnable(TextBinds __instance)
         {
             if (ConvertTextToVR(__instance.text1, __instance.text2) == "Error"
             && (!string.IsNullOrEmpty(__instance.text1) || !string.IsNullOrEmpty(__instance.text2))) return;

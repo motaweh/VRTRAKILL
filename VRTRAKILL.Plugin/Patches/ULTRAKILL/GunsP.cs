@@ -4,24 +4,33 @@ using Plugin.Systems.Input;
 
 namespace Plugin.Patches.ULTRAKILL;
 
-[HarmonyPatch] internal sealed class GunsP
+[HarmonyPatch]
+internal sealed class GunsP
 {
-    [HarmonyPostfix] [HarmonyPatch(typeof(GunControl), nameof(GunControl.Start))] static void RLPGC(GunControl __instance)
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(GunControl), nameof(GunControl.Start))]
+    static void RLPGC(GunControl __instance)
     {
         __instance.gameObject.AddComponent<VRGunsController>();
         __instance.GetComponent<WalkingBob>().enabled = false;
         __instance.transform.localPosition = Vector3.zero;
     }
-    [HarmonyPostfix] [HarmonyPatch(typeof(GunSetter), nameof(GunSetter.ResetWeapons))] static void RLPGS(GunSetter __instance, bool firstTime = false)
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(GunSetter), nameof(GunSetter.ResetWeapons))]
+    static void RLPGS(GunSetter __instance, bool firstTime = false)
     { __instance.transform.localPosition = Vector3.zero; }
-    [HarmonyPostfix] [HarmonyPatch(typeof(GunSetter), nameof(GunSetter.Start))] static void MakeThemUndisappear(GunSetter __instance)
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(GunSetter), nameof(GunSetter.Start))]
+    static void MakeThemUndisappear(GunSetter __instance)
     {
         foreach (SkinnedMeshRenderer SMR in __instance.GetComponentsInChildren<SkinnedMeshRenderer>())
             SMR.updateWhenOffscreen = true;
     }
 
     // weapon wheel controller interaction
-    [HarmonyPrefix] [HarmonyPatch(typeof(WeaponWheel), nameof(WeaponWheel.Update))] static bool WWUpdate(WeaponWheel __instance)
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(WeaponWheel), nameof(WeaponWheel.Update))]
+    static bool WWUpdate(WeaponWheel __instance)
     {
         if (!MonoSingleton<GunControl>.Instance
         || !MonoSingleton<GunControl>.Instance.activated

@@ -46,7 +46,7 @@ namespace Plugin.Systems.UI
         {
             if (GO != null)
             {
-                try { ConvertCanvas(GO.GetComponent<Canvas>()); } catch {}
+                try { ConvertCanvas(GO.GetComponent<Canvas>()); } catch { }
 
                 if (GO.transform.childCount > 0)
                     for (int i = 0; i < GO.transform.childCount; i++)
@@ -56,7 +56,7 @@ namespace Plugin.Systems.UI
             {
                 foreach (Canvas C in Object.FindObjectsOfType<Canvas>())
                     if (!C.gameObject.HasComponent<UICanvas>())
-                        try { ConvertCanvas(C); } catch {}
+                        try { ConvertCanvas(C); } catch { }
             }
         }
         public static void ConvertCanvas(Canvas C, bool Force = false, bool DontAddComponent = false)

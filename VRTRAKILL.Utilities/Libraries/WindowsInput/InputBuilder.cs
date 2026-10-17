@@ -117,9 +117,9 @@ namespace WindowsInput
         {
             var down =
                 new INPUT
-                    {
-                        Type = (UInt32) InputType.Keyboard,
-                        Data =
+                {
+                    Type = (UInt32)InputType.Keyboard,
+                    Data =
                             {
                                 Keyboard =
                                     new KEYBDINPUT
@@ -131,7 +131,7 @@ namespace WindowsInput
                                             ExtraInfo = IntPtr.Zero
                                         }
                             }
-                    };
+                };
 
             _inputList.Add(down);
             return this;
@@ -146,9 +146,9 @@ namespace WindowsInput
         {
             var up =
                 new INPUT
-                    {
-                        Type = (UInt32) InputType.Keyboard,
-                        Data =
+                {
+                    Type = (UInt32)InputType.Keyboard,
+                    Data =
                             {
                                 Keyboard =
                                     new KEYBDINPUT
@@ -162,7 +162,7 @@ namespace WindowsInput
                                             ExtraInfo = IntPtr.Zero
                                         }
                             }
-                    };
+                };
 
             _inputList.Add(up);
             return this;
@@ -190,9 +190,9 @@ namespace WindowsInput
             UInt16 scanCode = character;
 
             var down = new INPUT
-                           {
-                               Type = (UInt32)InputType.Keyboard,
-                               Data =
+            {
+                Type = (UInt32)InputType.Keyboard,
+                Data =
                                    {
                                        Keyboard =
                                            new KEYBDINPUT
@@ -204,12 +204,12 @@ namespace WindowsInput
                                                    ExtraInfo = IntPtr.Zero
                                                }
                                    }
-                           };
+            };
 
             var up = new INPUT
-                         {
-                             Type = (UInt32)InputType.Keyboard,
-                             Data =
+            {
+                Type = (UInt32)InputType.Keyboard,
+                Data =
                                  {
                                      Keyboard =
                                          new KEYBDINPUT
@@ -222,7 +222,7 @@ namespace WindowsInput
                                                  ExtraInfo = IntPtr.Zero
                                              }
                                  }
-                         };
+            };
 
             // Handle extended keys:
             // If the scan code is preceded by a prefix byte that has the value 0xE0 (224),

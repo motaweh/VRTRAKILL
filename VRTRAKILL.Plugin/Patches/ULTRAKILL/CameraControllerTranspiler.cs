@@ -51,7 +51,7 @@ internal class CameraControllerTranspiler
     static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         // this.cc, CameraController.Instance, Camera.main or this.cam/camObj, then .transform -> the dominant hand's transform
-        CodeMatch matchGettingCameraController = new CodeMatch(i => 
+        CodeMatch matchGettingCameraController = new CodeMatch(i =>
             (i.opcode == OpCodes.Ldfld && i.operand is FieldInfo f && f.FieldType == typeof(CameraController))
          || (i.opcode == OpCodes.Call && i.operand is MethodInfo f2 && f2 == AccessTools.PropertyGetter(typeof(CameraController), nameof(CameraController.Instance)))
          || (i.opcode == OpCodes.Call && i.operand is MethodInfo f3 && f3 == AccessTools.PropertyGetter(typeof(Camera), nameof(Camera.main)))
@@ -60,7 +60,8 @@ internal class CameraControllerTranspiler
                 .MatchForward(false,
                     matchGettingCameraController,
                     new CodeMatch(i => i.opcode == OpCodes.Callvirt && i.operand is MethodInfo m && m.Name == "get_transform"))
-                .Repeat(matcher => {
+                .Repeat(matcher =>
+                {
                     if (matcher.Instruction.opcode == OpCodes.Ldfld) // the replaced ldfld leaves 'this' on the stack
                         matcher.InsertAndAdvance(new CodeInstruction(OpCodes.Pop));
 

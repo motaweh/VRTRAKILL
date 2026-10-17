@@ -7,7 +7,8 @@ using System;
 namespace Plugin.Patches.Visual;
 
 // hides the game's own arm on weapons that get a VR arm
-[HarmonyPatch] internal class PatchRemoveArms
+[HarmonyPatch]
+internal class PatchRemoveArms
 {
     [HarmonyPostfix]
     [HarmonyPatch(typeof(Revolver), nameof(Revolver.Start))]
@@ -16,12 +17,16 @@ namespace Plugin.Patches.Visual;
         try { __instance.gameObject.AddComponent<VRArmTransformer>(); }
         catch (NullReferenceException) { Vars.Log.LogWarning($"Revolver is null???"); }
     }
-    [HarmonyPostfix] [HarmonyPatch(typeof(SandboxArm), nameof(SandboxArm.Awake))] static void RemoveSandboxArm(SandboxArm __instance)
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(SandboxArm), nameof(SandboxArm.Awake))]
+    static void RemoveSandboxArm(SandboxArm __instance)
     {
         try { __instance.gameObject.AddComponent<VRArmTransformer>(); }
         catch (NullReferenceException) { Vars.Log.LogWarning($"Sandbox arm is null???"); }
     }
-    [HarmonyPostfix] [HarmonyPatch(typeof(Shotgun), nameof(Shotgun.Start))] static void RemoveShotgunArm(Shotgun __instance)
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(Shotgun), nameof(Shotgun.Start))]
+    static void RemoveShotgunArm(Shotgun __instance)
     {
         try
         {
@@ -31,7 +36,9 @@ namespace Plugin.Patches.Visual;
         }
         catch (NullReferenceException) { Vars.Log.LogWarning("Shotgun is null???"); }
     }
-    [HarmonyPostfix] [HarmonyPatch(typeof(FishingRodWeapon), nameof(FishingRodWeapon.Awake))] static void RemoveFRArm(FishingRodWeapon __instance)
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(FishingRodWeapon), nameof(FishingRodWeapon.Awake))]
+    static void RemoveFRArm(FishingRodWeapon __instance)
     {
         try { __instance.gameObject.AddComponent<VRArmTransformer>(); }
         catch (NullReferenceException) { Vars.Log.LogWarning("Fishing rod is null???"); }

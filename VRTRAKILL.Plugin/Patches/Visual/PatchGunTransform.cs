@@ -6,9 +6,11 @@ using Plugin.Systems;
 
 namespace Plugin.Patches.Visual;
 
-[HarmonyPatch] internal class PatchGunTransform
+[HarmonyPatch]
+internal class PatchGunTransform
 {
-    [HarmonyPatch(typeof(Revolver))] static class RevolverT
+    [HarmonyPatch(typeof(Revolver))]
+    static class RevolverT
     {
         static Vector3 Position = new Vector3(.05f, -.1f, .6f),
                        Rotation = new Vector3(),
@@ -18,7 +20,9 @@ namespace Plugin.Patches.Visual;
                        AltScale = new Vector3(.085f, .085f, .085f),
                        HandOffsetRotation = new Vector3(0, -90, -90);
 
-        [HarmonyPostfix] [HarmonyPatch(nameof(Revolver.Start))] static void Retransform(Revolver __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(Revolver.Start))]
+        static void Retransform(Revolver __instance)
         {
             VRWeaponRotationLock WAC = __instance.gameObject.AddComponent<VRWeaponRotationLock>();
             Arm A = Arm.FeedbackerPreset(__instance.transform);
@@ -29,20 +33,24 @@ namespace Plugin.Patches.Visual;
             else ApplyTransform(ref __instance.wpos, Position, Rotation, Scale);
         }
     }
-    [HarmonyPatch(typeof(Shotgun))] static class ShotgunT
+    [HarmonyPatch(typeof(Shotgun))]
+    static class ShotgunT
     {
         static Vector3
             Position = new Vector3(-.02f, .2f, .26f),
             Rotation = new Vector3(),
             Scale = new Vector3(.1f, .1f, .1f);
 
-        [HarmonyPostfix] [HarmonyPatch(nameof(Shotgun.Start))]
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(Shotgun.Start))]
         static void Retransform(Shotgun __instance)
         {
             ApplyTransform(ref __instance.wpos, Position, Rotation, Scale);
         }
 
-        [HarmonyPostfix] [HarmonyPatch(nameof(Shotgun.Update))] static void Update(Shotgun __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(Shotgun.Update))]
+        static void Update(Shotgun __instance)
         {
             if (__instance.anim.GetBool("Sawing"))
                 __instance.transform.GetChild(2).localEulerAngles = new Vector3(__instance.transform.GetChild(2).localEulerAngles.x, __instance.transform.GetChild(2).localEulerAngles.y, 25);
@@ -50,26 +58,32 @@ namespace Plugin.Patches.Visual;
                 __instance.transform.GetChild(2).localEulerAngles = new Vector3(__instance.transform.GetChild(2).localEulerAngles.x, __instance.transform.GetChild(2).localEulerAngles.y, 0);
         }
     }
-    [HarmonyPatch(typeof(ShotgunHammer))] static class ShotgunHammerT
+    [HarmonyPatch(typeof(ShotgunHammer))]
+    static class ShotgunHammerT
     {
         static Vector3
             Position = new Vector3(0, -.15f, .25f),
             Rotation = new Vector3(),
             Scale = new Vector3(.45f, .45f, .45f);
 
-        [HarmonyPostfix] [HarmonyPatch(nameof(ShotgunHammer.OnEnable))] static void Retransform(ShotgunHammer __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(ShotgunHammer.OnEnable))]
+        static void Retransform(ShotgunHammer __instance)
         {
             ApplyTransform(ref __instance.wpos, Position, Rotation, Scale);
             __instance.transform.GetChild(1).localRotation = Quaternion.Euler(0, 90, 0);
             __instance.gameObject.GetComponent<Animator>().enabled = false;
         }
-        [HarmonyPostfix] [HarmonyPatch(nameof(ShotgunHammer.LateUpdate))] static void More(ShotgunHammer __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(ShotgunHammer.LateUpdate))]
+        static void More(ShotgunHammer __instance)
         {
             __instance.transform.GetChild(1).GetChild(0).localPosition = new Vector3(.375f, .415f, .3f);
-            __instance.transform.GetChild(1).GetChild(0).localEulerAngles = new Vector3(60,0,0);
+            __instance.transform.GetChild(1).GetChild(0).localEulerAngles = new Vector3(60, 0, 0);
         }
     }
-    [HarmonyPatch(typeof(Nailgun))] static class NailgunT
+    [HarmonyPatch(typeof(Nailgun))]
+    static class NailgunT
     {
         static Vector3 Position = new Vector3(-.165f, .1f, .045f),
                        Rotation = new Vector3(),
@@ -78,24 +92,30 @@ namespace Plugin.Patches.Visual;
                        AltRotation = new Vector3(),
                        AltScale = new Vector3(.35f, .35f, .35f);
 
-        [HarmonyPostfix] [HarmonyPatch(nameof(Nailgun.Start))] static void Retransform(Nailgun __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(Nailgun.Start))]
+        static void Retransform(Nailgun __instance)
         {
             if (__instance.altVersion) { ApplyTransform(ref __instance.wpos, AltPosition, AltRotation, AltScale); }
             else { ApplyTransform(ref __instance.wpos, Position, Rotation, Scale); }
         }
     }
-    [HarmonyPatch(typeof(Railcannon))] static class RailcannonT
+    [HarmonyPatch(typeof(Railcannon))]
+    static class RailcannonT
     {
         static Vector3 Position = new Vector3(-.15f, .15f, -.175f);
         static Vector3 Scale = new Vector3(.25f, .25f, .25f);
 
-        [HarmonyPostfix] [HarmonyPatch(nameof(Railcannon.Start))] static void Retransform(Railcannon __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(Railcannon.Start))]
+        static void Retransform(Railcannon __instance)
         {
             __instance.wpos.defaultPos += Position;
             __instance.wpos.defaultScale = Scale;
         }
     }
-    [HarmonyPatch(typeof(RocketLauncher))] static class RocketLauncherT
+    [HarmonyPatch(typeof(RocketLauncher))]
+    static class RocketLauncherT
     {
         static Vector3 Position = new Vector3(-.3f, .3f, -.1f),
                        Rotation = new Vector3(),
@@ -104,26 +124,34 @@ namespace Plugin.Patches.Visual;
                        AltRotation = new Vector3(),
                        AltScale = new Vector3();
 
-        [HarmonyPostfix] [HarmonyPatch(nameof(RocketLauncher.Start))] static void Retransform(RocketLauncher __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(RocketLauncher.Start))]
+        static void Retransform(RocketLauncher __instance)
         {
             ApplyTransform(__instance.GetComponent<WeaponPos>(), Position, Rotation, Scale);
             if (Systems.VRAvatar.VRigController.Instance != null)
                 __instance.transform.GetChild(0).localPosition = Vector3.zero;
         }
     }
-    [HarmonyPatch(typeof(Chainsaw))] static class ChainsawT
+    [HarmonyPatch(typeof(Chainsaw))]
+    static class ChainsawT
     {
-        [HarmonyPostfix] [HarmonyPatch(nameof(Chainsaw.Start))] static void ChainSaw(Chainsaw __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(Chainsaw.Start))]
+        static void ChainSaw(Chainsaw __instance)
         {
             __instance.lineStartTransform = GunControl.Instance?.currentWeapon != null ? GunControl.Instance?.currentWeapon.transform : Vars.DominantHand.transform;
         }
     }
-    
-    [HarmonyPatch(typeof(Sandbox.Arm.SandboxArm))] static class SandboxArmT
+
+    [HarmonyPatch(typeof(Sandbox.Arm.SandboxArm))]
+    static class SandboxArmT
     {
         static Vector3 Scale = new Vector3(-.275f, .275f, .275f);
 
-        [HarmonyPostfix] [HarmonyPatch(nameof(Sandbox.Arm.SandboxArm.Awake))] static void Retransform(Sandbox.Arm.SandboxArm __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(Sandbox.Arm.SandboxArm.Awake))]
+        static void Retransform(Sandbox.Arm.SandboxArm __instance)
         {
             VRArmController DAC = __instance.gameObject.AddComponent<VRArmController>();
             Arm A = Arm.SandboxerPreset(__instance.transform);
@@ -132,13 +160,16 @@ namespace Plugin.Patches.Visual;
         }
     }
 
-    [HarmonyPatch(typeof(FishingRodWeapon))] static class FishingRodWeaponT
+    [HarmonyPatch(typeof(FishingRodWeapon))]
+    static class FishingRodWeaponT
     {
         static Vector3 Position = new Vector3(.05f, -.06f, -.185f),
                        Rotation = new Vector3(10, 90, 20),
                        Scale = new Vector3(-.0023f, .0023f, .0023f);
 
-        [HarmonyPostfix] [HarmonyPatch(nameof(FishingRodWeapon.Awake))] static void Retransform(FishingRodWeapon __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(FishingRodWeapon.Awake))]
+        static void Retransform(FishingRodWeapon __instance)
         {
             ApplyTransform(__instance.GetComponent<WeaponPos>(), Position, Rotation, Scale);
 
@@ -147,13 +178,16 @@ namespace Plugin.Patches.Visual;
             WAC.Arm = A; WAC.OffsetPos = Vector3.zero;
         }
     }
-    [HarmonyPatch(typeof(WeaponIdentifier))] static class WasherT
+    [HarmonyPatch(typeof(WeaponIdentifier))]
+    static class WasherT
     {
         static Vector3
             Position = new Vector3(0.065f, -0.075f, -0.175f),
             Rotation = new Vector3(10, 90, 20),
             Scale = new Vector3(-.0025f, .0025f, .0025f);
-        [HarmonyPostfix] [HarmonyPatch(nameof(WeaponIdentifier.Start))] static void Retransform(WeaponIdentifier __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(WeaponIdentifier.Start))]
+        static void Retransform(WeaponIdentifier __instance)
         {
             var washer = __instance.GetComponentInChildren<Washer>();
             if (washer)
@@ -177,13 +211,16 @@ namespace Plugin.Patches.Visual;
             }
         }
     }
-    [HarmonyPatch(typeof(WeaponIdentifier))] static class VacuumT
+    [HarmonyPatch(typeof(WeaponIdentifier))]
+    static class VacuumT
     {
         static Vector3
             Position = new Vector3(0, -.35f, 2.15f),
             Rotation = new Vector3(0, 90, 20),
             Scale = new Vector3(.125f, .125f, .125f);
-        [HarmonyPostfix] [HarmonyPatch(nameof(WeaponIdentifier.Start))] static void Retransform(WeaponIdentifier __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(WeaponIdentifier.Start))]
+        static void Retransform(WeaponIdentifier __instance)
         {
             if (__instance.GetComponentInChildren<Vacuum>())
             {
@@ -196,7 +233,9 @@ namespace Plugin.Patches.Visual;
         }
     }
 
-    [HarmonyPrefix] [HarmonyPatch(typeof(WeaponPos), nameof(WeaponPos.Start))] static void Start(WeaponPos __instance)
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(WeaponPos), nameof(WeaponPos.Start))]
+    static void Start(WeaponPos __instance)
     {
         __instance.middlePos = __instance.defaultPos;
         __instance.middleRot = __instance.defaultRot;

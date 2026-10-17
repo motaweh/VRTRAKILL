@@ -14,9 +14,9 @@ internal class VRArmControllerBase : MonoBehaviour
     {
         switch (Arm.Type)
         {
-            case ArmType.Feedbacker:     return new Vector3(0, -.25f, -.5f);
+            case ArmType.Feedbacker: return new Vector3(0, -.25f, -.5f);
             case ArmType.Knuckleblaster: return new Vector3(0, -.01f, -.025f);
-            case ArmType.Whiplash:       return new Vector3(.145f, .09f, .04f);
+            case ArmType.Whiplash: return new Vector3(.145f, .09f, .04f);
 
             case ArmType.Spear:
             default: return Vector3.zero;

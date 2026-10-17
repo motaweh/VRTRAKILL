@@ -23,7 +23,8 @@ namespace Plugin.Systems.VRPlayer
                         VRAvatar.AvatarSizeAdjustor.Instance.enabled = false;
                     else if ((bool)!VRAvatar.AvatarSizeAdjustor.Instance?.enabled)
                         VRAvatar.AvatarSizeAdjustor.Instance.enabled = true;
-                } catch (System.NullReferenceException) { SubtitleController.Instance.DisplaySubtitle("Unable to toggle avatar size adjustment!"); }
+                }
+                catch (System.NullReferenceException) { SubtitleController.Instance.DisplaySubtitle("Unable to toggle avatar size adjustment!"); }
             }
         }
 

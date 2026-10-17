@@ -16,7 +16,7 @@ namespace Plugin.Systems.UI
         private void UpdatePos()
         {
             LastCamFwd = Vars.MainCamera.transform.forward * Distance;
-            transform.rotation =  Vars.MainCamera.transform.rotation;
+            transform.rotation = Vars.MainCamera.transform.rotation;
         }
         private void ResetPos()
         {

@@ -3,9 +3,12 @@ using VRTRAKILL.Utilities;
 
 namespace Plugin.Systems.VRAvatar.Patches
 {
-    [HarmonyPatch] internal class VRIKP
+    [HarmonyPatch]
+    internal class VRIKP
     {
-        [HarmonyPostfix] [HarmonyPatch(typeof(NewMovement), nameof(NewMovement.Start))] static void AttachVRIK(NewMovement __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(NewMovement), nameof(NewMovement.Start))]
+        static void AttachVRIK(NewMovement __instance)
         {
             if (!__instance.gameObject.HasComponent<VRigController>())
             {

@@ -9,9 +9,11 @@ using Plugin.Systems.VRAvatar.Armature;
 
 namespace Plugin.Patches.ULTRAKILL;
 
-[HarmonyPatch(typeof(HookArm))] internal sealed class PatchHookArm
+[HarmonyPatch(typeof(HookArm))]
+internal sealed class PatchHookArm
 {
-    [HarmonyPostfix] [HarmonyPatch(nameof(HookArm.Start))]
+    [HarmonyPostfix]
+    [HarmonyPatch(nameof(HookArm.Start))]
     static void Start(HookArm __instance)
     {
         Arm A = Arm.WhiplashPreset(__instance.transform);
@@ -21,7 +23,8 @@ namespace Plugin.Patches.ULTRAKILL;
     }
 
     // native Update stays (portal traversal, line renderer); only the throw origin moves from the arm to the VR hand
-    [HarmonyTranspiler] [HarmonyPatch(nameof(HookArm.Update))]
+    [HarmonyTranspiler]
+    [HarmonyPatch(nameof(HookArm.Update))]
     static IEnumerable<CodeInstruction> Update(IEnumerable<CodeInstruction> instructions)
     {
         MethodInfo getTransform = AccessTools.PropertyGetter(typeof(Component), nameof(Component.transform));
@@ -36,7 +39,8 @@ namespace Plugin.Patches.ULTRAKILL;
         return SkipHandOffsets(codes);
     }
 
-    [HarmonyTranspiler] [HarmonyPatch(nameof(HookArm.StopThrow))]
+    [HarmonyTranspiler]
+    [HarmonyPatch(nameof(HookArm.StopThrow))]
     static IEnumerable<CodeInstruction> StopThrow(IEnumerable<CodeInstruction> instructions)
         => SkipHandOffsets(instructions);
 

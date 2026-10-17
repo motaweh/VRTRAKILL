@@ -6,6 +6,7 @@ using UnityEngine.XR;
 
 namespace Plugin.Patches.ULTRAKILL;
 
-[HarmonyPatch(typeof(StainVoxelManager))] internal class PatchStains
+[HarmonyPatch(typeof(StainVoxelManager))]
+internal class PatchStains
 {
 }

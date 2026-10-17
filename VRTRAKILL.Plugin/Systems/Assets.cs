@@ -12,8 +12,8 @@ namespace Plugin.Systems
 
         // Hand Poses
         public static GameObject HandPose_Shotgun { get; private set; }
-        public static GameObject HandPose_Nailgun{ get; private set; }
-        public static GameObject HandPose_Sawblade{ get; private set; }
+        public static GameObject HandPose_Nailgun { get; private set; }
+        public static GameObject HandPose_Sawblade { get; private set; }
         public static GameObject HandPose_Railgun { get; private set; }
 
         public static GameObject Controller_D { get; private set; }

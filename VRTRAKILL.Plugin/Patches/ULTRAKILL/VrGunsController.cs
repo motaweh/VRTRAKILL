@@ -29,7 +29,7 @@ internal class VRGunsController : MonoSingleton<VRGunsController>
 
     public void LateUpdate()
     {
-        if(TargeterCamera != null)
+        if (TargeterCamera != null)
             TargeterCamera.transform.position = Vars.DominantHand.transform.position;
 
         transform.position = Vars.DominantHand.transform.position;

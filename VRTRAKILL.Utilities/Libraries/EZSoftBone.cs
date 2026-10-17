@@ -673,7 +673,8 @@ namespace Plugin.Util.Libraries.EZhex1991.EZSoftBone
             }
         }
     }
-    [RequireComponent(typeof(Collider))] public class EZSoftBoneCollider : EZSoftBoneColliderBase
+    [RequireComponent(typeof(Collider))]
+    public class EZSoftBoneCollider : EZSoftBoneColliderBase
     {
         [SerializeField]
         private Collider m_ReferenceCollider;
@@ -774,7 +775,7 @@ namespace Plugin.Util.Libraries.EZhex1991.EZSoftBone
             else EZSoftBoneUtility.PointOutsideCylinder(ref position, transform, spacing + margin);
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
                 private void OnDrawGizmosSelected()
                 {
                     Vector3 center, direction;
@@ -795,9 +796,10 @@ namespace Plugin.Util.Libraries.EZhex1991.EZSoftBone
                     UnityEditor.Handles.matrix *= Matrix4x4.Translate(-transform.right * 2 * radius);
                     UnityEditor.Handles.DrawLine(p0, p1);
                 }
-        #endif
+#endif
     }
-    [CreateAssetMenu(fileName = "SBForce", menuName = "EZSoftBone/SBForce")] public class EZSoftBoneForce : ScriptableObject
+    [CreateAssetMenu(fileName = "SBForce", menuName = "EZSoftBone/SBForce")]
+    public class EZSoftBoneForce : ScriptableObject
     {
         [SerializeField]
         private float m_Force = 1;
@@ -891,7 +893,7 @@ namespace Plugin.Util.Libraries.EZhex1991.EZSoftBone
             return transform.TransformDirection(force.GetForce(time - conductivity * normalizedLength));
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
                 private void OnDrawGizmosSelected()
                 {
                     DrawGizmos();
@@ -918,7 +920,7 @@ namespace Plugin.Util.Libraries.EZhex1991.EZSoftBone
                     }
                     Gizmos.DrawWireCube(new Vector3(0, 0, force.force), force.turbulence * 2);
                 }
-        #endif
+#endif
     }
     [CreateAssetMenu(fileName = "SBMat", menuName = "EZSoftBone/SBMaterial")]
     public class EZSoftBoneMaterial : ScriptableObject

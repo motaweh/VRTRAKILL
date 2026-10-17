@@ -4,9 +4,12 @@ using UnityEngine.UI;
 
 namespace Plugin.Systems.UI.Patches
 {
-    [HarmonyPatch] internal class CrosshairP
+    [HarmonyPatch]
+    internal class CrosshairP
     {
-        [HarmonyPrefix] [HarmonyPatch(typeof(Crosshair), nameof(Crosshair.Start))] static void SetCrosshair(Crosshair __instance)
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Crosshair), nameof(Crosshair.Start))]
+        static void SetCrosshair(Crosshair __instance)
         {
             Canvas C = __instance.gameObject.AddComponent<Canvas>();
             UIConverter.ConvertCanvas(C, DontAddComponent: true);
@@ -17,11 +20,15 @@ namespace Plugin.Systems.UI.Patches
             __instance.transform.localEulerAngles = Vector3.zero;
             __instance.gameObject.AddComponent<CrosshairController>();
         }
-        [HarmonyPostfix] [HarmonyPatch(typeof(Crosshair), nameof(Crosshair.Start))] static void Reparent(Crosshair __instance)
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Crosshair), nameof(Crosshair.Start))]
+        static void Reparent(Crosshair __instance)
         {
             __instance.transform.parent = Vars.DominantHand.transform;
         }
-        [HarmonyPrefix] [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.HideShit))] static bool FixShit(StatsManager __instance)
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.HideShit))]
+        static bool FixShit(StatsManager __instance)
         {
             if (__instance.shud == null) __instance.shud = MonoSingleton<StyleHUD>.Instance;
 

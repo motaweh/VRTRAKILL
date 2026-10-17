@@ -75,7 +75,7 @@ internal class VRArmTransformer : MonoBehaviour
         if (!GetComponent<PortalAwareRenderer>())
             gameObject.AddComponent<PortalAwareRenderer>().objectType = PortalAwareRenderer.ObjectType.Player;
     }
-    
+
     public void LateUpdate()
     {
         if (Arm != null)

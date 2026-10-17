@@ -5,9 +5,11 @@ using UnityEngine;
 
 namespace Plugin.Patches.ULTRAKILL;
 
-[HarmonyPatch(typeof(ShotgunHammer))] internal class PatchShotgunHammer
+[HarmonyPatch(typeof(ShotgunHammer))]
+internal class PatchShotgunHammer
 {
-    [HarmonyPostfix] [HarmonyPatch(nameof(ShotgunHammer.LateUpdate))]
+    [HarmonyPostfix]
+    [HarmonyPatch(nameof(ShotgunHammer.LateUpdate))]
     static void LateUpdate_AddIK(ShotgunHammer __instance)
     {
         if (VRigController.Instance != null)

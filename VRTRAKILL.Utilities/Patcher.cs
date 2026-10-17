@@ -16,8 +16,8 @@ namespace VRTRAKILL.Utilities
         public Harmony Harmony { get; set; }
         public Assembly Ass { get; set; } = Assembly.GetCallingAssembly();
 
-        public string Namespace { get; set; } 
-        public string[] Namespaces { get; set; } 
+        public string Namespace { get; set; }
+        public string[] Namespaces { get; set; }
         public Type Type { get; set; }
         public Type[] Types { get; set; }
 
@@ -78,7 +78,7 @@ namespace VRTRAKILL.Utilities
                 Patch(L.ToArray());
             }
         }
-        
+
 
         public void Patch(string _Namespace)
         {
@@ -97,7 +97,7 @@ namespace VRTRAKILL.Utilities
             Harmony.PatchAll(_T);
         }
         public void Patch(Type[] _T)
-        { foreach(Type T in _T) Harmony.PatchAll(T); }
+        { foreach (Type T in _T) Harmony.PatchAll(T); }
 
         public void UnpatchAll()
         => Harmony.UnpatchSelf();

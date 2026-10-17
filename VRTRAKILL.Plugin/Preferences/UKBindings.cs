@@ -45,29 +45,29 @@ namespace Plugin.Prefs
             /// </summary>
             public ModifiedActions()
             {
-                Dodge           = new ModifiedAction[] { new ModifiedAction("LeftShift") };
-                Slide           = new ModifiedAction[] { new ModifiedAction("LeftControl") };
-                Jump            = new ModifiedAction[] { new ModifiedAction("Space") };
-                ChangeFist      = new ModifiedAction[] { new ModifiedAction("G") };
-                Punch           = new ModifiedAction[] { new ModifiedAction("F") };
-                Hook            = new ModifiedAction[] { new ModifiedAction("R") };
-                PrimaryFire     = new ModifiedAction[] { new ModifiedAction("LMB") };
-                SecondaryFire   = new ModifiedAction[] { new ModifiedAction("RMB") };
+                Dodge = new ModifiedAction[] { new ModifiedAction("LeftShift") };
+                Slide = new ModifiedAction[] { new ModifiedAction("LeftControl") };
+                Jump = new ModifiedAction[] { new ModifiedAction("Space") };
+                ChangeFist = new ModifiedAction[] { new ModifiedAction("G") };
+                Punch = new ModifiedAction[] { new ModifiedAction("F") };
+                Hook = new ModifiedAction[] { new ModifiedAction("R") };
+                PrimaryFire = new ModifiedAction[] { new ModifiedAction("LMB") };
+                SecondaryFire = new ModifiedAction[] { new ModifiedAction("RMB") };
                 ChangeVariation = new ModifiedAction[] { new ModifiedAction("E") };
-                PrevVariation   = new ModifiedAction[] { new ModifiedAction("Q") };
-                Slot0           = new ModifiedAction[] { new ModifiedAction("0") };
-                Slot1           = new ModifiedAction[] { new ModifiedAction("1") };
-                Slot2           = new ModifiedAction[] { new ModifiedAction("2") };
-                Slot3           = new ModifiedAction[] { new ModifiedAction("3") };
-                Slot4           = new ModifiedAction[] { new ModifiedAction("4") };
-                Slot5           = new ModifiedAction[] { new ModifiedAction("5") };
-                Slot6           = new ModifiedAction[] { new ModifiedAction("6") };
-                Slot7           = new ModifiedAction[] { new ModifiedAction("7") };
-                Slot8           = new ModifiedAction[] { new ModifiedAction("8") };
-                Slot9           = new ModifiedAction[] { new ModifiedAction("9") };
-                NextWeapon      = new ModifiedAction[] { new ModifiedAction("") };
-                PrevWeapon      = new ModifiedAction[] { new ModifiedAction("") };
-                LastWeapon      = new ModifiedAction[] { new ModifiedAction("") }; // the game has no keyboard default for it
+                PrevVariation = new ModifiedAction[] { new ModifiedAction("Q") };
+                Slot0 = new ModifiedAction[] { new ModifiedAction("0") };
+                Slot1 = new ModifiedAction[] { new ModifiedAction("1") };
+                Slot2 = new ModifiedAction[] { new ModifiedAction("2") };
+                Slot3 = new ModifiedAction[] { new ModifiedAction("3") };
+                Slot4 = new ModifiedAction[] { new ModifiedAction("4") };
+                Slot5 = new ModifiedAction[] { new ModifiedAction("5") };
+                Slot6 = new ModifiedAction[] { new ModifiedAction("6") };
+                Slot7 = new ModifiedAction[] { new ModifiedAction("7") };
+                Slot8 = new ModifiedAction[] { new ModifiedAction("8") };
+                Slot9 = new ModifiedAction[] { new ModifiedAction("9") };
+                NextWeapon = new ModifiedAction[] { new ModifiedAction("") };
+                PrevWeapon = new ModifiedAction[] { new ModifiedAction("") };
+                LastWeapon = new ModifiedAction[] { new ModifiedAction("") }; // the game has no keyboard default for it
             }
         }
         /// <summary>

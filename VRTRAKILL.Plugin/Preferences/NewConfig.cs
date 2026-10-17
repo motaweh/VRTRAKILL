@@ -8,7 +8,8 @@ namespace Plugin.Prefs
     public class NewConfig
     {
         [JsonIgnore] public UKBindings.ModifiedActions UKBinds { get; set; }
-        [JsonProperty("VRTRAKILL Keybinds")] public _VRBinds VRBinds { get; set; } public class _VRBinds
+        [JsonProperty("VRTRAKILL Keybinds")] public _VRBinds VRBinds { get; set; }
+        public class _VRBinds
         {
             [JsonProperty("Toggle Desktop View")] public string ToggleDV { get; set; } = "T";
             [JsonProperty("Toggle Size Adjustment")] public string ToggleAvatarSizeAdj { get; set; } = "J";
@@ -16,7 +17,8 @@ namespace Plugin.Prefs
 
         [JsonProperty("Movement multiplier")] public float MovementMultiplier { get; set; } = 0.575f;
 
-        [JsonProperty("Controller Settings")] public _Controllers Controllers { get; set; } public class _Controllers
+        [JsonProperty("Controller Settings")] public _Controllers Controllers { get; set; }
+        public class _Controllers
         {
             [JsonProperty("Deadzone (from 0 to 1)")] public float Deadzone { get; set; } = 0.4f;
             [JsonProperty("Smooth turning speed")] public float SmoothSpeed { get; set; } = 300;
@@ -29,14 +31,16 @@ namespace Plugin.Prefs
         }
 
         [JsonProperty("Enable controller-based aiming")] public bool EnableCBA { get; set; } = true;
-        [JsonProperty("CBS Settings")] public _CBS CBS { get; set; } public class _CBS
+        [JsonProperty("CBS Settings")] public _CBS CBS { get; set; }
+        public class _CBS
         {
             [JsonProperty("Enable Crosshair")] public bool EnableCrosshair { get; set; } = true;
             [JsonProperty("Crosshair distance")] public float CrosshairDistance { get; set; } = 8;
         }
 
         [JsonProperty("Enable movement-based punching")] public bool EnableMBP { get; set; } = true;
-        [JsonProperty("MBP Settings")] public _MBP MBP { get; set; } public class _MBP
+        [JsonProperty("MBP Settings")] public _MBP MBP { get; set; }
+        public class _MBP
         {
             [JsonProperty("Velocity-based punching direction")] public bool ToggleVelocity { get; set; } = false;
             [JsonProperty("Required speed to punch")] public float PunchingSpeed { get; set; } = 7.5f;
@@ -44,7 +48,8 @@ namespace Plugin.Prefs
         }
 
         [JsonProperty("Enable VRAvatar")] public bool EnableVRBody { get; set; } = true;
-        [JsonProperty("VRAvatar Settings")] public _VRBody VRBody { get; set; } public class _VRBody
+        [JsonProperty("VRAvatar Settings")] public _VRBody VRBody { get; set; }
+        public class _VRBody
         {
             [JsonProperty("Enable arms IK")] public bool EnableArmsIK { get; set; } = true;
             [JsonProperty("Enable legs IK")] public bool EnableLegsIK { get; set; } = true;
@@ -55,12 +60,14 @@ namespace Plugin.Prefs
             }
         }
 
-        [JsonProperty("UI Interaction Settings")] public _UIInteraction UIInteraction { get; set; } public class _UIInteraction
+        [JsonProperty("UI Interaction Settings")] public _UIInteraction UIInteraction { get; set; }
+        public class _UIInteraction
         {
             [JsonProperty("UI Size (from 0 to 0.1)")] public float UISize { get; set; } = 0.0625f;
             [JsonProperty("Controller-based")] public bool ControllerBased { get; set; } = true;
 
-            [JsonProperty("Controller Lines")] public _ControllerLines ControllerLines { get; set; } public class _ControllerLines
+            [JsonProperty("Controller Lines")] public _ControllerLines ControllerLines { get; set; }
+            public class _ControllerLines
             {
                 [JsonProperty("Enabled")] public bool Enabled { get; set; } = true;
                 [JsonProperty("Starting transparency (from 0 to 1)")] public float StartAlpha { get; set; } = 0.4f;
@@ -73,14 +80,16 @@ namespace Plugin.Prefs
             }
         }
 
-        [JsonProperty("DesktopView Settings")] public _DesktopView DesktopView { get; set; } public class _DesktopView
+        [JsonProperty("DesktopView Settings")] public _DesktopView DesktopView { get; set; }
+        public class _DesktopView
         {
             [JsonProperty("Enabled by default")] public bool Enabled { get; set; } = true;
             [JsonProperty("World view FOV")] public float WorldCamFOV { get; set; } = 90;
             [JsonProperty("UI view FOV")] public float UICamFOV { get; set; } = 90;
         }
 
-        [JsonProperty("Miscellaneous/Unsorted Settings")] public _Misc Misc { get; set; } public class _Misc
+        [JsonProperty("Miscellaneous/Unsorted Settings")] public _Misc Misc { get; set; }
+        public class _Misc
         {
         }
 
