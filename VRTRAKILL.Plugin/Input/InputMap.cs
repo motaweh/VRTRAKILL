@@ -19,8 +19,8 @@ namespace Plugin.Systems.Input
             { "enter",         VirtualKeyCode.RETURN },
             { "leftshift",     VirtualKeyCode.LSHIFT },
             { "rightshift",    VirtualKeyCode.RSHIFT },
-            { "leftcontrol",   VirtualKeyCode.LCONTROL },
-            { "rightcontrol",  VirtualKeyCode.RCONTROL },
+            { "leftcontrol",   VirtualKeyCode.LCONTROL },   { "leftctrl",  VirtualKeyCode.LCONTROL }, // Input System names (Binds.json)
+            { "rightcontrol",  VirtualKeyCode.RCONTROL },   { "rightctrl", VirtualKeyCode.RCONTROL },
             { "capslock",      VirtualKeyCode.CAPITAL },
             { "escape",        VirtualKeyCode.ESCAPE },
             { "spacebar",      VirtualKeyCode.SPACE }, { "space", VirtualKeyCode.SPACE },
@@ -122,6 +122,10 @@ namespace Plugin.Systems.Input
 
             { "mouse5",  (MouseButton)4 },
             { "m5",  (MouseButton)4 },
+
+            // Input System names (Binds.json)
+            { "leftbutton", MouseButton.LeftButton }, { "rightbutton", MouseButton.RightButton }, { "middlebutton", MouseButton.MiddleButton },
+            { "backbutton", (MouseButton)3 }, { "forwardbutton", (MouseButton)4 },
 
             { "mousescroll",    (MouseButton)10 },
             { "scroll",         (MouseButton)10 },

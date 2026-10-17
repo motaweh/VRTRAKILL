@@ -116,6 +116,13 @@ namespace Plugin.Prefs
                 InputMap.KeysM.TryGetValue(Binds.Slot8[0].Path, out MSlot8);
                 InputMap.KeysM.TryGetValue(Binds.Slot9[0].Path, out MSlot9);
                 #endregion
+
+                // "Last Used Weapon" has no keyboard default; holding "Previous Variation" also opens the wheel (GunControl)
+                if (KLastWeapon == null && MLastWeapon == null)
+                {
+                    InputMap.Keys.TryGetValue(Binds.PrevVariation[0].Path, out KLastWeapon);
+                    InputMap.KeysM.TryGetValue(Binds.PrevVariation[0].Path, out MLastWeapon);
+                }
             }
             catch (Exception E)
             {
