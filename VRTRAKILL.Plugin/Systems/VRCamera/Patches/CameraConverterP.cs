@@ -168,8 +168,9 @@ namespace Plugin.Systems.VRCamera.Patches
         [HarmonyPatch(typeof(CameraController), nameof(CameraController.GetDefaultPos))]
         static bool GetDefaultPos(ref Vector3 __result)
         {
-            if (Controllers.VRGunsSystem.Instance == null) __result = Vector3.zero;
-            __result = Vars.DominantHand.transform.position;
+            // Instance never returns null: without a VR hand it auto-creates a VRGunsSystem with no GunOffset
+            Controllers.VRGunsSystem Guns = Controllers.VRGunsSystem.Instance;
+            __result = Guns != null && Guns.GunOffset != null ? Guns.GunOffset.transform.position : Vector3.zero;
             return false;
         }
 
