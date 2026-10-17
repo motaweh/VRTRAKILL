@@ -108,13 +108,13 @@ namespace Plugin.Systems.Input
         };
         public static readonly Dictionary<string, MouseButton?> KeysM = new Dictionary<string, MouseButton?>(System.StringComparer.OrdinalIgnoreCase)
         {
-            { "leftmouse", MouseButton.RightButton },{ "mouseleft",  MouseButton.LeftButton}, { "mouse0", MouseButton.LeftButton },
+            { "leftmouse", MouseButton.LeftButton },{ "mouseleft",  MouseButton.LeftButton}, { "mouse0", MouseButton.LeftButton },
             { "lmb",  MouseButton.LeftButton}, { "m0", MouseButton.LeftButton },
 
             { "rightmouse", MouseButton.RightButton },{ "mouseright",  MouseButton.RightButton}, { "mouse1", MouseButton.RightButton },
             { "rmb",  MouseButton.RightButton}, { "m1", MouseButton.RightButton },
 
-            { "middlemouse", MouseButton.RightButton }, { "mousemiddle",  MouseButton.MiddleButton}, { "mouse2", MouseButton.MiddleButton },
+            { "middlemouse", MouseButton.MiddleButton }, { "mousemiddle",  MouseButton.MiddleButton}, { "mouse2", MouseButton.MiddleButton },
             { "mmb",  MouseButton.MiddleButton}, { "m2", MouseButton.MiddleButton },
 
             { "mouse4",  (MouseButton)3 },
