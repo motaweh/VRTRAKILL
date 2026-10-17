@@ -67,6 +67,7 @@ namespace Plugin.Systems.Input
             if (Started) InpSim.Keyboard.KeyDown(KeyCode);
             else if (Ended) InpSim.Keyboard.KeyUp(KeyCode);
         }
+        // InputMap.KeysM: 3 = mouse4/backButton (XBUTTON1), 4 = mouse5/forwardButton (XBUTTON2), 10 = scroll (no release)
         private static void TriggerKey(MouseButton Button, bool Started, bool Ended)
         {
             if (Started)
@@ -76,8 +77,14 @@ namespace Plugin.Systems.Input
                         InpSim.Mouse.LeftButtonDown(); break;
                     case MouseButton.RightButton:
                         InpSim.Mouse.RightButtonDown(); break;
-                    default:
-                        InpSim.Mouse.XButtonDown((int)Button); break;
+                    case MouseButton.MiddleButton:
+                        InpSim.Mouse.MiddleButtonDown(); break;
+                    case (MouseButton)3:
+                        InpSim.Mouse.XButtonDown(1); break;
+                    case (MouseButton)4:
+                        InpSim.Mouse.XButtonDown(2); break;
+                    case (MouseButton)10:
+                        MouseScroll(1); break;
                 }
             else if (Ended)
                 switch (Button)
@@ -86,8 +93,12 @@ namespace Plugin.Systems.Input
                         InpSim.Mouse.LeftButtonUp(); break;
                     case MouseButton.RightButton:
                         InpSim.Mouse.RightButtonUp(); break;
-                    default:
-                        InpSim.Mouse.XButtonUp((int)Button); break;
+                    case MouseButton.MiddleButton:
+                        InpSim.Mouse.MiddleButtonUp(); break;
+                    case (MouseButton)3:
+                        InpSim.Mouse.XButtonUp(1); break;
+                    case (MouseButton)4:
+                        InpSim.Mouse.XButtonUp(2); break;
                 }
         }
         private static void MouseScroll(int Amount)

@@ -182,6 +182,26 @@ namespace WindowsInput
         }
 
         /// <summary>
+        /// Simulates a mouse middle button down gesture.
+        /// </summary>
+        public IMouseSimulator MiddleButtonDown()
+        {
+            var inputList = new InputBuilder().AddMouseButtonDown(MouseButton.MiddleButton).ToArray();
+            SendSimulatedInput(inputList);
+            return this;
+        }
+
+        /// <summary>
+        /// Simulates a mouse middle button up gesture.
+        /// </summary>
+        public IMouseSimulator MiddleButtonUp()
+        {
+            var inputList = new InputBuilder().AddMouseButtonUp(MouseButton.MiddleButton).ToArray();
+            SendSimulatedInput(inputList);
+            return this;
+        }
+
+        /// <summary>
         /// Simulates a mouse X button down gesture.
         /// </summary>
         /// <param name="buttonId">The button id.</param>
