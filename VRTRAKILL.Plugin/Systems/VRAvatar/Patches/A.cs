@@ -1,4 +1,5 @@
 ﻿namespace Plugin.Systems.VRAvatar.Patches
 {
-    [HarmonyLib.HarmonyPatch] internal class A { /* This is a. Placeholder. For use in namespaces. Do not remove me. */ }
+    // anchors this namespace; do not remove
+    [HarmonyLib.HarmonyPatch] internal class A { }
 }

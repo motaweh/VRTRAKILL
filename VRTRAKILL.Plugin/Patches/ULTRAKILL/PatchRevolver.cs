@@ -13,7 +13,7 @@ namespace Plugin.Patches.ULTRAKILL;
         else if (Vars.Config.EnableCBA) __instance.camObj = Vars.DominantHand;
         else __instance.camObj = Camera.main.gameObject;
 
-        //I couldn't be bothered to transpile this
+        // rest of the game's ThrowCoin, spawning from the camObj chosen above
 		if (__instance.punch == null || !__instance.punch.gameObject.activeInHierarchy)
 			__instance.punch = MonoSingleton<FistControl>.Instance.currentPunch;
 		if (__instance.punch)
@@ -30,6 +30,6 @@ namespace Plugin.Patches.ULTRAKILL;
     [HarmonyPrefix] [HarmonyPatch(nameof(Revolver.Shoot))]
     private static void Shoot(Revolver __instance)
     {
-        __instance.gunBarrel = Vars.DominantHand; //So it comes from the right positions
+        __instance.gunBarrel = Vars.DominantHand; // fire from the VR hand
     }
 }

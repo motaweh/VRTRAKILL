@@ -155,9 +155,7 @@ namespace Plugin.Systems.Input
             { KeyCode.Delete,        VirtualKeyCode.DELETE },
 
             { KeyCode.KeypadPlus,    VirtualKeyCode.ADD },
-            //{ KeyCode.Separator,     VirtualKeyCode.SEPARATOR },
             { KeyCode.KeypadMinus,   VirtualKeyCode.SUBTRACT },
-            //{ KeyCode.Decimal,       VirtualKeyCode.DECIMAL },
             { KeyCode.KeypadDivide,  VirtualKeyCode.DIVIDE },
 
             { KeyCode.Numlock,       VirtualKeyCode.NUMLOCK },

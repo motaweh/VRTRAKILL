@@ -5,7 +5,7 @@ using VRTRAKILL.Utilities;
 
 namespace Plugin.Systems.UI
 {
-    // mostly "borrowed" from huskvr
+    // mostly adapted from HuskVR
     internal class UIConverter
     {
         public static Camera UICamera { get; private set; }
@@ -23,7 +23,7 @@ namespace Plugin.Systems.UI
 
             if (Vars.Config.UIInteraction.ControllerBased)
             {
-                // make this camera almost useless because it's only use is to give me the middle POINT.
+                // disabled camera; only its viewport centre is used as the UI ray
                 UIEventCamera = new GameObject("UI Event Camera").AddComponent<Camera>();
                 UIEventCamera.enabled = false;
                 UIEventCamera.stereoTargetEye = StereoTargetEyeMask.None;

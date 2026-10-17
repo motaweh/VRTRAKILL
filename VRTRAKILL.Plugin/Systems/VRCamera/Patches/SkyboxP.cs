@@ -15,7 +15,7 @@ namespace Plugin.Systems.VRCamera.Patches
         [HarmonyPatch(typeof(LimboSkybox), nameof(LimboSkybox.UpdateCamera))]
         static bool LimboFix2(Camera cam, LimboSkybox __instance)
         {
-            PortalPatch.AddLimboSkyboxToAllPPHs(__instance); //AND THIS
+            PortalPatch.AddLimboSkyboxToAllPPHs(__instance);
 
             if (!__instance.isActiveAndEnabled) return false;
             __instance.InitializeRT();
@@ -31,7 +31,7 @@ namespace Plugin.Systems.VRCamera.Patches
             __instance.fakeCam.fieldOfView = __instance.playerCam.fieldOfView;
             __instance.fakeCam.targetTexture = __instance.skybox;
 
-            __instance.fakeCam.projectionMatrix = __instance.playerCam.projectionMatrix; //ONLY ADDED LINE
+            __instance.fakeCam.projectionMatrix = __instance.playerCam.projectionMatrix; // the only change from the game's method
 
             Shader.SetGlobalTexture("_LimboSky", __instance.skybox);
             Shader.SetGlobalFloat("_LimboSkyWidth", __instance.lastWidth);
@@ -52,7 +52,7 @@ namespace Plugin.Systems.VRCamera.Patches
             __instance.fakeCam.cullingMask = __instance.playerCam.cullingMask;
             __instance.fakeCam.fieldOfView = __instance.playerCam.fieldOfView;
             __instance.fakeCam.targetTexture = __instance.skybox;
-            __instance.fakeCam.projectionMatrix = __instance.playerCam.projectionMatrix; //ONLY ADDED LINE
+            __instance.fakeCam.projectionMatrix = __instance.playerCam.projectionMatrix; // the only change from the game's method
             __instance.fakeCam.Render();
 
             return false;
@@ -64,7 +64,7 @@ namespace Plugin.Systems.VRCamera.Patches
             if (__instance.oneTime && __instance.activated) return false;
             __instance.activated = true;
 
-            //Do both eyes :D
+            // apply to both eyes
             CameraClearFlags flags = (!__instance.disable) ? CameraClearFlags.Skybox : CameraClearFlags.Color;
             if (CameraConverterP.leftEye != null)
                 CameraConverterP.leftEye.clearFlags = flags;

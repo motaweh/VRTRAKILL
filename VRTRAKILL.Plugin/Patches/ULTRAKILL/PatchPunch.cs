@@ -26,7 +26,6 @@ namespace Plugin.Patches.ULTRAKILL;
         VRArmControllerBase AC = __instance.gameObject.AddComponent<VRArmController>();
         AT.Arm = A; AC.Arm = A;
 
-        // inshallah pls stop
         foreach (SkinnedMeshRenderer SMR in __instance.GetComponentsInChildren<SkinnedMeshRenderer>())
             SMR.updateWhenOffscreen = true;
 
@@ -50,8 +49,7 @@ namespace Plugin.Patches.ULTRAKILL;
             __instance.PunchStart();
         }
         __state = __instance.ready;
-        __instance.ready = false; //we will set this back how it should be after
-        //We can now continue with confidence as ready is now false so we can't have another punch
+        __instance.ready = false; // blocks the game's own punch this frame; UpdateEnd restores it
     }
     [HarmonyPostfix]
     [HarmonyPatch(nameof(Punch.Update))]
@@ -60,10 +58,10 @@ namespace Plugin.Patches.ULTRAKILL;
         __instance.ready = __state;
     }
     [HarmonyTranspiler]
-    [HarmonyPatch(nameof(Punch.ActiveFrame))] //Also punch success?
+    [HarmonyPatch(nameof(Punch.ActiveFrame))]
     static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
-        //Convert this.cc.GetDefaultPos() to Vars.NDHC.transform.position
+        // this.cc.GetDefaultPos() -> Vars.NDHC.transform.position
         IEnumerable<CodeInstruction> sequence = new CodeMatcher(instructions)
                 .MatchForward(false,
                     new CodeMatch(i => i.opcode == OpCodes.Ldarg_0),
@@ -75,7 +73,7 @@ namespace Plugin.Patches.ULTRAKILL;
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Transform), nameof(Transform.position))) { labels = matcher.Labels });
                 })
                 .InstructionEnumeration();
-        //this.camObj.transform.forward -> Vars.punchDirection
+        // this.camObj.transform.forward -> Vars.punchDirection
         sequence = new CodeMatcher(sequence)
                 .MatchForward(false,
                     new CodeMatch(i => i.opcode == OpCodes.Ldarg_0),
@@ -89,7 +87,7 @@ namespace Plugin.Patches.ULTRAKILL;
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
                 })
                 .InstructionEnumeration();
-        //this.camObj.transform.rotation -> Vars.NDHC.transform.rotation
+        // this.camObj.transform.rotation -> Vars.NDHC.transform.rotation
         sequence = new CodeMatcher(sequence)
                 .MatchForward(false,
                     new CodeMatch(i => i.opcode == OpCodes.Ldarg_0),
@@ -106,7 +104,6 @@ namespace Plugin.Patches.ULTRAKILL;
         return sequence;
     }
 
-    //CBA TO DO A TRANSPILER
     [HarmonyPrefix]
     [HarmonyPatch(nameof(Punch.BlastCheck))]
     private static bool BlastCheck(Punch __instance)
@@ -124,8 +121,6 @@ namespace Plugin.Patches.ULTRAKILL;
         }
         return false;
     }
-    //Ended up deciding that it felt better to go where you looked
-    //And cause i couldnt get it to feel nice and i cba
     [HarmonyPrefix]
     [HarmonyPatch(nameof(Punch.GetParryLookTarget))]
     private static bool GetParryLookTarget(ref Vector3 __result)

@@ -19,7 +19,6 @@ namespace Plugin.Patches.Visual;
             Hand.SetParent(__instance.transform.GetChild(2).GetChild(0).GetChild(0), false);
             Hand.localPosition = Vector3.zero;
             Hand.localEulerAngles = new Vector3(0, 0, 270);
-            //Hand.localScale = new Vector3(.1f, .1f, .1f);
 
             Hand.GetChild(1).GetChild(0).position = Hand.parent.transform.position;
             Hand.GetChild(1).GetChild(0).localPosition += new Vector3(-0.005f, -0.008f, -0.005f);

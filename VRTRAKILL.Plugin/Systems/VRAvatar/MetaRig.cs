@@ -94,10 +94,6 @@ namespace Plugin.Systems.VRAvatar
             }
 
             MR.Pelvis = MR.Root.GetChild(0).GetChild(0).GetChild(1);
-            //MR.LeftLeg = Leg.MRPreset(MR.Root.GetChild(0).GetChild(0).GetChild(1).GetChild(0));
-            //MR.RightLeg = Leg.MRPreset(MR.Root.GetChild(0).GetChild(0).GetChild(1).GetChild(2));
-            //MR.LeftLegIK = Leg.MRIKPreset(MR.Root.GetChild(0).GetChild(0).GetChild(1).GetChild(1));
-            //MR.RightLegIK = Leg.MRIKPreset(MR.Root.GetChild(0).GetChild(0).GetChild(1).GetChild(3));
 
             MR.Arm_IKPole_Left = MR.Root.GetChild(0).GetChild(1);
             MR.Arm_IKPole_Right = MR.Root.GetChild(0).GetChild(2);

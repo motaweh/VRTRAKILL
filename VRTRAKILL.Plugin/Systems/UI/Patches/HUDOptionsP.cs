@@ -34,7 +34,7 @@ namespace Plugin.Systems.UI.Patches
             // prime bosses specific
             try { Object.FindObjectOfType<FlashImage>().transform.localScale *= 10; } catch { }
 
-            // disable unnecessary stuff (for now)
+            // hide the power-up vignette
             string[] ScreenEffectsToDisable =
             {
                 "PowerUpVignette",
@@ -60,7 +60,6 @@ namespace Plugin.Systems.UI.Patches
             UI_GTFOTW.name = "VRTRAKILL_GetOutOfTheWall";
             UI_GTFOTW.transform.localScale = Vector3.zero;
 
-            // Sets it's index to 0 so that it's above everything else
             UI_GTFOTW.transform.SetSiblingIndex(0);
             UI_GTFOTW.transform.localScale = Vector3.one;
             UI_GTFOTW.transform.localPosition = Vector3.zero;
@@ -74,14 +73,9 @@ namespace Plugin.Systems.UI.Patches
 
         [HarmonyPostfix] [HarmonyPatch(typeof(ScreenZone), nameof(ScreenZone.OnTriggerEnter))] static void ConvertThing()
         {
-            //foreach (Canvas C in Resources.FindObjectsOfTypeAll(typeof(Canvas)))
-            //    if (!C.gameObject.HasComponent<UICanvas>())
             UIConverter.RecursiveConvertCanvas();
         }
 
-        /// <summary>
-        ///     Fuck you
-        /// </summary>
         [HarmonyPostfix] [HarmonyPatch(typeof(FlashImage), nameof(FlashImage.Flash))] static void FlashImageTweak(FlashImage __instance)
         {
             if (__instance.gameObject.name.Contains("White") || __instance.gameObject.name.Contains("Black"))

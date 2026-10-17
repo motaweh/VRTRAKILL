@@ -49,7 +49,7 @@ namespace Plugin.Patches.ULTRAKILL;
                 return false;
 
             __instance.direction = Vector2.ClampMagnitude(__instance.direction + InputVars.MoveVector, 1f);
-            float num = Mathf.Repeat(Mathf.Atan2(__instance.direction.x, __instance.direction.y) * 57.29578f + 90f, 360f); // the magic number of holy shit
+            float num = Mathf.Repeat(Mathf.Atan2(__instance.direction.x, __instance.direction.y) * 57.29578f + 90f, 360f); // rad to deg
             if (Mathf.Approximately(num, 360f))
                 num = 0f;
 

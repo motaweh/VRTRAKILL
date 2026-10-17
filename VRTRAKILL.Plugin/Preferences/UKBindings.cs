@@ -128,10 +128,7 @@ namespace Plugin.Prefs
 
             if (Json == null || Json.Actions == null) return Binds;
 
-            // What this does is basically scroll thru all the properties in the Binds object
-            // For each property in Binds scroll through all the properties in the Json.Actions obejct
-            // If it has the matching names (as stated in the JsonProperty) and different values,
-            // swap the default value with the .json one.
+            // copy each saved action over the default with the same JsonProperty name
             PropertyInfo[] PropInfo = Binds.GetType().GetProperties();
             for (int i = 0; i < PropInfo.Length; i++)
             {

@@ -16,7 +16,6 @@ namespace Plugin.Systems.VRCamera
             C.backgroundColor = Vars.MainCamera.backgroundColor;
             C.cullingMask = Vars.MainCamera.cullingMask;
             C.clearFlags = Vars.MainCamera.clearFlags;
-            //C.fieldOfView = Vars.Config.DesktopView.WorldCamFOV;
             C.fieldOfView = Vars.MainCamera.fieldOfView;
         }
     }

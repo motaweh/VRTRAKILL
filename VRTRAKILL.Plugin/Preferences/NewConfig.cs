@@ -82,7 +82,6 @@ namespace Plugin.Prefs
 
         [JsonProperty("Miscellaneous/Unsorted Settings")] public _Misc Misc { get; set; } public class _Misc
         {
-            //[JsonProperty("Enable 4S FPS Camera (BROKEN)")] public bool Enable4SFPSCam { get; set; } = false;
         }
 
         public NewConfig()

@@ -6,7 +6,7 @@ using System;
 
 namespace Plugin.Patches.Visual;
 
-// Removes hands from revolver & shotgun
+// hides the game's own arm on weapons that get a VR arm
 [HarmonyPatch] internal class PatchRemoveArms
 {
     [HarmonyPostfix]

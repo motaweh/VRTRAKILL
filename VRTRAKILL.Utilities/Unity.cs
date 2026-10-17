@@ -60,7 +60,6 @@ namespace VRTRAKILL.Utilities
         /// </summary>
         /// <typeparam name="T"> The <c>Component</c> class (e.g. <c>NewMovement</c>) </typeparam>
         /// <param name="GM"> An instance of a <c>GameObject</c> </param>
-        /// <returns></returns>
         public static bool HasComponent<T>(this GameObject GM) where T : Component
         { return GM.GetComponent<T>() != null; }
     }

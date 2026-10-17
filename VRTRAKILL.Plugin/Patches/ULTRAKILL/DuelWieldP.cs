@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Plugin.Patches.ULTRAKILL;
 
-// Dual wielding has this funny bug where it makes third, fourth guns far far away and it looks cool but no
+// the game's offsets put the third and later dual-wield copies far from the hand
 [HarmonyPatch(typeof(DualWieldPickup))] internal class DuelWieldP
 {
     [HarmonyPrefix] [HarmonyPatch(nameof(DualWieldPickup.PickedUp))] static bool FixTransform(DualWieldPickup __instance)
@@ -26,9 +26,7 @@ namespace Plugin.Patches.ULTRAKILL;
 
         gameObject.transform.localScale = Vector3.one;
 
-        /* if (componentsInChildren == null || componentsInChildren.Length == 0)
-            gameObject.transform.localPosition = Vector3.zero;
-        else */ if (componentsInChildren.Length % 2 == 0)
+        if (componentsInChildren.Length % 2 == 0)
             gameObject.transform.localPosition = new Vector3((float)(componentsInChildren.Length / 2) * -.15f, 0f, 0f);
         else
             gameObject.transform.localPosition = new Vector3((float)((componentsInChildren.Length) / 2) * .15f, 0f, 0f);

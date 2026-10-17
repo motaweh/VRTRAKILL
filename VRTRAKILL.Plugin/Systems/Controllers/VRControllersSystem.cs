@@ -8,7 +8,6 @@ using VRTRAKILL.Utilities;
 
 namespace Plugin.Systems.Controllers
 {
-    // lol the name
     public class VRControllersSystem : MonoBehaviour
     {
         public GameObject RenderModel;
@@ -96,7 +95,7 @@ namespace Plugin.Systems.Controllers
             else
                 CameraConverterP.PortalAwareSetTransformFromBody(transform, VRControllerLocations.Instance.rightPos, VRControllerLocations.Instance.rightRot, true);
 
-            VRGunsController.Instance.LateUpdate(); //Annoying but stuff was desyncing
+            VRGunsController.Instance.LateUpdate(); // waiting for its own LateUpdate leaves the gun a frame behind the hand
 
             // controller-based ui interaction
             if (Vars.Config.UIInteraction.ControllerBased) CPRaycast();
@@ -110,11 +109,5 @@ namespace Plugin.Systems.Controllers
                 RenderModel.transform.localScale = RenderModelOffsetScale;
             }
         }
-
-        //public static Vector3 ControllerOffset = new Vector3(0, 2.85f, 0);
-        //public static void OnTransformUpdatedH(SteamVR_Behaviour_Pose fromAction, SteamVR_Input_Sources fromSource)
-        //{
-        //fromAction.transform.position += ControllerOffset;
-        //}
     }
 }

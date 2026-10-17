@@ -6,7 +6,6 @@ namespace Plugin.Systems.UI.Patches
 {
     [HarmonyPatch] internal sealed class HudP
     {
-        // Magic numbers to make good hud good.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(HudController), nameof(HudController.Start))]
         static void ReparentHUD(HudController __instance)
@@ -29,9 +28,6 @@ namespace Plugin.Systems.UI.Patches
             switch (__instance.gameObject.name)
             {
                 case "GunCanvas":
-                    //StandardHUDWorker SHUDW = __instance.transform.parent.gameObject.AddComponent<StandardHUDWorker>();
-                    //SHUDW.StandardHUD = __instance.gameObject;
-
                     __instance.defaultPos = new Vector3(-440, -320, 120) * 0.1f;
                     __instance.defaultRot = new Vector3(0, -20, 0);
 

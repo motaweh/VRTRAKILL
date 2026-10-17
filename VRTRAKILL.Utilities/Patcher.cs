@@ -7,7 +7,6 @@ using System.Collections.Generic;
 namespace VRTRAKILL.Utilities
 {
     // If you wanna use it for your own purposes - you have my full permission :)
-    // You can find the usage of this class in the Plugin.Plugin class
 
     /// <summary>
     /// Uses BepInEx'd HarmonyX to simplify patching in plugins/mods.

@@ -9,7 +9,7 @@ namespace Plugin.Systems.VRAvatar
     // the NewMovement of the player's avatar
     internal class VRigController : MonoBehaviour
     {
-        // can't use stuff normally without it being both a singleton and a monobehavior
+        // hand-rolled singleton so this class can use Awake
         private static VRigController _Instance; public static VRigController Instance { get { return _Instance; } }
 
         public MetaRig Rig; private EZSoftBone WingBone;
@@ -26,7 +26,6 @@ namespace Plugin.Systems.VRAvatar
 
         public void Awake()
         {
-            // awake would be inaccessible if it was a monosingleton
             if (_Instance != null && _Instance != this) Destroy(this.gameObject);
             else _Instance = this;
         }
@@ -36,7 +35,6 @@ namespace Plugin.Systems.VRAvatar
             Rig = Rig ?? MetaRig.CreateVCustomPreset(null, "VR Avatar");
             VRTRAKILL.Utilities.Unity.RecursiveChangeLayer(Rig.GameObjectT.gameObject, (int)Layers.AlwaysOnTop);
 
-            // transform shenanigans (necessary)
             Rig.GameObjectT.localPosition = Vector3.zero;
             Rig.GameObjectT.localRotation = Quaternion.Euler(Vector3.zero);
 
@@ -66,20 +64,6 @@ namespace Plugin.Systems.VRAvatar
             if (Vars.Config.VRBody.EnableLegsIK)
             {
                 Anim = Rig.GameObjectT.GetComponent<Animator>();
-                //AddIK(Rig.LeftLegIK.Foot.gameObject, Rig.LeftLeg.Foot, Pole: Rig.Leg_IKPole_Left);
-                //AddIK(Rig.RightLegIK.Foot.gameObject, Rig.RightLeg.Foot, Pole: Rig.Leg_IKPole_Right);
-
-                //IKFoot LeftLeg = Rig.LeftLeg.Foot.gameObject.AddComponent<IKFoot>();
-                //LeftLeg.Anim = this.Anim;
-                //LeftLeg.Body = Rig.Root;
-                //LeftLeg.FootSpacing = -.3f;
-                //IKFoot RightLeg = Rig.RightLeg.Foot.gameObject.AddComponent<IKFoot>();
-                //RightLeg.Anim = this.Anim;
-                //RightLeg.Body = Rig.Root;
-                //RightLeg.FootSpacing = .3f;
-
-                //LeftLeg.OtherFoot = RightLeg;
-                //RightLeg.OtherFoot = LeftLeg;
             }
 
             #region Dynamic wings
@@ -98,7 +82,7 @@ namespace Plugin.Systems.VRAvatar
 
             #endregion
 
-            // Neck chain Ik
+            // neck chain IK
             AddIK(Rig.NeckEnd.gameObject, Rig.Head.GetChild(0).GetChild(0), 2);
 
             this.gameObject.SetActive(false);
@@ -200,9 +184,7 @@ namespace Plugin.Systems.VRAvatar
 
         private void HandleWings()
         {
-            // Basically if you move (as in moveyour player via stick)
-            // Wings will get less mobile for convenience
-            // Also don't try to tweak these without unity editor, it'll take forever.
+            // stiffer wings while moving; tune these values in the Unity editor
             if (NewMovement.Instance.rb.velocity.magnitude > .1f)
             {
                 WingBone.material.damping = .2f;
@@ -232,7 +214,7 @@ namespace Plugin.Systems.VRAvatar
         }
         private void HandlePelvisRotation()
         {
-            // this exists because my foot placement logic does not want to work *horizontally*
+            // turn the pelvis toward the movement, since foot placement does not handle sideways steps
             Vector3 Direction = new Vector3(-NewMovement.Instance.rb.velocity.z, 0, NewMovement.Instance.rb.velocity.x);
             Quaternion Rotation = Quaternion.Euler(0, Quaternion.LookRotation(Direction, Vector3.up).eulerAngles.y + 90, 0);
             if (Input.InputVars.MoveVector.y < 0) Rotation = Quaternion.Euler(0, -Rotation.eulerAngles.y - 180, 0);
@@ -246,20 +228,14 @@ namespace Plugin.Systems.VRAvatar
             if (GunControl.Instance.currentWeapon.HasComponent<RocketLauncher>())
             {
                 macf = true;
-                //Rig.FeedbackerB.Forearm.localScale = new Vector3(.5f, .5f, .5f);
-                //Rig.FeedbackerB.Hand.Root.gameObject.GetComponent<IKChain>().Init();
             }
             else if (GunControl.Instance.currentWeapon.HasComponent<ShotgunHammer>())
             {
                 macf = true;
-                //Rig.FeedbackerB.Forearm.localScale = new Vector3(.85f, .85f, .85f);
-                //Rig.FeedbackerB.Hand.Root.gameObject.GetComponent<IKChain>().Init();
             }
             else if (macf)
             {
                 macf = false;
-                //Rig.FeedbackerB.Forearm.localScale = Vector3.one;
-                //Rig.FeedbackerB.Hand.Root.gameObject.GetComponent<IKChain>().Init();
             }
         }
     }

@@ -3,7 +3,6 @@ using Valve.VR;
 
 namespace Plugin.Systems
 {
-    // check manifests in VRTRAKILL/AssetBundles to know which one is which
     internal static class Assets
     {
         // V1 Rig (also usable for V2)
@@ -23,17 +22,14 @@ namespace Plugin.Systems
 
         public static GameObject UI_GTFOTW { get; private set; }
 
-        private static Vector3 DefaultPos = new Vector3(2048, -4048, 2048); //Out of the way?
+        private static Vector3 DefaultPos = new Vector3(2048, -4048, 2048); // parks the loaded templates far from the level
         private static Quaternion DefaultRot = Quaternion.identity;
 
         public static void LoadAllCustomAssets()
         {
-            //if (SteamVR.initializedState == SteamVR.InitializedStates.InitializeFailure) SteamVR.Initialize();
-            //Plugin.Log.LogMessage("Loading assets: " + (SteamVR.initializedState.ToString()));
             AssetBundle Assets = LoadBundle("vrtrakillassetbundle");
             VRig = Object.Instantiate(LoadAsset<GameObject>(Assets, "V1/V1.prefab"), DefaultPos, DefaultRot);
             VHead = LoadAsset<GameObject>(Assets, "V1/V1_Head.prefab");
-            //CAMERARIG = Object.Instantiate(LoadAsset<GameObject>(Assets, "[CameraRig].prefab"), DefaultPos, DefaultRot);
 
             HandPose_Shotgun = Object.Instantiate(LoadAsset<GameObject>(Assets, "Arms/Feedbacker/Hand_Shotgun.prefab"), DefaultPos, DefaultRot);
             HandPose_Nailgun = Object.Instantiate(LoadAsset<GameObject>(Assets, "Arms/Feedbacker/Hand_Nailgun.prefab"), DefaultPos, DefaultRot);

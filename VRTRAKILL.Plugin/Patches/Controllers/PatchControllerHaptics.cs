@@ -13,7 +13,6 @@ namespace Plugin.Patches.Controllers;
     static bool Quitting;
     static PatchControllerHaptics() { Application.quitting += () => Quitting = true; }
 
-    // I can't believe it worked first try without any corrections.
     [HarmonyPrefix] [HarmonyPatch(nameof(RumbleManager.Update))] static bool Update(RumbleManager __instance)
     {
         __instance.discardedKeys.Clear();
@@ -55,7 +54,6 @@ namespace Plugin.Patches.Controllers;
         return false;
     }
 
-    // Number 7:
     public static void Vibrate(float Duration, float Frequency, float Amplitude, SteamVR_Input_Sources Source)
     {
         if (Quitting || !SteamVR_Input.initialized) return;

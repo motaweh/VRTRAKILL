@@ -5,13 +5,12 @@ using VRTRAKILL.Utilities;
 
 namespace Plugin.Systems
 {
-    // does what needs to be done before anything else
+    // per-scene setup
     internal static class SceneWorker
     {
         public static void Init()
         => SceneManager.activeSceneChanged += (_, y) => SceneChanged(y);
 
-        // cool message suppersion :)
         private static void SceneChanged(Scene S)
         {
             VRTRAKILL.Utilities.Unity.EnableOffscreenRendering();
@@ -27,8 +26,7 @@ namespace Plugin.Systems
         }
         private static void RelayerAssetsStuff()
         {
-            // thanks to unity being so fucking weird instead of actual gameobjects it stores references to them,
-            // so this works.
+            // the Assets properties hold references to the instantiated objects, so this relayers them in place
             foreach (PropertyInfo I in typeof(Assets).GetProperties())
             {
                 if (I.GetValue(typeof(Assets), null) != null)

@@ -13,7 +13,6 @@ namespace Plugin.Systems.Controllers
 
         private Vector3 _PreviousPosition, _CurrentVelocity; public float Speed = 0; // for punch detection
         private Vector3 LastPosition, Velocity; // for direction
-        // note: do not fucking delete this
         private IEnumerator CalculateSpeed()
         {
             _PreviousPosition = transform.position;
@@ -48,7 +47,6 @@ namespace Plugin.Systems.Controllers
             if (LastPosition != transform.position)
             {
                 Velocity = (transform.position - LastPosition).normalized;
-                //Vars.punchDirection = Velocity;
                 Vars.punchDirection = Vars.NonDominantHand.transform.forward;
                 LastPosition = transform.position;
             }

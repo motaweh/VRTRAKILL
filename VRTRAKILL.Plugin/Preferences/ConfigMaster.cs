@@ -41,7 +41,7 @@ namespace Plugin.Prefs
             MSlot3 = null, MSlot4 = null, MSlot5 = null,
             MSlot6 = null, MSlot7 = null, MSlot8 = null, MSlot9 = null;
 
-        // joystickwhateverbutton is there because unity is angry when you pass it as null
+        // Joystick8Button9 is an unused placeholder; Unity rejects a null KeyCode
         public static UnityEngine.KeyCode?
             ToggleDesktopView = UnityEngine.KeyCode.Joystick8Button9,
 

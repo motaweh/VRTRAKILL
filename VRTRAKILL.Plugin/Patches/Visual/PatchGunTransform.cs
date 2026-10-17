@@ -8,12 +8,6 @@ namespace Plugin.Patches.Visual;
 
 [HarmonyPatch] internal class PatchGunTransform
 {
-    /* Template for transform values:
-     static Vector3
-            Position = new Vector3(),
-            Rotation = new Vector3(),
-            Scale = new Vector3();
-     */
     [HarmonyPatch(typeof(Revolver))] static class RevolverT
     {
         static Vector3 Position = new Vector3(.05f, -.1f, .6f),
@@ -97,7 +91,7 @@ namespace Plugin.Patches.Visual;
 
         [HarmonyPostfix] [HarmonyPatch(nameof(Railcannon.Start))] static void Retransform(Railcannon __instance)
         {
-            __instance.wpos.defaultPos += Position; // what and why?
+            __instance.wpos.defaultPos += Position;
             __instance.wpos.defaultScale = Scale;
         }
     }
@@ -131,7 +125,6 @@ namespace Plugin.Patches.Visual;
 
         [HarmonyPostfix] [HarmonyPatch(nameof(Sandbox.Arm.SandboxArm.Awake))] static void Retransform(Sandbox.Arm.SandboxArm __instance)
         {
-            //retransform
             VRArmController DAC = __instance.gameObject.AddComponent<VRArmController>();
             Arm A = Arm.SandboxerPreset(__instance.transform);
             DAC.Arm = A; DAC.OffsetPos = new Vector3(-.15f, -.3f, -.55f);

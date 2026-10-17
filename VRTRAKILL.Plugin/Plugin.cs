@@ -17,8 +17,6 @@ using System.CodeDom;
 
 namespace Plugin
 {
-    // note: i will NEVER use transpilers IN THIS LIFETIME!! OVER MY DEAD BODY!!
-
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     public sealed partial class Plugin : BaseUnityPlugin
     {
@@ -73,13 +71,7 @@ namespace Plugin
             };
             System.Collections.Generic.List<System.Type> Types = new System.Collections.Generic.List<System.Type>
             {
-                //typeof(Systems.Input.ControlMessages.Patches),
             };
-            //if (Vars.Config.Controllers.EnableHaptics) Types.Add(typeof(Systems.Controllers.Patches.ControllerHaptics));
-            //if (Vars.Config.EnableCBS)                 Namespaces.Add(typeof(Systems.Guns.Patches.A).Namespace);
-            //if (Vars.Config.EnableMBP)                 Namespaces.Add(typeof(Systems.Arms.Patches.A).Namespace);
-            //if (!Vars.Config.MBP.CameraWhiplash)       Namespaces.Add(typeof(Systems.Arms.Patches.Whiplash.A).Namespace);
-            //if (Vars.Config.EnableVRBody)              Namespaces.Add(typeof(Systems.VRAvatar.Patches.A).Namespace);
 
             new Patcher(new HarmonyLib.Harmony(PluginInfo.PLUGIN_GUID))
             {

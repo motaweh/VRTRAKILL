@@ -23,8 +23,7 @@ internal class FrustrumTargetTranspiler
     }
     static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
-        //We want to replace Camera.main.GetComponent<CameraFrustumTargeter>();
-        //With CameraFrustrumTarget.Instance
+        // Camera.main.GetComponent<CameraFrustumTargeter>() -> CameraFrustumTargeter.Instance
         return new CodeMatcher(instructions)
                 .MatchForward(false,
                     new CodeMatch(i => i.opcode == OpCodes.Call && i.operand is MethodInfo f2 && f2 == AccessTools.PropertyGetter(typeof(Camera), nameof(Camera.main))),

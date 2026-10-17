@@ -2,12 +2,11 @@
 
 namespace Plugin.Systems.VRPlayer
 {
-    // acts as many things in one
     public class VRKeybindsController : MonoSingleton<VRKeybindsController>
     {
         public static bool WasDVActive { get; set; }
 
-        public void Start() { /* used as a placeholder for extensions */ }
+        public void Start() { }
 
         public void Update()
         {

@@ -17,7 +17,7 @@ namespace Plugin.Systems.VRCamera.Patches
 {
     [HarmonyPatch] public class CameraConverterP
     {
-        // ty huskvr you pretty
+        // adapted from HuskVR
         public static Camera DesktopWorldCam, DesktopUICam;
         public static Camera leftEye, rightEye;
 
@@ -28,7 +28,7 @@ namespace Plugin.Systems.VRCamera.Patches
             cc.cam.nearClipPlane = 0.01f;
             cc.cam.stereoTargetEye = StereoTargetEyeMask.None;
 
-            //// some binary magic (that i don't understand) to enable the layer with the hands
+            // render the AlwaysOnTop layer (hands)
             cc.cam.cullingMask |= 1 << (int)Layers.AlwaysOnTop;
             cc.hudCamera.enabled = false;
 
@@ -46,27 +46,10 @@ namespace Plugin.Systems.VRCamera.Patches
         {
             while (__instance.cam == null && __instance.hudCamera == null) {}
 
-            // for some particular reason destroying it is a bad idea.
+            // deactivate, not destroy: destroying it breaks the game
             GameObject.Find("Virtual Camera").SetActive(false);
 
             __instance.cam.enabled = false;
-
-            //#region Desktop View
-            //DesktopWorldCam = new GameObject("Desktop World Camera").AddComponent<Camera>();
-            //DesktopWorldCam.transform.parent = leftEye.transform;
-            //DesktopWorldCam.transform.localPosition = Vector3.zero;
-            //DesktopWorldCam.gameObject.AddComponent<DesktopCamera>();
-
-            //DesktopUICam = new GameObject("Desktop UI Camera").AddComponent<Camera>();
-            //DesktopUICam.transform.parent = leftEye.transform;
-            //DesktopUICam.transform.localPosition = Vector3.zero;
-            //DesktopUICam.gameObject.AddComponent<DesktopUICamera>();
-            //if (!Vars.Config.DesktopView.Enabled)
-            //{
-            //    DesktopWorldCam.gameObject.SetActive(false);
-            //    DesktopUICam.gameObject.SetActive(false);
-            //}
-            //#endregion
         }
         [HarmonyPostfix] [HarmonyPatch(typeof(NewMovement), nameof(NewMovement.GetHurt))] public static void FixWeirdDeathThing(NewMovement __instance)
         {
@@ -79,9 +62,6 @@ namespace Plugin.Systems.VRCamera.Patches
         }
         [HarmonyPostfix] [HarmonyPatch(typeof(NewMovement), nameof(NewMovement.Start))] static void ScaleObjects(NewMovement __instance)
         {
-            // this should've been bigger, but i've changed my mind a thousand years ago and it works
-            // this mod is officially my opus magnum spaghetti code and dumpster fire
-            //Container.transform.localScale = new Vector3(2, 2, 2);
             __instance.gameObject.AddComponent<VRPlayer.VRKeybindsController>();
 
             InputVars.TurnOffset = 0;
@@ -92,7 +72,6 @@ namespace Plugin.Systems.VRCamera.Patches
         [HarmonyPatch(typeof(CameraController), nameof(CameraController.LateUpdate))]
         static void HandleRotationsAndPositions(CameraController __instance)
         {
-            // do nothing
             if (!__instance.player) { __instance.nm = NewMovement.Instance; __instance.player = __instance.nm.gameObject; }
 
             __instance.rotationX = -VRControllerLocations.Instance.headRot.eulerAngles.x;
@@ -130,7 +109,7 @@ namespace Plugin.Systems.VRCamera.Patches
             Vector3 intersection;
             PortalTravellerFlags portalTravellerFlags = PortalTravellerFlags.Player;
 
-            //Code from PortalManager2
+            // adapted from PortalManagerV2
             if (Scene.FindCrossedPortal(cc.transform.parent.position, t.transform.position, out portalHandle, out intersection))
             {
                 Portal portalObject = Scene.GetPortalObject(portalHandle);
@@ -165,7 +144,6 @@ namespace Plugin.Systems.VRCamera.Patches
                         }
                         PortalTravelDetails details = PortalTravelDetails.WithInteresction(portalSequence, intersections, travelMatrix, intersection);
 
-                        //Actually do the movement
                         t.transform.position = details.enterToExit.MultiplyPoint3x4(t.transform.position);
                         t.transform.rotation = details.enterToExit.rotation * t.transform.rotation;
                     }
@@ -197,14 +175,14 @@ namespace Plugin.Systems.VRCamera.Patches
         [HarmonyPatch(typeof(PlayerAnimations), nameof(PlayerAnimations.Start))]
         static void RemovePlayerModel(PlayerAnimations __instance)
         {
-            //Add in the VR head
+            // VR head
             GameObject head = GameObject.Instantiate(Assets.VHead, leftEye.transform);
             head.transform.localPosition = new Vector3(0, 0, -0.07f);
             head.transform.localScale *= 2f;
             Object.Destroy(head.GetComponent<CapsuleCollider>());
             foreach (Transform t in head.GetComponentsInChildren<Transform>(true))
                 t.gameObject.layer = LayerMask.NameToLayer("Portal");
-            //Done so we get the correct unlit look
+            // reuse the player model's material for the correct unlit look
             head.GetComponentInChildren<SkinnedMeshRenderer>().material = __instance.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
 
             __instance.GetComponentsInChildren<SkinnedMeshRenderer>(true).ToList().ForEach(x => UnityEngine.Object.Destroy(x));

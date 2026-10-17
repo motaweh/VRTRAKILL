@@ -3,8 +3,7 @@ using UnityEngine;
 
 namespace Plugin.Systems.UI
 {
-    // short for GET THE FUCK OUT OF THE WALL
-    // used explicitly for getting the fuck out of the wall
+    // warns the player when the head is inside level geometry
     internal sealed class GTFOTW : MonoBehaviour
     {
         public Transform DetectorTransform;

@@ -15,7 +15,7 @@ internal class PatchRocketLauncher
         if (VRigController.Instance != null)
         {
             __instance.transform.position = VRigController.Instance.Rig.FeedbackerB.Forearm.position;
-            __instance.transform.LookAt(Vars.DominantHand.transform/*VRigController.Instance.Rig.FeedbackerB.Hand.Root*/);
+            __instance.transform.LookAt(Vars.DominantHand.transform);
         }
     }
 

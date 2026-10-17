@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Plugin.Systems.UI
 {
-    // "borrowed" from huskvr
+    // adapted from HuskVR
     internal sealed class UICanvas : MonoBehaviour
     {
         private Vector3 LastCamFwd = Vector3.zero;

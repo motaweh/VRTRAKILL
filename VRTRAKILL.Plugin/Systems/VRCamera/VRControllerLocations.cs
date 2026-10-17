@@ -27,12 +27,7 @@ namespace VRBasePlugin.Systems.VRCamera
 
         IEnumerator Start()
         {
-            transform.position = Vector3.zero; //IK its unneccessary but just make sure
-
-            //if (_head != null) GameObject.DestroyImmediate(_head.gameObject);
-            //_head = new GameObject("Head").transform;
-            //_head.SetParent(transform);
-            //_head.gameObject.AddComponent<SteamVR_TrackedObject>();
+            transform.position = Vector3.zero;
 
             SteamVR_Actions._default.Activate();
             yield return null;
@@ -40,7 +35,7 @@ namespace VRBasePlugin.Systems.VRCamera
             if (_left != null) GameObject.DestroyImmediate(_left.gameObject);
             _left = new GameObject("Left").transform;
             _left.SetParent(transform);
-            _left.gameObject.SetActive(false); //OnEnable would bind the default "Pose" action before poseAction is set
+            _left.gameObject.SetActive(false); // OnEnable would bind the default "Pose" action before poseAction is set
             SteamVR_Behaviour_Pose l = _left.gameObject.AddComponent<SteamVR_Behaviour_Pose>();
             l.poseAction = SteamVR_Actions._default.LeftPose;
             l.inputSource = SteamVR_Input_Sources.LeftHand;
@@ -63,13 +58,8 @@ namespace VRBasePlugin.Systems.VRCamera
         private bool IsTurning; private float SnapTurnTimer;
         public void Update()
         {
-            //if (_head != null)
-            {
-                //headPos = _head.position;
-                //headRot = _head.rotation;
-                headPos = InputTracking.GetLocalPosition(XRNode.Head);
-                headRot = InputTracking.GetLocalRotation(XRNode.Head);
-            }
+            headPos = InputTracking.GetLocalPosition(XRNode.Head);
+            headRot = InputTracking.GetLocalRotation(XRNode.Head);
             if (_left != null)
             {
                 leftPos = _left.position;

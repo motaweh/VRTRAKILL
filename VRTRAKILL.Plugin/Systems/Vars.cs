@@ -32,7 +32,7 @@ namespace Plugin.Systems
         public static Prefs.NewConfig Config => Prefs.ConfigJSON.GetConfig().Config;
         public static BepInEx.Logging.ManualLogSource Log => Plugin.Log;
 
-        #region Checks n' Shits
+        #region Checks
         public static bool IsMainMenu
             => OptionsManager.Instance?.mainMenu ?? false;
         // polled every frame from the Intro on; Instance there spends the game's one-shot Find and the menu's OptionsManager is never found

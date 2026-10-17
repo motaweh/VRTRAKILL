@@ -2,7 +2,7 @@
 
 namespace Plugin.Systems.VRAvatar
 {
-    // code from.. uh.. i frogot.
+    // FABRIK solver, see https://www.youtube.com/watch?v=UNoX65PRehA
     internal class IKChain : MonoBehaviour
     {
         /// <summary>
@@ -34,7 +34,7 @@ namespace Plugin.Systems.VRAvatar
         public float SnapBackStrength = 1f;
 
 
-        protected float[] BonesLength; //Target to Origin
+        protected float[] BonesLength; // target to origin
         protected float CompleteLength;
         protected Transform[] Bones;
         protected Vector3[] Positions;
@@ -44,19 +44,16 @@ namespace Plugin.Systems.VRAvatar
         protected Transform Root;
 
 
-        // Start is called before the first frame update
         public void Start() => Init();
 
         public void Init()
         {
-            //initial array
             Bones = new Transform[ChainLength + 1];
             Positions = new Vector3[ChainLength + 1];
             BonesLength = new float[ChainLength];
             StartDirectionSucc = new Vector3[ChainLength + 1];
             StartRotationBone = new Quaternion[ChainLength + 1];
 
-            //find root
             Root = transform;
             for (var i = 0; i <= ChainLength; i++)
             {
@@ -65,7 +62,6 @@ namespace Plugin.Systems.VRAvatar
                 Root = Root.parent;
             }
 
-            //init target
             if (Target == null)
             {
                 Target = new GameObject(gameObject.name + " Target").transform;
@@ -73,8 +69,6 @@ namespace Plugin.Systems.VRAvatar
             }
             StartRotationTarget = GetRotationRootSpace(Target);
 
-
-            //init data
             var current = transform;
             CompleteLength = 0;
             for (var i = Bones.Length - 1; i >= 0; i--)
@@ -84,12 +78,10 @@ namespace Plugin.Systems.VRAvatar
 
                 if (i == Bones.Length - 1)
                 {
-                    //leaf
                     StartDirectionSucc[i] = GetPositionRootSpace(Target) - GetPositionRootSpace(current);
                 }
                 else
                 {
-                    //mid bone
                     StartDirectionSucc[i] = GetPositionRootSpace(Bones[i + 1]) - GetPositionRootSpace(current);
                     BonesLength[i] = StartDirectionSucc[i].magnitude;
                     CompleteLength += BonesLength[i];
@@ -97,12 +89,8 @@ namespace Plugin.Systems.VRAvatar
 
                 current = current.parent;
             }
-
-
-
         }
 
-        // ~Update is called once per frame~ sike lmao
         public void LateUpdate()
         {
             ResolveIK();
@@ -116,25 +104,16 @@ namespace Plugin.Systems.VRAvatar
             if (BonesLength.Length != ChainLength)
                 Init();
 
-            //Fabric
-
-            //  root
-            //  (bone0) (bonelen 0) (bone1) (bonelen 1) (bone2)...
-            //   x--------------------x--------------------x---...
-
-            //get position
             for (int i = 0; i < Bones.Length; i++)
                 Positions[i] = GetPositionRootSpace(Bones[i]);
 
             var targetPosition = GetPositionRootSpace(Target);
             var targetRotation = GetRotationRootSpace(Target);
 
-            //1st is possible to reach?
+            // target out of reach: stretch the chain toward it
             if ((targetPosition - GetPositionRootSpace(Bones[0])).sqrMagnitude >= CompleteLength * CompleteLength)
             {
-                //just strech it
                 var direction = (targetPosition - Positions[0]).normalized;
-                //set everything after root
                 for (int i = 1; i < Positions.Length; i++)
                     Positions[i] = Positions[i - 1] + direction * BonesLength[i - 1];
             }
@@ -145,27 +124,25 @@ namespace Plugin.Systems.VRAvatar
 
                 for (int iteration = 0; iteration < Iterations; iteration++)
                 {
-                    //https://www.youtube.com/watch?v=UNoX65PRehA
-                    //back
+                    // backward pass
                     for (int i = Positions.Length - 1; i > 0; i--)
                     {
                         if (i == Positions.Length - 1)
-                            Positions[i] = targetPosition; //set it to target
+                            Positions[i] = targetPosition;
                         else
-                            Positions[i] = Positions[i + 1] + (Positions[i] - Positions[i + 1]).normalized * BonesLength[i]; //set in line on distance
+                            Positions[i] = Positions[i + 1] + (Positions[i] - Positions[i + 1]).normalized * BonesLength[i];
                     }
 
-                    //forward
+                    // forward pass
                     for (int i = 1; i < Positions.Length; i++)
                         Positions[i] = Positions[i - 1] + (Positions[i] - Positions[i - 1]).normalized * BonesLength[i - 1];
 
-                    //close enough?
                     if ((Positions[Positions.Length - 1] - targetPosition).sqrMagnitude < Delta * Delta)
                         break;
                 }
             }
 
-            //move towards pole
+            // bend toward the pole
             if (Pole != null)
             {
                 var polePosition = GetPositionRootSpace(Pole);
@@ -179,7 +156,6 @@ namespace Plugin.Systems.VRAvatar
                 }
             }
 
-            //set position & rotation
             for (int i = 0; i < Positions.Length; i++)
             {
                 if (i == Positions.Length - 1)
@@ -208,7 +184,7 @@ namespace Plugin.Systems.VRAvatar
 
         private Quaternion GetRotationRootSpace(Transform current)
         {
-            //inverse(after) * before => rot: before -> after
+            // inverse(after) * before => rot: before -> after
             if (Root == null)
                 return current.rotation;
             else

@@ -36,7 +36,6 @@ namespace Plugin.Systems.Input
 
         public static bool Escape = false;
 
-        // Helper methods
         public static string FriendlyBindingName(this ISteamVR_Action_In SVRAI)
         {
             string Direction;
@@ -52,16 +51,12 @@ namespace Plugin.Systems.Input
                     Direction = "Right"; break;
                 default: Direction = string.Empty; break;
             }
-            //if (string.IsNullOrEmpty(Direction))
-            //    return SVRAI.GetLocalizedOriginPart(SteamVR_Input_Sources.Any, EVRInputStringBits.VRInputString_InputSource);
-            //else return $"{Direction} {SVRAI.GetLocalizedOriginPart(SteamVR_Input_Sources.Any, EVRInputStringBits.VRInputString_InputSource)}";
             // GetLocalizedOriginPart's params array is emitted as a SteamVR-scoped EVRInputStringBits typeref that fails to load
             if (string.IsNullOrEmpty(Direction))
                 return SVRAI.GetLocalizedOrigin(SteamVR_Input_Sources.Any);
             else return $"{Direction} {SVRAI.GetLocalizedOrigin(SteamVR_Input_Sources.Any)}";
         }
 
-        // Simulate keyboard input
         private static void TriggerKey(bool Started, bool Ended, VirtualKeyCode? KeyCode = null, MouseButton? Button = null)
         {
             if (KeyCode != null) TriggerKey((VirtualKeyCode)KeyCode, Started, Ended);
@@ -143,7 +138,7 @@ namespace Plugin.Systems.Input
             SteamVR_Actions._default.Escape.AddOnUpdateListener(EscapeH, SteamVR_Input_Sources.Any);
         }
 
-        // Movemint
+        // Movement
         private static void MovementH(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
         { InputVars.MoveVector = axis; }
         private static void TurnH(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
@@ -155,7 +150,7 @@ namespace Plugin.Systems.Input
         private static void DashH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Dash) { Dash = newState; TriggerKey(Dash, !Dash, ConfigMaster.KDash, ConfigMaster.MDash); } }
 
-        // Fisting
+        // Arms
         private static void PunchH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         {
             if (newState != Punch)

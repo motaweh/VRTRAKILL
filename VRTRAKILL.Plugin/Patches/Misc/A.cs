@@ -1,4 +1,5 @@
 ﻿namespace Plugin.Patches.Misc
 {
-    internal class A { /* This is a. Placeholder. For use in namespaces. Do not remove me. */ }
+    // anchors this namespace for Plugin.PatchStuff; do not remove
+    internal class A { }
 }

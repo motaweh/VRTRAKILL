@@ -5,8 +5,7 @@ namespace Plugin.Systems.VRAvatar
     [RequireComponent(typeof(VRigController))]
     internal class AvatarSizeAdjustor : MonoBehaviour
     {
-        // being a singleton you can't access OnEnable method for some reason
-        // so i use this.
+        // hand-rolled singleton so this class can use OnEnable
         private static AvatarSizeAdjustor _Instance; public static AvatarSizeAdjustor Instance { get { return _Instance; } }
         public MetaRig Rig => VRigController.Instance.Rig;
 
