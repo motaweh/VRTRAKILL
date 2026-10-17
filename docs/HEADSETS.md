@@ -2,18 +2,38 @@
 
 VRTRAKILL runs through **SteamVR (OpenVR)** only. Every headset must reach the game through SteamVR. The OpenXR runtime that is set as active on the PC (Meta, SteamVR or VDXR) does not matter, because the mod does not use OpenXR.
 
-## Supported headsets
+## Support status
 
-| Headset | Connection | SteamVR controller type | Default binding |
+| Headset / controller | SteamVR controller type | Status | Default binding |
 |---|---|---|---|
-| PlayStation VR2 | PlayStation VR2 App + SteamVR | `playstation_vr2_sense` | `bindings_playstation_vr2_sense.json` |
-| Meta Quest 2, 3, 3S, Pro | Quest Link (cable) or Air Link | `oculus_touch` (SteamVR `oculus` driver) | `bindings_oculus_touch.json` |
-| Meta Quest 2, 3, 3S, Pro | Steam Link | `oculus_touch` (SteamVR `vrlink` driver) | `bindings_oculus_touch.json` |
-| Meta Quest 2, 3, 3S, Pro | Virtual Desktop (SteamVR mode) | `oculus_touch`, or `knuckles` with "Emulate Index controllers" on | `bindings_oculus_touch.json` / `bindings_knuckles.json` |
-| Valve Index | SteamVR | `knuckles` | `bindings_knuckles.json` |
-| HTC Vive, WMR | SteamVR | `vive_controller`, `holographic_controller` | community bindings, not tested |
+| PlayStation VR2 / Sense controllers | `playstation_vr2_sense` | Tested on hardware | `bindings_playstation_vr2_sense.json` |
+| Meta Quest 2, 3, 3S, Pro / Touch (Link, Air Link, Steam Link, Virtual Desktop) | `oculus_touch` | Configured, not tested | `bindings_oculus_touch.json` |
+| Valve Index / Index controllers (also Virtual Desktop with "Emulate Index controllers") | `knuckles` | Configured, not tested | `bindings_knuckles.json` |
+| HTC Vive, Vive Pro / Vive wands | `vive_controller` | Configured, not tested | `bindings_vive_controller.json` |
+| Windows Mixed Reality / motion controllers | `holographic_controller` | Configured, not tested | `bindings_holographic_controller.json` |
+| HTC Vive Cosmos controllers | `vive_cosmos_controller` | Not supported | file is an empty stub |
+| Logitech VR Ink stylus | `logitech_stylus` | Not supported | file is an empty stub |
+| Hand tracking (any headset) | none | Not supported | none |
+| OpenXR-only runtimes without SteamVR | none | Not supported | none |
 
-Hand tracking is not supported. Use controllers.
+"Configured" means the default binding covers every game action and passes a check against the SteamVR driver's input profile. Nobody has played the game with it.
+
+### What works
+
+- PS VR2: the only controller the mod has been played with on this game build. Head and hand tracking, the actions in the button map below and the menus with the controller laser are in use.
+- Configured controllers: the same actions are bound, so the same features are expected. Change any binding in SteamVR if one does not suit you.
+
+### Finger tracking
+
+The mod does not read finger (skeleton) data. Hands use fixed poses on every controller, so finger tracking does nothing in game.
+
+| Controller | Skeleton input in driver profile | Skeleton bound in default binding |
+|---|---|---|
+| PS VR2 Sense | yes | yes |
+| Index | yes | yes |
+| Touch | yes | yes |
+| Vive wand | yes | yes |
+| WMR | not checked (driver profile not available) | no |
 
 ## How to launch
 
@@ -53,25 +73,36 @@ The mod does not set or assume a refresh rate. Set 72, 80, 90 or 120 Hz in the L
 
 `(R)` is the right controller, `(L)` is the left controller. "Double" is a fast double press. "Held" is a long press. Change any of these in **SteamVR > Settings > Controllers > Manage Controller Bindings > ULTRAKILL**.
 
-| Action | Quest Touch | PS VR2 Sense | Index |
-|---|---|---|---|
-| Move | (L) stick | (L) stick | (L) thumbstick |
-| Jump | (L) stick click | (L) stick click | (L) thumbstick click |
-| Turn | (R) stick | (R) stick | (R) thumbstick |
-| Slide / slam | (R) stick click | (R) stick click | (R) thumbstick click |
-| Dash | (L) Y | (L) triangle | (L) B |
-| Shoot | (R) trigger | (R) R2 | (R) trigger |
-| Alternate fire | (R) grip | (R) R1 | (R) grip |
-| Punch | (L) trigger | (L) L2 | (L) trigger |
-| Whiplash | (L) X | (L) square | (L) A |
-| Change hand | (L) grip | (L) L1 | (L) grip |
-| Change weapon variation | (R) A | (R) cross | (R) A |
-| Next / previous weapon | (R) stick | (R) stick | (R) thumbstick |
-| Weapon wheel | (R) B held | (R) circle held | (R) B held |
-| Weapon wheel scroll | (L) stick | (L) stick | (L) thumbstick |
-| Pause / back | (R) B double | (R) Options, or (R) circle double | (R) B double |
+| Action | Quest Touch | PS VR2 Sense | Index | Vive wand | WMR |
+|---|---|---|---|---|---|
+| Move | (L) stick | (L) stick | (L) thumbstick | (L) trackpad touch | (L) stick |
+| Jump | (L) stick click | (L) stick click | (L) thumbstick click | (L) trackpad click up | (L) stick click |
+| Turn | (R) stick | (R) stick | (R) thumbstick | (R) trackpad touch | (R) stick |
+| Slide / slam | (R) stick click | (R) stick click | (R) thumbstick click | (R) trackpad click down | (R) stick click |
+| Dash | (L) Y | (L) triangle | (L) B | (L) trackpad click down, left or right | (L) trackpad click up |
+| Shoot | (R) trigger | (R) R2 | (R) trigger | (R) trigger | (R) trigger |
+| Alternate fire | (R) grip | (R) R1 | (R) grip | (R) grip | (R) grip |
+| Punch | (L) trigger | (L) L2 | (L) trigger | (L) trigger | (L) trigger |
+| Whiplash | (L) X | (L) square | (L) A | (L) menu | (L) trackpad click left |
+| Change hand | (L) grip | (L) L1 | (L) grip | (L) grip | (L) grip |
+| Change weapon variation | (R) A | (R) cross | (R) A | (R) trackpad click up | (R) trackpad click down |
+| Next / previous weapon | (R) stick | (R) stick | (R) thumbstick | not bound | (R) stick |
+| Weapon wheel | (R) B held | (R) circle held | (R) B held | (R) menu held | (R) menu held |
+| Weapon wheel scroll | (L) stick | (L) stick | (L) thumbstick | (L) trackpad touch | (L) stick |
+| Pause / back | (R) B double | (R) Options, or (R) circle double | (R) B double | (R) menu double | (L) menu, or (R) menu double |
 
 In menus, point with either controller and press its trigger to click. The left stick moves the selection and the "Change weapon variation" button selects it.
+
+## Known issues
+
+- Only PS VR2 is tested on hardware. Quest, Index, Vive and WMR bindings are checked against driver input profiles only.
+- Vive wand: next / previous weapon is not bound. The right trackpad already turns, and a scroll there would also fire on every up or down click. Use the weapon wheel.
+- WMR: the binding was checked against Valve's WMR example binding and ALVR's WMR controller profile, not against the Microsoft driver, which is not installed here.
+- The weapon wheel button presses the key the game uses for "Last Used Weapon". The game has no keyboard key for it by default, so the mod presses the "Previous Variation" key (Q) instead, which opens the wheel when held. On Index a short press therefore changes to the previous variation. Bind a keyboard key to "Last Used Weapon" in the game's controls to get quick swap on a short press.
+- Left-handed mode is marked as broken in the config file ("Left handed (BROKEN)").
+- Rumble at game exit: the mod now skips rumble once the game starts to quit, to stop the NullReferenceException that Player.log showed at shutdown. Not yet confirmed on hardware.
+- Rumble during play is not confirmed on any controller.
+- After an update that changes a default binding, SteamVR can keep the old one. Select the default binding again in the binding screen.
 
 ## Upgrading an older install
 
