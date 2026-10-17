@@ -12,10 +12,8 @@ internal static class PatchSteamVR
     [HarmonyPatch(typeof(SteamVR_Camera), nameof(SteamVR_Camera.Expand))]
     static bool SVRCExpand(SteamVR_Camera __instance, Transform ____ears, Transform ____head)
     {
+        // _head stays unset: OnEnable would treat this camera as the old head and deactivate it
         __instance.gameObject.AddComponent<SteamVR_Ears>();
-        ____ears = __instance.transform;
-        ____head = __instance.transform;
-
         return false;
     }
 }
