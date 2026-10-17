@@ -137,8 +137,8 @@ public sealed class PatchPunch
         }
         if (Physics.Raycast(Vars.NDHC.transform.position, vector, out var hitInfo, float.PositiveInfinity, LayerMaskDefaults.Get(LMD.Enemies), QueryTriggerInteraction.Ignore))
             __result = hitInfo.point;
-
-        __result = Vars.NDHC.transform.position + vector * 1000f;
+        else
+            __result = Vars.NDHC.transform.position + vector * 1000f;
         return false;
     }
 }
