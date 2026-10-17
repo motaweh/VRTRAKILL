@@ -172,9 +172,6 @@
     <Reference Include="Unity.XR.Management">
       <HintPath>..\lib\Unity.XR.Management.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.XR.OpenXR">
-      <HintPath>..\lib\Unity.XR.OpenXR.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.XR.OpenVR">
       <HintPath>..\lib\Unity.XR.OpenVR.dll</HintPath>
     </Reference>
