@@ -9,6 +9,9 @@ namespace Plugin.Patches.Controllers;
 [HarmonyPatch(typeof(RumbleManager))] internal sealed class PatchControllerHaptics
 {
     static readonly SteamVR_Action_Vibration HapticAction = SteamVR_Actions._default.Haptic;
+    // RumbleManager.OnDisable runs at quit after OpenVR shut down (OpenVR.Input is null -> NRE in Execute)
+    static bool Quitting;
+    static PatchControllerHaptics() { Application.quitting += () => Quitting = true; }
 
     // I can't believe it worked first try without any corrections.
     [HarmonyPrefix] [HarmonyPatch(nameof(RumbleManager.Update))] static bool Update(RumbleManager __instance)
@@ -54,7 +57,10 @@ namespace Plugin.Patches.Controllers;
 
     // Number 7:
     public static void Vibrate(float Duration, float Frequency, float Amplitude, SteamVR_Input_Sources Source)
-    { HapticAction.Execute(0, Duration, Frequency, Amplitude, Source); }
+    {
+        if (Quitting || !SteamVR_Input.initialized) return;
+        HapticAction.Execute(0, Duration, Frequency, Amplitude, Source);
+    }
 
     public static SteamVR_Input_Sources ResolveController(string Key)
     {
