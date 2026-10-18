@@ -6,6 +6,26 @@ This version runs on the current ULTRAKILL on Steam: build 22957324 (Unity 2022.
 
 It was built and tested on build 22957324 only. If Steam updates the game, the mod can break until it gets an update.
 
+## Contents
+
+- [Download](#download)
+- [Requirements](#requirements)
+- [Install](#install)
+- [Setting up your headset](#setting-up-your-headset)
+  - [PlayStation VR2](#playstation-vr2)
+  - [Meta Quest](#meta-quest)
+- [Headsets](#headsets)
+- [Controls](#controls)
+  - [PS VR2 Sense controllers](#ps-vr2-sense-controllers)
+  - [Meta Quest Touch controllers](#meta-quest-touch-controllers)
+- [Changes in 1.0.1](#changes-in-101)
+- [Updates](#updates)
+- [Known issues](#known-issues)
+- [Uninstall](#uninstall)
+- [Building from source](#building-from-source)
+- [Credits](#credits)
+- [License](#license)
+
 ## Download
 
 Get the latest release from the [Releases page](../../releases). There are two zips:
