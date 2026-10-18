@@ -64,15 +64,21 @@ namespace Plugin.Systems.VRCamera.Patches
             DesktopWorldCam.gameObject.SetActive(on);
             DesktopUICam.gameObject.SetActive(on);
         }
-        // Turns off the virtual camera and the main camera before the camera controller starts.
+        // Turns off the virtual camera and the main camera before the camera controller starts, if the camera is set.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(CameraController), nameof(CameraController.Start))]
         static void ConvertCameras(CameraController __instance)
         {
-            while (__instance.cam == null && __instance.hudCamera == null) { }
+            // OnEnable sets cam through CheckAspectRatio; the old busy-wait here could never end on the main thread
+            if (__instance.cam == null)
+            {
+                Vars.Log.LogWarning("CameraController.Start ran without a camera; VR camera conversion skipped.");
+                return;
+            }
 
             // deactivate, not destroy: destroying it breaks the game
-            GameObject.Find("Virtual Camera").SetActive(false);
+            GameObject VirtualCamera = GameObject.Find("Virtual Camera");
+            if (VirtualCamera != null) VirtualCamera.SetActive(false);
 
             __instance.cam.enabled = false;
         }
