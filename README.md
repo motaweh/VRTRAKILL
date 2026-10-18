@@ -89,21 +89,32 @@ Steam's verify step does not remove extra files, so do step 3 as well.
 
 ## Building from source
 
-<!-- BUILD-NAMES: check these against the repo before release: ULTRAKILLDir, tools/package.ps1, global.json SDK 7.0.400 -->
+You need the .NET SDK pinned in `global.json` (7.0.400 or a later 7.0 feature band) and ULTRAKILL build 22957324 with BepInEx 5.4.23.5 installed in it. The game's DLLs are not in this repo. The build reads Assembly-CSharp, the Unity DLLs and the BepInEx core from your game folder, and publicizes Assembly-CSharp at build time.
 
-You need the .NET SDK version pinned in `global.json` (7.0.400) and an installed copy of ULTRAKILL build 22957324. The game's DLLs are not in this repo. The build references them from your game install.
+The game folder comes from the `ULTRAKILLDir` property. The default is `C:\Program Files (x86)\Steam\steamapps\common\ULTRAKILL`. Set it if your game is somewhere else, either as an environment variable or on the command line:
 
-1. Set the `ULTRAKILLDir` MSBuild property to your ULTRAKILL folder (the one with `ULTRAKILL.exe`).
-2. Run `tools/package.ps1`. It builds the solution and writes the full and mod-only zips.
+```
+dotnet build VRTRAKILL.sln -c Release -p:ULTRAKILLDir="E:\SteamLibrary\steamapps\common\ULTRAKILL"
+```
 
-The files that go outside `BepInEx` are in `ULTRAKILL_COPYTOROOT`.
+To make the release zips, run:
+
+```
+pwsh tools/package.ps1 -ULTRAKILLDir "E:\SteamLibrary\steamapps\common\ULTRAKILL"
+```
+
+It builds Release, downloads the BepInEx 5.4.23.5 x64 zip from the BepInEx GitHub release, checks its SHA256, and writes `VRTRAKILL-1.0.0-full.zip`, `VRTRAKILL-1.0.0-modonly.zip` and `SHA256SUMS.txt` to `artifacts/`.
+
+Everything the mod installs besides its three DLLs is in `ULTRAKILL_COPYTOROOT`, laid out like the game folder.
+
+The Unity project for `vrtrakillassetbundle` is not in this repo. It is `_unityProject.7z` in the `ultra_revamp` branch of the [original repo](https://github.com/whateverusername0/VRTRAKILL/tree/ultra_revamp).
 
 ## Credits
 
 - whateverusername0 created VRTRAKILL ([original repo](https://github.com/whateverusername0/VRTRAKILL)). The original README put development on indefinite hold and pointed players to forks for newer game versions. This is one of those forks.
 - Squaresweets (Matthew Collier) made the [VRTRAKILL_FRAUD](https://github.com/Squaresweets/VRTRAKILL_FRAUD) fork. This version builds on it.
 - Guillaume-Lechevallier: the VRPatcher, portal overlay and OpenVR start-up code are ported from the [Guillaume-Lechevallier VRTRAKILL_FRAUD](https://github.com/Guillaume-Lechevallier/VRTRAKILL_FRAUD) fork.
-- Graze, Rokic and Party Wumpus contributed to the original mod.
+- Graze, Rokic, Party Wumpus and NavaShield contributed to the original mod.
 - Raicuparta: the globalgamemanagers patcher approach comes from Two Forks VR (MIT).
 
 Updated for build 22957324 by Motaweh.
