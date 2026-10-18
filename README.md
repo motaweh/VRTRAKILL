@@ -18,6 +18,7 @@ It was built and tested on build 22957324 only. If Steam updates the game, the m
 - [Controls](#controls)
   - [PS VR2 Sense controllers](#ps-vr2-sense-controllers)
   - [Meta Quest Touch controllers](#meta-quest-touch-controllers)
+- [Changes in 1.0.2](#changes-in-102)
 - [Changes in 1.0.1](#changes-in-101)
 - [Updates](#updates)
 - [Uninstall](#uninstall)
@@ -29,12 +30,12 @@ It was built and tested on build 22957324 only. If Steam updates the game, the m
 
 Get the latest release from the [Releases page](../../releases). There are two zips:
 
-- `VRTRAKILL-1.0.1-full.zip`: the mod plus BepInEx 5.4.23.5 (x64). Use this one if you have never installed BepInEx.
-- `VRTRAKILL-1.0.1-modonly.zip`: the mod only, for players who already have BepInEx 5.4.23.5.
+- `VRTRAKILL-1.0.2-full.zip`: the mod plus BepInEx 5.4.23.5 (x64). Use this one if you have never installed BepInEx.
+- `VRTRAKILL-1.0.2-modonly.zip`: the mod only, for players who already have BepInEx 5.4.23.5.
 
 The release also has `SHA256SUMS.txt` and its signature `SHA256SUMS.txt.sig`, which the in-game updater checks.
 
-For r2modman or Gale, use the Thunderstore package `VRTRAKILL-1.0.1-thunderstore.zip` instead. Its install steps are in [thunderstore/README.md](thunderstore/README.md).
+For r2modman or Gale, use the Thunderstore package `VRTRAKILL-1.0.2-thunderstore.zip` instead. Its install steps are in [thunderstore/README.md](thunderstore/README.md).
 
 The zip root is the ULTRAKILL game folder. It contains `BepInEx/`, `ULTRAKILL_Data/` and (in the full zip) `winhttp.dll`, `doorstop_config.ini`, `.doorstop_version` and `changelog.txt`.
 
@@ -164,6 +165,10 @@ Maps for Index, Vive and WMR, and launch steps for other connections, are in [do
 Mod settings are in `BepInEx/plugins/VRTRAKILL/VRTRAKILL_Config.json` (turning, deadzone, snap turn, crosshair, punching and more).
 
 - "Finger tracking": optional cosmetic finger curl on the punch hand, off by default.
+
+## Changes in 1.0.2
+
+- The weapon wheel stays open while you hold B (Quest) or Circle (PS VR2). Before, it closed after about 1 second.
 
 ## Changes in 1.0.1
 

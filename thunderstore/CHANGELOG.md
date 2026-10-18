@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2
+
+- The weapon wheel stays open while you hold B (Quest) or Circle (PS VR2). Before, it closed after about 1 second.
+
 ## 1.0.1
 
 - Controls follow the common VR shooter layout (Meta's controller guidance and ULTRAKILL's own gamepad layout). The same logic applies to Index, Vive and WMR.

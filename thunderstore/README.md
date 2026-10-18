@@ -1,6 +1,6 @@
 # VRTRAKILL
 
-VR mod for ULTRAKILL, through SteamVR. Version 1.0.1.
+VR mod for ULTRAKILL, through SteamVR. Version 1.0.2.
 
 This version runs on the current ULTRAKILL on Steam: build 22957324 (Unity 2022.3.29f1). You do not need to downgrade the game. It was built and tested on build 22957324 only. If Steam updates the game, the mod can break until it gets an update.
 

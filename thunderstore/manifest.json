@@ -1,6 +1,6 @@
 {
   "name": "VRTRAKILL",
-  "version_number": "1.0.1",
+  "version_number": "1.0.2",
   "website_url": "https://github.com/motaweh/VRTRAKILL",
   "description": "VR mod for ULTRAKILL through SteamVR. Runs on the current Steam build 22957324. A fork of whateverusername0's VRTRAKILL.",
   "dependencies": [
