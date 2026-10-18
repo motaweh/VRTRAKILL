@@ -22,6 +22,9 @@ namespace VRPatcher
         // Leaves the assembly unchanged; BepInEx requires a Patch method on a preloader patcher.
         public static void Patch(AssemblyDefinition assembly) { }
 
+        // Installs a downloaded mod update; BepInEx calls Finish after it releases the game DLLs and before the plugins load.
+        public static void Finish() => UpdateApplier.Run();
+
         // Finds the game data folder and patches globalgamemanagers before the game loads.
         public static void Initialize()
         {

@@ -93,6 +93,8 @@ namespace Plugin.Prefs
         {
         }
 
+        [JsonProperty("Auto update")] public string AutoUpdate { get; set; } = "Notify"; // Off, Notify or Download; see README "Updates"
+
         // Creates a config with default settings and the current game binds.
         public NewConfig()
         {

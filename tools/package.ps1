@@ -1,13 +1,14 @@
 # Builds Release and writes the release zips:
 #   VRTRAKILL-<ver>-full.zip     mod + BepInEx 5.4.23.5 x64
 #   VRTRAKILL-<ver>-modonly.zip  mod only
-#   SHA256SUMS.txt
+#   SHA256SUMS.txt, SHA256SUMS.txt.sig (tools/sign-release.ps1; -NoSign skips it for local test builds)
 # The zip root is the ULTRAKILL game folder.
-# Usage: pwsh tools/package.ps1 [-ULTRAKILLDir <game folder>] [-OutDir <dir>] [-Version 1.0.0]
+# The version is VRTRAKILLVersion in Directory.Build.props.
+# Usage: pwsh tools/package.ps1 [-ULTRAKILLDir <game folder>] [-OutDir <dir>] [-NoSign]
 param(
     [string]$ULTRAKILLDir = $(if ($env:ULTRAKILLDir) { $env:ULTRAKILLDir } else { 'C:\Program Files (x86)\Steam\steamapps\common\ULTRAKILL' }),
     [string]$OutDir = (Join-Path $PSScriptRoot '..\artifacts'),
-    [string]$Version = '1.0.0'
+    [switch]$NoSign
 )
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
@@ -15,6 +16,8 @@ Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
 $Repo = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $Work = Join-Path $Repo 'artifacts\work'
 $Payload = Join-Path $Repo 'ULTRAKILL_COPYTOROOT'
+$Version = ([xml](Get-Content (Join-Path $Repo 'Directory.Build.props') -Raw)).Project.PropertyGroup.VRTRAKILLVersion | Where-Object { $_ } | Select-Object -First 1
+if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw "VRTRAKILLVersion '$Version' in Directory.Build.props is not major.minor.patch" }
 
 # official release asset; the hash is the digest GitHub lists for it
 $BepInExUrl = 'https://github.com/BepInEx/BepInEx/releases/download/v5.4.23.5/BepInEx_win_x64_5.4.23.5.zip'
@@ -91,3 +94,4 @@ New-Zip $Mod (Join-Path $OutDir $names[1])
 $sums = foreach ($n in $names) { '{0}  {1}' -f (Get-FileHash (Join-Path $OutDir $n) -Algorithm SHA256).Hash.ToLowerInvariant(), $n }
 [System.IO.File]::WriteAllText((Join-Path $OutDir 'SHA256SUMS.txt'), (($sums -join "`n") + "`n"))
 Get-Content (Join-Path $OutDir 'SHA256SUMS.txt')
+if (-not $NoSign) { & (Join-Path $PSScriptRoot 'sign-release.ps1') -SumsPath (Join-Path $OutDir 'SHA256SUMS.txt') }

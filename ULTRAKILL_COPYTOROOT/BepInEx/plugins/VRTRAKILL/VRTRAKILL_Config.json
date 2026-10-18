@@ -44,6 +44,7 @@
       "World view FOV": 90.0,
       "UI view FOV": 90.0
     },
-    "Miscellaneous/Unsorted Settings": {}
+    "Miscellaneous/Unsorted Settings": {},
+    "Auto update": "Notify"
   }
 }

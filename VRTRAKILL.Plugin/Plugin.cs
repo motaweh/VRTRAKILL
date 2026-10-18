@@ -38,6 +38,7 @@ namespace Plugin
             }
             catch (Exception e) { Log.LogError("VRTRAKILL setup failed: " + e); }
 
+            Systems.Updates.UpdateService.Begin(this); // background update check; never throws
             StartCoroutine(InitVRWhenReady());
         }
 
