@@ -26,6 +26,7 @@ namespace Plugin.Prefs
             [JsonProperty("Draw controller models")] public bool DrawControllers { get; set; } = true;
             [JsonProperty("Enable Controller Rumble")] public bool EnableHaptics { get; set; } = true;
             [JsonProperty("Left handed (BROKEN)")] public bool LeftHanded { get; set; } = false;
+            [JsonProperty("Finger tracking")] public bool FingerTracking { get; set; } = false;
         }
 
         [JsonProperty("Enable controller-based aiming")] public bool EnableCBA { get; set; } = true;

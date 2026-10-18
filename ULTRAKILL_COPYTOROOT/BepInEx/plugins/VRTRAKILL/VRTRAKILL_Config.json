@@ -12,7 +12,8 @@
       "Snap turning angles": 45.0,
       "Draw controller models": true,
       "Enable Controller Rumble": true,
-      "Left handed (BROKEN)": false
+      "Left handed (BROKEN)": false,
+      "Finger tracking": false
     },
     "Enable controller-based aiming": true,
     "CBS Settings": {

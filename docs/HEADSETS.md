@@ -25,7 +25,12 @@ VRTRAKILL runs through SteamVR (OpenVR) only. Every headset must reach the game 
 
 ### Finger tracking
 
-The mod does not read finger (skeleton) data. Hands use fixed poses on every controller, so finger tracking does nothing in game.
+Finger tracking is off by default. Set "Finger tracking" to true under "Controller Settings" in `VRTRAKILL_Config.json` to turn it on. Not yet confirmed on hardware.
+
+- Only the punch arm (Feedbacker and Knuckleblaster) follows the finger curls, and only while it idles. A punch, a held item and the shop use the game's own animation.
+- Weapon grips, the whiplash and the sandbox arm keep their fixed poses.
+- A controller with no skeleton data, or with the skeleton not bound, keeps the fixed pose.
+- The log shows "Finger tracking: left hand skeleton data received." when data arrives.
 
 | Controller | Skeleton input in driver profile | Skeleton bound in default binding |
 |---|---|---|

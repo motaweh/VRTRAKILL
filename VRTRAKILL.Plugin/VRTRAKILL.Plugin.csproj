@@ -189,6 +189,7 @@
     <Compile Include="Input\ControlMessages\Patches.cs" />
     <Compile Include="Input\InputMap.cs" />
     <Compile Include="Input\InputVars.cs" />
+    <Compile Include="Input\SkeletonInput.cs" />
     <Compile Include="Input\SVRActionsManager.cs" />
     <Compile Include="Patches\Controllers\A.cs" />
     <Compile Include="Patches\Misc\A.cs" />
@@ -222,6 +223,7 @@
     <Compile Include="Systems\Arms\VRArmController.cs" />
     <Compile Include="Systems\Arms\VRArmControllerBase.cs" />
     <Compile Include="Systems\Arms\VRArmTransformer.cs" />
+    <Compile Include="Systems\Arms\VRFingerCurl.cs" />
     <Compile Include="Systems\Arms\VRWeaponRotationLock.cs" />
     <Compile Include="Systems\Assets.cs" />
     <Compile Include="Systems\Controllers\VRArmsSystem.cs" />
