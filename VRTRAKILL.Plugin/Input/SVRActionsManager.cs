@@ -113,44 +113,66 @@ namespace Plugin.Systems.Input
         // Adds the SteamVR action listeners that drive movement, guns, arms and key presses.
         public static void Init()
         {
+            // the first per-hand read (UIInteraction, the pose trackers) adds a source and updates it at once, mid-frame,
+            // which logs NoData; added here, in SteamVR_Input's startup frame, their first update waits for the input update
+            SteamVR_Actions._default.Shoot.ForceAddSourceToUpdateList(SteamVR_Input_Sources.LeftHand);
+            SteamVR_Actions._default.Shoot.ForceAddSourceToUpdateList(SteamVR_Input_Sources.RightHand);
+            SteamVR_Actions._default.Punch.ForceAddSourceToUpdateList(SteamVR_Input_Sources.LeftHand);
+            SteamVR_Actions._default.Punch.ForceAddSourceToUpdateList(SteamVR_Input_Sources.RightHand);
+            SteamVR_Actions._default.LeftPose.ForceAddSourceToUpdateList(SteamVR_Input_Sources.LeftHand);
+            SteamVR_Actions._default.RightPose.ForceAddSourceToUpdateList(SteamVR_Input_Sources.RightHand);
+
             // Movement
-            SteamVR_Actions._default.Movement.AddOnUpdateListener(MovementH, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.Turn.AddOnUpdateListener(TurnH, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.Jump.AddOnUpdateListener(JumpH, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.Slide.AddOnUpdateListener(SlideH, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.Dash.AddOnUpdateListener(DashH, SteamVR_Input_Sources.Any);
+            Listen(SteamVR_Actions._default.Movement, MovementH);
+            Listen(SteamVR_Actions._default.Turn, TurnH);
+            Listen(SteamVR_Actions._default.Jump, JumpH);
+            Listen(SteamVR_Actions._default.Slide, SlideH);
+            Listen(SteamVR_Actions._default.Dash, DashH);
 
             // Arms
-            SteamVR_Actions._default.Punch.AddOnUpdateListener(PunchH, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.SwapHand.AddOnUpdateListener(SwapHandH, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.Whiplash.AddOnUpdateListener(WhiplashH, SteamVR_Input_Sources.Any);
+            Listen(SteamVR_Actions._default.Punch, PunchH);
+            Listen(SteamVR_Actions._default.SwapHand, SwapHandH);
+            Listen(SteamVR_Actions._default.Whiplash, WhiplashH);
 
             // Guns
-            SteamVR_Actions._default.Shoot.AddOnUpdateListener(RHShootH, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.AltShoot.AddOnUpdateListener(RHAltShootH, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.IterateWeapon.AddOnUpdateListener(IterateWeaponH, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.ChangeWeaponVariation.AddOnUpdateListener(ChangeWeaponVariationH, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.NextWeapon.AddOnUpdateListener(NextWeaponH, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.PrevWeapon.AddOnUpdateListener(PrevWeaponH, SteamVR_Input_Sources.Any);
+            Listen(SteamVR_Actions._default.Shoot, RHShootH);
+            Listen(SteamVR_Actions._default.AltShoot, RHAltShootH);
+            Listen(SteamVR_Actions._default.IterateWeapon, IterateWeaponH);
+            Listen(SteamVR_Actions._default.ChangeWeaponVariation, ChangeWeaponVariationH);
+            Listen(SteamVR_Actions._default.NextWeapon, NextWeaponH);
+            Listen(SteamVR_Actions._default.PrevWeapon, PrevWeaponH);
 
             // Weapon quick switch, open weapon wheel
-            SteamVR_Actions._default.OpenWeaponWheel.AddOnUpdateListener(OpenWeaponWheelH, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.WeaponWheelScroll.AddOnUpdateListener(WeaponWheelScrollH, SteamVR_Input_Sources.Any);
+            Listen(SteamVR_Actions._default.OpenWeaponWheel, OpenWeaponWheelH);
+            Listen(SteamVR_Actions._default.WeaponWheelScroll, WeaponWheelScrollH);
 
             // Slots
-            SteamVR_Actions._default.Slot0.AddOnUpdateListener(Slot0H, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.Slot1.AddOnUpdateListener(Slot1H, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.Slot2.AddOnUpdateListener(Slot2H, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.Slot3.AddOnUpdateListener(Slot3H, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.Slot4.AddOnUpdateListener(Slot4H, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.Slot5.AddOnUpdateListener(Slot5H, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.Slot6.AddOnUpdateListener(Slot6H, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.Slot7.AddOnUpdateListener(Slot7H, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.Slot8.AddOnUpdateListener(Slot8H, SteamVR_Input_Sources.Any);
-            SteamVR_Actions._default.Slot9.AddOnUpdateListener(Slot9H, SteamVR_Input_Sources.Any);
+            Listen(SteamVR_Actions._default.Slot0, Slot0H);
+            Listen(SteamVR_Actions._default.Slot1, Slot1H);
+            Listen(SteamVR_Actions._default.Slot2, Slot2H);
+            Listen(SteamVR_Actions._default.Slot3, Slot3H);
+            Listen(SteamVR_Actions._default.Slot4, Slot4H);
+            Listen(SteamVR_Actions._default.Slot5, Slot5H);
+            Listen(SteamVR_Actions._default.Slot6, Slot6H);
+            Listen(SteamVR_Actions._default.Slot7, Slot7H);
+            Listen(SteamVR_Actions._default.Slot8, Slot8H);
+            Listen(SteamVR_Actions._default.Slot9, Slot9H);
 
             // Go back, pause, etc.
-            SteamVR_Actions._default.Escape.AddOnUpdateListener(EscapeH, SteamVR_Input_Sources.Any);
+            Listen(SteamVR_Actions._default.Escape, EscapeH);
+        }
+
+        // Adds the update listener, and releases the bind when the action goes inactive (SteamVR dashboard, lost controller), since onUpdate then stops.
+        private static void Listen(SteamVR_Action_Boolean Action, SteamVR_Action_Boolean.UpdateHandler Handler)
+        {
+            Action.AddOnUpdateListener(Handler, SteamVR_Input_Sources.Any);
+            Action.AddOnActiveChangeListener((FromAction, FromSource, Active) => { if (!Active) Handler(FromAction, FromSource, false); }, SteamVR_Input_Sources.Any);
+        }
+        // Adds the update listener, and centers the stick when the action goes inactive, since onUpdate then stops.
+        private static void Listen(SteamVR_Action_Vector2 Action, SteamVR_Action_Vector2.UpdateHandler Handler)
+        {
+            Action.AddOnUpdateListener(Handler, SteamVR_Input_Sources.Any);
+            Action.AddOnActiveChangeListener((FromAction, FromSource, Active) => { if (!Active) Handler(FromAction, FromSource, Vector2.zero, Vector2.zero); }, SteamVR_Input_Sources.Any);
         }
 
         // Stores the movement stick axis.
@@ -169,14 +191,21 @@ namespace Plugin.Systems.Input
         private static void DashH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Dash) { Dash = newState; TriggerKey(Dash, !Dash, ConfigMaster.KDash, ConfigMaster.MDash); } }
 
-        // Presses or releases the punch bind, or the shoot bind while the player is frozen or in a shop.
+        private static VirtualKeyCode? PunchKey; private static MouseButton? PunchButton;
+        // Presses the punch bind, or the shoot bind while the player is frozen or in a shop, and releases the bind it pressed.
         private static void PunchH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         {
             if (newState != Punch)
             {
                 Punch = newState;
-                if (Vars.IsPlayerFrozen || Vars.IsPlayerUsingShop) TriggerKey(Punch, !Punch, ConfigMaster.KShoot, ConfigMaster.MShoot);
-                else TriggerKey(Punch, !Punch, ConfigMaster.KPunch, ConfigMaster.MPunch);
+                // the frozen or shop state can change while held; releasing the other bind left this one down
+                if (Punch)
+                {
+                    bool Shoot = Vars.IsPlayerFrozen || Vars.IsPlayerUsingShop;
+                    PunchKey = Shoot ? ConfigMaster.KShoot : ConfigMaster.KPunch;
+                    PunchButton = Shoot ? ConfigMaster.MShoot : ConfigMaster.MPunch;
+                }
+                TriggerKey(Punch, !Punch, PunchKey, PunchButton);
             }
         }
         // Presses or releases the change fist bind when the swap hand action changes.
