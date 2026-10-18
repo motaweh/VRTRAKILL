@@ -1,6 +1,8 @@
 <Project>
   <!-- Game install to compile against. Override with -p:ULTRAKILLDir=... or an ULTRAKILLDir environment variable. -->
   <PropertyGroup>
+    <!-- the one mod version: plugin, assemblies and release zip names (Directory.Build.targets, tools/package.ps1) -->
+    <VRTRAKILLVersion>1.0.1</VRTRAKILLVersion>
     <ULTRAKILLDir Condition="'$(ULTRAKILLDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\ULTRAKILL</ULTRAKILLDir>
     <ULTRAKILLManaged>$([MSBuild]::EnsureTrailingSlash('$(ULTRAKILLDir)'))ULTRAKILL_Data\Managed</ULTRAKILLManaged>
     <BepInExCore>$([MSBuild]::EnsureTrailingSlash('$(ULTRAKILLDir)'))BepInEx\core</BepInExCore>
