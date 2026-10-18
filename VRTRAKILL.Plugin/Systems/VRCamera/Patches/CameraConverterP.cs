@@ -99,11 +99,20 @@ namespace Plugin.Systems.VRCamera.Patches
         }
 
 
-        // Drives the camera rotation from the headset and places the eye cameras, through portals if needed.
+        // Drives the FPS camera rotation from the headset and places the eye cameras on the FPS player, through portals if needed.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(CameraController), nameof(CameraController.LateUpdate))]
         static void HandleRotationsAndPositions(CameraController __instance)
         {
+            // the platformer camera is handled by CrashBandicrootCCP; leave its eyes there
+            if (__instance.platformerCamera) return;
+            // back from 4-S or Clash mode: return the eyes to the FPS player
+            if (__instance == CameraController.Instance && leftEye.transform.parent != __instance.transform.parent)
+            {
+                leftEye.transform.SetParent(__instance.transform.parent);
+                rightEye.transform.SetParent(__instance.transform.parent);
+            }
+
             if (!__instance.player) { __instance.nm = NewMovement.Instance; __instance.player = __instance.nm.gameObject; }
 
             __instance.rotationX = -VRControllerLocations.Instance.headRot.eulerAngles.x;
