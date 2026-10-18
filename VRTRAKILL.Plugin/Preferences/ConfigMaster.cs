@@ -136,8 +136,9 @@ namespace Plugin.Prefs
         {
             try
             {
-                InputMap.UKeys.TryGetValue(VRConfig.ToggleDV, out ToggleDesktopView);
-                InputMap.UKeys.TryGetValue(VRConfig.ToggleAvatarSizeAdj, out ToggleAvatarSizeAdj);
+                // a miss would store null, and VRKeybindsController's (KeyCode) cast of null throws every frame
+                ToggleDesktopView = UnityKey(VRConfig.ToggleDV);
+                ToggleAvatarSizeAdj = UnityKey(VRConfig.ToggleAvatarSizeAdj);
             }
             catch (Exception E)
             {
@@ -146,5 +147,8 @@ namespace Plugin.Prefs
                 Vars.Log.LogError(E);
             }
         }
+        // Returns the Unity key code for a config key name, or KeyCode.None when the name is empty or unknown.
+        private static UnityEngine.KeyCode UnityKey(string Name)
+            => Name != null && InputMap.UKeys.TryGetValue(Name, out UnityEngine.KeyCode? Key) && Key != null ? (UnityEngine.KeyCode)Key : UnityEngine.KeyCode.None;
     }
 }

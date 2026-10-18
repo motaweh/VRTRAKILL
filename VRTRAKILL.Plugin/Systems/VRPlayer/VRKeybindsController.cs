@@ -19,14 +19,10 @@ namespace Plugin.Systems.VRPlayer
             }
             if (UnityEngine.Input.GetKeyDown((KeyCode)Prefs.ConfigMaster.ToggleAvatarSizeAdj))
             {
-                try
-                {
-                    if ((bool)(VRAvatar.AvatarSizeAdjustor.Instance?.enabled))
-                        VRAvatar.AvatarSizeAdjustor.Instance.enabled = false;
-                    else if ((bool)!VRAvatar.AvatarSizeAdjustor.Instance?.enabled)
-                        VRAvatar.AvatarSizeAdjustor.Instance.enabled = true;
-                }
-                catch (System.NullReferenceException) { SubtitleController.Instance.DisplaySubtitle("Unable to toggle avatar size adjustment!"); }
+                // (bool) of a null bool? threw InvalidOperationException, which the NullReferenceException catch missed
+                if (VRAvatar.AvatarSizeAdjustor.Instance is VRAvatar.AvatarSizeAdjustor Adjustor && Adjustor != null)
+                    Adjustor.enabled = !Adjustor.enabled;
+                else SubtitleController.Instance.DisplaySubtitle("Unable to toggle avatar size adjustment!");
             }
         }
 

@@ -24,7 +24,7 @@ internal class VRGunsController : MonoSingleton<VRGunsController>
             TargeterCamera.transform.localPosition = Vector3.zero;
             TargeterCamera.transform.localEulerAngles = Vector3.zero;
         }
-        CameraFrustumTargeter.Instance.camera = TargeterCamera;
+        if (CameraFrustumTargeter.Instance is CameraFrustumTargeter Targeter && Targeter != null) Targeter.camera = TargeterCamera;
     }
 
     // Moves the guns and the targeter camera to the gun hand, and turns the guns with it unless auto aim has a target.
@@ -34,7 +34,8 @@ internal class VRGunsController : MonoSingleton<VRGunsController>
             TargeterCamera.transform.position = Vars.DominantHand.transform.position;
 
         transform.position = Vars.DominantHand.transform.position;
-        if ((bool)CameraFrustumTargeter.Instance?.isActiveAndEnabled && CameraFrustumTargeter.isEnabled && (bool)CameraFrustumTargeter.Instance?.CurrentTarget)
+        if (CameraFrustumTargeter.Instance is CameraFrustumTargeter Targeter && Targeter != null
+            && Targeter.isActiveAndEnabled && CameraFrustumTargeter.isEnabled && Targeter.CurrentTarget)
             return;
         transform.rotation = Vars.DominantHand.transform.rotation;
     }
