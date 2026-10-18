@@ -12,7 +12,7 @@ namespace Plugin.Patches.ULTRAKILL;
 [HarmonyPatch(typeof(Punch))]
 public sealed class PatchPunch
 {
-    // Adds the VR arm parts for the fist type, keeps its meshes updating off screen and turns off the punch trail.
+    // Adds the VR arm parts and finger curl for the fist type, keeps its meshes updating off screen and turns off the punch trail.
     [HarmonyPostfix]
     [HarmonyPatch(nameof(Punch.Start))]
     private static void Start(Punch __instance)
@@ -27,6 +27,8 @@ public sealed class PatchPunch
         VRArmTransformer AT = __instance.gameObject.AddComponent<VRArmTransformer>();
         VRArmControllerBase AC = __instance.gameObject.AddComponent<VRArmController>();
         AT.Arm = A; AC.Arm = A;
+        if (Vars.Config.Controllers.FingerTracking && A != null)
+            __instance.gameObject.AddComponent<VRFingerCurl>().Setup(A, AC, __instance);
 
         foreach (SkinnedMeshRenderer SMR in __instance.GetComponentsInChildren<SkinnedMeshRenderer>())
             SMR.updateWhenOffscreen = true;

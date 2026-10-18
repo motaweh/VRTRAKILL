@@ -167,7 +167,7 @@ An install only writes to `BepInEx/plugins/VRTRAKILL/`, `BepInEx/patchers/` and 
 - Vive wand: next / previous weapon is not bound. Use the weapon wheel.
 - The weapon wheel button holds the game's "Previous Variation" key (Q). On Index a short press changes to the previous variation. Bind a key to "Last Used Weapon" in the game's controls to get quick swap on a short press.
 - Left-handed mode is broken.
-- Finger tracking does nothing. Hands use fixed poses.
+- Finger tracking is off by default and is not confirmed on hardware. It moves the punch arm fingers only.
 - After an update that changes a default binding, SteamVR can keep the old one. Select the default binding again in the binding screen.
 - Portals seen in a mirror do not render correctly.
 - Portals can flicker for a moment when you go through them.
