@@ -93,6 +93,8 @@ The mod does not set or assume a refresh rate. Set 72, 80, 90 or 120 Hz in the L
 
 In menus, point with either controller and press its trigger to click. The left stick moves the selection and the "Change weapon variation" button selects it.
 
+While the weapon wheel is open, the weapon wheel scroll stick points at a weapon and does not move the player. Let go of the wheel button to switch.
+
 ## Known issues
 
 - Only PS VR2 is tested on hardware. Quest, Index, Vive and WMR bindings are checked against driver input profiles only.
@@ -103,6 +105,7 @@ In menus, point with either controller and press its trigger to click. The left 
 - Rumble is skipped once the game starts to quit, which stops an error at shutdown. Not yet confirmed on hardware.
 - Rumble during play is not confirmed on any controller.
 - After an update that changes a default binding, SteamVR can keep the old one. Select the default binding again in the binding screen.
+- Issues in the game itself (portals, stains, 4-S, desktop view) are listed in the [README](../README.md#known-issues).
 
 ## Upgrading an older install
 

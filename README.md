@@ -77,6 +77,14 @@ Mod settings are in `BepInEx/plugins/VRTRAKILL/VRTRAKILL_Config.json` (turning, 
 - Rumble during play is not confirmed on any controller.
 - Finger tracking does nothing. Hands use fixed poses.
 - After an update that changes a default binding, SteamVR can keep the old one. Select the default binding again in the binding screen.
+- Portals seen in a mirror do not render correctly.
+- Portals can flicker for a moment when you go through them.
+- Whiplash is unreliable through portals.
+- Oil stains do not show, and blood stains are missing in most levels.
+- The desktop view (T key, off by default) skips the game's post-processing, and portals look wrong in it.
+- 4-S and Clash mode have not been played in VR yet. The pause menu does not show in the headset while you are in them.
+- The VR body ("Enable VRAvatar" in the config file) is off by default and has not been tested.
+- The shop weapon and enemy previews and the late HUD conversion are not yet confirmed in the headset.
 
 ## Uninstall
 
@@ -113,7 +121,7 @@ The Unity project for `vrtrakillassetbundle` is not in this repo. It is `_unityP
 
 - whateverusername0 created VRTRAKILL ([original repo](https://github.com/whateverusername0/VRTRAKILL)). The original README put development on indefinite hold and pointed players to forks for newer game versions. This is one of those forks.
 - Squaresweets (Matthew Collier) made the [VRTRAKILL_FRAUD](https://github.com/Squaresweets/VRTRAKILL_FRAUD) fork. This version builds on it.
-- Guillaume-Lechevallier: the VRPatcher, portal overlay and OpenVR start-up code are ported from the [Guillaume-Lechevallier VRTRAKILL_FRAUD](https://github.com/Guillaume-Lechevallier/VRTRAKILL_FRAUD) fork.
+- Guillaume-Lechevallier: the VRPatcher, portal overlay and OpenVR start-up code are ported from the [Guillaume-Lechevallier VRTRAKILL_FRAUD](https://github.com/Guillaume-Lechevallier/VRTRAKILL_FRAUD) fork. So are the weapon wheel stick fix, the desktop view cameras, the 4-S and Clash mode camera, the late HUD and menu conversion, and the opt-in VR body loading.
 - Graze, Rokic, Party Wumpus and NavaShield contributed to the original mod.
 - Raicuparta: the globalgamemanagers patcher approach comes from Two Forks VR (MIT).
 
