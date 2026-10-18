@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using UnityEngine;
+using Plugin.Systems;
 using Plugin.Systems.Input;
 
 namespace Plugin.Patches.ULTRAKILL;
@@ -30,7 +31,7 @@ internal sealed class GunsP
             SMR.updateWhenOffscreen = true;
     }
 
-    // Replaces the weapon wheel update so the movement stick selects the segments.
+    // Replaces the weapon wheel update so the wheel stick points at a segment.
     [HarmonyPrefix]
     [HarmonyPatch(typeof(WeaponWheel), nameof(WeaponWheel.Update))]
     static bool WWUpdate(WeaponWheel __instance)
@@ -60,7 +61,9 @@ internal sealed class GunsP
             if (__instance.segments == null || __instance.segments.Count == 0)
                 return false;
 
-            __instance.direction = Vector2.ClampMagnitude(__instance.direction + InputVars.MoveVector, 1f);
+            // the stick sets the direction; adding the move axis every frame made the selection drift
+            if (InputVars.WWVector.sqrMagnitude > Vars.Config.Controllers.Deadzone * Vars.Config.Controllers.Deadzone)
+                __instance.direction = Vector2.ClampMagnitude(InputVars.WWVector, 1f);
             float num = Mathf.Repeat(Mathf.Atan2(__instance.direction.x, __instance.direction.y) * 57.29578f + 90f, 360f); // rad to deg
             if (Mathf.Approximately(num, 360f))
                 num = 0f;

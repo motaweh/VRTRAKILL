@@ -33,6 +33,6 @@ internal class MovementTranspiler
                     .RemoveInstruction())
                 .InstructionEnumeration();
     }
-    // Returns the VR movement stick axis in place of the move input.
-    static Vector2 GetReplacementMove(PlayerInput input) => InputVars.MoveVector;
+    // Returns the VR movement stick axis in place of the move input, or zero while the weapon wheel uses the same stick.
+    static Vector2 GetReplacementMove(PlayerInput input) => Vars.IsWeaponWheelPresent ? Vector2.zero : InputVars.MoveVector;
 }
