@@ -26,6 +26,13 @@ namespace Plugin.Systems.Updates
                 Started = true;
                 UpdateMode mode = UpdateLayout.ParseMode(Vars.Config.AutoUpdate);
                 if (mode == UpdateMode.Off) { Vars.Log.LogInfo("Update check is off (\"Auto update\": \"Off\")."); return; }
+                // the installer only writes the zip layout; a mod manager copy (BepInEx/plugins/<team>-VRTRAKILL in a profile) is updated by the manager
+                if (mode == UpdateMode.Download && !string.Equals(Path.GetFullPath(PluginInfo.PluginPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar),
+                        Path.GetFullPath(Path.Combine(BepInEx.Paths.GameRootPath, "BepInEx/plugins/VRTRAKILL")).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar), StringComparison.OrdinalIgnoreCase))
+                {
+                    Vars.Log.LogInfo("\"Auto update\" is Download, but this copy is not in the game's BepInEx/plugins/VRTRAKILL (a mod manager install); only notifying. Update it in the mod manager.");
+                    mode = UpdateMode.Notify;
+                }
                 host.StartCoroutine(Run(host, mode));
             }
             catch (Exception e) { Vars.Log.LogWarning("Update check not started: " + e.Message); }

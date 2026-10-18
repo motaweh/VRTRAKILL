@@ -25,6 +25,9 @@ namespace VRPatcher
             BepInEx.Logging.ManualLogSource log = BepInEx.Logging.Logger.CreateLogSource("VRTRAKILL Update");
             try
             {
+                // a mod manager profile has its own BepInEx folder; Apply writes the zip layout under the game folder, so it only runs for the zip install
+                if (!string.Equals(Path.GetFullPath(BepInEx.Paths.BepInExRootPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar), Path.GetFullPath(Path.Combine(BepInEx.Paths.GameRootPath, "BepInEx")).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar), StringComparison.OrdinalIgnoreCase))
+                { log.LogInfo("BepInEx runs from a mod manager profile; the update installer is skipped."); return; }
                 Apply(BepInEx.Paths.GameRootPath, BepInEx.Paths.BepInExRootPath, VRTRAKILL.BuildVersion.Value,
                       (message, warning) => { if (warning) log.LogWarning(message); else log.LogInfo(message); });
             }
