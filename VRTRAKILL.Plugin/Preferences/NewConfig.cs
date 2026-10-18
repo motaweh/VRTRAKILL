@@ -45,7 +45,7 @@ namespace Plugin.Prefs
             [JsonProperty("WHIPLASH: camera-based aiming")] public bool CameraWhiplash { get; set; } = false;
         }
 
-        [JsonProperty("Enable VRAvatar")] public bool EnableVRBody { get; set; } = true;
+        [JsonProperty("Enable VRAvatar")] public bool EnableVRBody { get; set; } = false;
         [JsonProperty("VRAvatar Settings")] public _VRBody VRBody { get; set; }
         public class _VRBody
         {

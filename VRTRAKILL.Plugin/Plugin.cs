@@ -53,7 +53,7 @@ namespace Plugin
             Log.LogError("OpenVR did not respond after three minutes. Keep SteamVR open and restart the game.");
         }
 
-        // Applies the Harmony patches in the mod patch namespaces.
+        // Applies the Harmony patches in the mod patch namespaces, and the avatar patches when the avatar is enabled.
         private void PatchStuff()
         {
             System.Collections.Generic.List<string> Namespaces = new System.Collections.Generic.List<string>
@@ -70,6 +70,8 @@ namespace Plugin
             System.Collections.Generic.List<System.Type> Types = new System.Collections.Generic.List<System.Type>
             {
             };
+            // the avatar is opt-in; with it off nothing in its namespace is patched
+            if (Vars.Config.EnableVRBody) Namespaces.Add(typeof(Systems.VRAvatar.Patches.A).Namespace);
 
             new Patcher(new HarmonyLib.Harmony(PluginInfo.PLUGIN_GUID))
             {
