@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Plugin.Systems;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Valve.VR;
 
@@ -9,11 +10,16 @@ namespace Plugin.Patches.Controllers;
 [HarmonyPatch(typeof(RumbleManager))]
 internal sealed class PatchControllerHaptics
 {
-    static readonly SteamVR_Action_Vibration HapticAction = SteamVR_Actions._default.Haptic;
+    // Returns the current haptic action; a cached copy would keep an action that a later SteamVR_Actions.PreInitialize replaced.
+    static SteamVR_Action_Vibration HapticAction => SteamVR_Actions._default.Haptic;
     // RumbleManager.OnDisable runs at quit after OpenVR shut down (OpenVR.Input is null -> NRE in Execute)
     static bool Quitting;
+    // the last amplitude sent; -1 forces the first send
+    static float LastAmplitude = -1f;
     // Sets Quitting when the application starts to quit.
     static PatchControllerHaptics() { Application.quitting += () => Quitting = true; }
+    // Runs the static constructor from Plugin.Awake, so the quit handler exists even if the first rumble comes during quit.
+    internal static void WatchQuit() { }
 
     // Replaces the gamepad rumble update: drops ended vibrations and sends the strongest one to its controller.
     [HarmonyPrefix]
@@ -44,20 +50,23 @@ internal sealed class PatchControllerHaptics
         num *= MonoSingleton<PrefsManager>.Instance.GetFloat("totalRumbleIntensity");
         if ((bool)MonoSingleton<OptionsManager>.Instance && MonoSingleton<OptionsManager>.Instance.paused)
             num = 0f;
+        if (!Vars.Config.Controllers.EnableHaptics) num = 0f;
 
-        Vibrate(1, num, num, source);
+        // a zero pulse is sent once, not every frame
+        if (num > 0f || LastAmplitude != 0f) Vibrate(1, num, num, source);
 
         return false;
     }
-    // Stops controller vibration in place of the game's rumble stop and disable methods.
+    // Stops controller vibration; StopVibration and StopAllVibrations then run so their pending vibrations are removed.
     [HarmonyPrefix]
     [HarmonyPatch(nameof(RumbleManager.OnDisable))]
     [HarmonyPatch(nameof(RumbleManager.StopVibration))]
     [HarmonyPatch(nameof(RumbleManager.StopAllVibrations))]
-    static bool DisableRumble()
+    static bool DisableRumble(MethodBase __originalMethod)
     {
         Vibrate(1, 0, 0, 0);
-        return false;
+        // skipping all three left infinite rumbles (slide, whiplash, nailgun) on until the scene ended
+        return __originalMethod.Name != nameof(RumbleManager.OnDisable);
     }
 
     // Sends a haptic pulse to a controller unless SteamVR input is not ready or the game is quitting.
@@ -65,6 +74,7 @@ internal sealed class PatchControllerHaptics
     {
         if (Quitting || !SteamVR_Input.initialized) return;
         HapticAction.Execute(0, Duration, Frequency, Amplitude, Source);
+        LastAmplitude = Amplitude;
     }
 
     // Returns the controller a rumble key belongs to: the arm hand, the gun hand or both.
@@ -85,7 +95,8 @@ internal sealed class PatchControllerHaptics
             case "rumble.coin_toss":
             case "rumble.whiplash.throw":
             case "rumble.whiplash.pull":
-                return Vars.NDHC.CC.source;
+                // the hands PatchControllerAdder gives the arms and the guns; Vars.NDHC would auto-create a VRArmsSystem with no hand
+                return Vars.Config.Controllers.LeftHanded ? SteamVR_Input_Sources.RightHand : SteamVR_Input_Sources.LeftHand;
 
             case "rumble.gun.fire":
             case "rumble.gun.fire_strong":
@@ -97,7 +108,7 @@ internal sealed class PatchControllerHaptics
             case "rumble.gun.sawblade":
             case "rumble.gun.revolver_charge":
             case "rumble.magnet_released":
-                return Vars.DHC.CC.source;
+                return Vars.Config.Controllers.LeftHanded ? SteamVR_Input_Sources.LeftHand : SteamVR_Input_Sources.RightHand;
 
             default:
                 Debug.LogError("No intensity found for key: " + Key);

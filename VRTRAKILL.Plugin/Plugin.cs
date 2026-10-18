@@ -22,6 +22,8 @@ namespace Plugin
         private static OpenVRLoader xrLoader;
         private const int VRInitAttempts = 90;
         private const float VRInitRetryDelay = 2f;
+        // PreInitialize creates new action objects; a second call orphans the ones already handed out
+        private static bool ActionsPreInitialized;
 
         // Loads the config, applies the patches, starts the scene worker, then starts VR init.
         public void Awake()
@@ -31,6 +33,7 @@ namespace Plugin
 
             // a setup failure must not stop VR init, or the game falls back to SteamVR theater mode;
             // each step has its own try so a bad config or Binds.json does not also skip the patches
+            Patches.Controllers.PatchControllerHaptics.WatchQuit();
             try { Prefs.ConfigMaster.Init(); }
             catch (Exception e) { Log.LogError("VRTRAKILL config setup failed: " + e); }
             try { PatchStuff(); }
@@ -87,7 +90,7 @@ namespace Plugin
             try
             {
                 Log.LogMessage("INITILIZING");
-                SteamVR_Actions.PreInitialize();
+                if (!ActionsPreInitialized) { SteamVR_Actions.PreInitialize(); ActionsPreInitialized = true; }
 
                 generalSettings = ScriptableObject.CreateInstance<XRGeneralSettings>();
                 managerSettings = ScriptableObject.CreateInstance<XRManagerSettings>();
