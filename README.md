@@ -150,7 +150,7 @@ Mod settings are in `BepInEx/plugins/VRTRAKILL/VRTRAKILL_Config.json` (turning, 
 - The desktop view toggle (T key) works.
 - Faster start: VRPatcher no longer makes BepInEx rewrite Assembly-CSharp on every start.
 - "Enable Controller Rumble" and "Enable Crosshair" in the config file now work.
-- New option "Finger tracking" (experimental, off by default): the punch arm fingers follow the SteamVR finger data.
+- New option "Finger tracking" (experimental, off by default). It does not work correctly yet. When it is on, the punch arm fingers follow the SteamVR finger data.
 - New option "Auto update". "Notify" (default) shows a notice in the main menu when a new release is out. "Download" (opt-in) downloads a signed update and installs it at the next start. "Off" turns the check off.
 - New option "Game blood and oil stains (experimental)", off by default.
 - Thunderstore package for r2modman and Gale. VRPatcher copies the VR game files into `ULTRAKILL_Data` at start-up, so the mod works from a mod manager profile. The zip install works as before.
@@ -177,7 +177,7 @@ An install only writes to `BepInEx/plugins/VRTRAKILL/`, `BepInEx/patchers/` and 
 - Vive wand: next / previous weapon is not bound. Use the weapon wheel.
 - The weapon wheel button holds the game's "Previous Variation" key (Q). On Index a short press changes to the previous variation. Bind a key to "Last Used Weapon" in the game's controls to get quick swap on a short press.
 - Left-handed mode is broken.
-- Finger tracking is off by default and is not confirmed on hardware. It moves the punch arm fingers only.
+- Finger tracking is experimental and off by default. It does not work correctly yet. It moves the punch arm fingers only.
 - After an update that changes a default binding, SteamVR can keep the old one. Select the default binding again in the binding screen.
 - Portals seen in a mirror do not render correctly.
 - Portals can flicker for a moment when you go through them.
