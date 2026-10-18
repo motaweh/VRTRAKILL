@@ -7,6 +7,7 @@
 - Controls follow the common VR shooter layout (Meta's controller guidance and ULTRAKILL's own gamepad layout). Dash is on the left stick click. Change weapon variation is on Triangle (PS VR2) or Y (Quest). Whiplash is on L1 or the left grip. Change fist (Feedbacker / Knuckleblaster) is on Square or X. The same logic applies to Index, Vive and WMR.
 - The right stick only turns. It no longer switches weapons. Use the weapon wheel. In menus the right stick still scrolls.
 - One press of Circle (PS VR2) or B (Quest) goes back in menus. In play only a double press pauses. Options still pauses on PS VR2.
+- Rockets, cannonballs and napalm now fire from the gun hand.
 - After this update, reset SteamVR to the default binding if the buttons still act like before (SteamVR Settings > Controllers > Manage Controller Bindings > ULTRAKILL > Default).
 
 ## 1.0.1
