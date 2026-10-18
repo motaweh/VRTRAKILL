@@ -33,7 +33,7 @@ internal class DuelWieldP
         if (componentsInChildren.Length % 2 == 0)
             gameObject.transform.localPosition = new Vector3((float)(componentsInChildren.Length / 2) * -.15f, 0f, 0f);
         else
-            gameObject.transform.localPosition = new Vector3((float)((componentsInChildren.Length) / 2) * .15f, 0f, 0f);
+            gameObject.transform.localPosition = new Vector3((float)((componentsInChildren.Length + 1) / 2) * .15f, 0f, 0f); // the game's (Length + 1) / 2; Length / 2 put the second copy on the first
 
         DualWield dualWield = gameObject.AddComponent<DualWield>();
         dualWield.delay = 0.05f;

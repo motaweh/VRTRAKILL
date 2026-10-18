@@ -32,6 +32,8 @@ internal class CameraControllerTranspiler
         yield return AccessTools.Method(typeof(Shotgun), nameof(Shotgun.ShootSaw), new[] { typeof(bool) }); // ShootSaw() only wraps ShootSaw(bool)
 
         yield return AccessTools.Method(typeof(ShotgunHammer), nameof(ShotgunHammer.ImpactRoutine));
+        // ImpactRoutine is an iterator: its body, with the camera forward read, is the state machine's MoveNext
+        yield return AccessTools.EnumeratorMoveNext(AccessTools.Method(typeof(ShotgunHammer), nameof(ShotgunHammer.ImpactRoutine)));
         yield return AccessTools.Method(typeof(ShotgunHammer), nameof(ShotgunHammer.HitNade));
         yield return AccessTools.Method(typeof(ShotgunHammer), nameof(ShotgunHammer.ImpactEffects));
         yield return AccessTools.Method(typeof(ShotgunHammer), nameof(ShotgunHammer.ThrowNade));

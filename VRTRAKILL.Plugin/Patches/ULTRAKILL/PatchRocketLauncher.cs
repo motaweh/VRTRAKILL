@@ -22,15 +22,17 @@ internal class PatchRocketLauncher
 
     static Vector3 oldPos;
     static Quaternion oldRot;
-    // Moves the camera to the gun hand before a rocket launcher shot so the shot fires from the hand.
+    // Moves the camera to the gun hand before a rocket launcher shot so the shot fires from the hand; __state says it moved.
     [HarmonyPrefix]
     [HarmonyPatch(nameof(RocketLauncher.Shoot))]
     [HarmonyPatch(nameof(RocketLauncher.ShootCannonball))]
     [HarmonyPatch(nameof(RocketLauncher.ShootNapalm))]
-    private static void FixFiringDir(RocketLauncher __instance)
+    private static void FixFiringDir(RocketLauncher __instance, out bool __state)
     {
+        __state = false;
         CameraController cam = MonoSingleton<CameraController>.Instance;
         if (cam == null || Vars.DominantHand == null) return;
+        __state = true;
 
         oldPos = cam.transform.position;
         oldRot = cam.transform.rotation;
@@ -38,15 +40,15 @@ internal class PatchRocketLauncher
         cam.transform.SetPositionAndRotation(Vars.DominantHand.transform.position, Vars.DominantHand.transform.rotation);
     }
 
-    // Puts the camera back after a rocket launcher shot.
+    // Puts the camera back after a rocket launcher shot, only if the prefix moved it; else oldPos is from an earlier shot.
     [HarmonyPostfix]
     [HarmonyPatch(nameof(RocketLauncher.Shoot))]
     [HarmonyPatch(nameof(RocketLauncher.ShootCannonball))]
     [HarmonyPatch(nameof(RocketLauncher.ShootNapalm))]
-    static void FixFiringDir2()
+    static void FixFiringDir2(bool __state)
     {
         CameraController cam = MonoSingleton<CameraController>.Instance;
-        if (cam == null) return;
+        if (!__state || cam == null) return;
 
         cam.transform.SetPositionAndRotation(oldPos, oldRot);
     }
