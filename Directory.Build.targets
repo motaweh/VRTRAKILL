@@ -1,0 +1,22 @@
+<Project>
+  <!-- Writes the VRTRAKILLVersion from Directory.Build.props into each mod assembly: assembly versions and the VRTRAKILL.BuildVersion constant. -->
+  <PropertyGroup>
+    <VRTRAKILLVersionFile>$(IntermediateOutputPath)VRTRAKILL.Version.g.cs</VRTRAKILLVersionFile>
+    <VRTRAKILLStampVersion Condition="'$(MSBuildProjectName)' == 'VRTRAKILL.Plugin' Or '$(MSBuildProjectName)' == 'VRTRAKILL.Utilities' Or '$(MSBuildProjectName)' == 'VRPatcher'">true</VRTRAKILLStampVersion>
+  </PropertyGroup>
+  <Target Name="WriteVRTRAKILLVersion" BeforeTargets="CoreCompile" Condition="'$(VRTRAKILLStampVersion)' == 'true'">
+    <Error Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(VRTRAKILLVersion)', '^\d+\.\d+\.\d+$'))" Text="VRTRAKILLVersion '$(VRTRAKILLVersion)' must be major.minor.patch." />
+    <ItemGroup>
+      <VRTRAKILLVersionLine Include="// generated from VRTRAKILLVersion in Directory.Build.props" />
+      <VRTRAKILLVersionLine Include="[assembly: System.Reflection.AssemblyVersion(&quot;$(VRTRAKILLVersion).0&quot;)]" />
+      <VRTRAKILLVersionLine Include="[assembly: System.Reflection.AssemblyFileVersion(&quot;$(VRTRAKILLVersion).0&quot;)]" />
+      <VRTRAKILLVersionLine Include="[assembly: System.Reflection.AssemblyInformationalVersion(&quot;$(VRTRAKILLVersion)&quot;)]" />
+      <VRTRAKILLVersionLine Include="namespace VRTRAKILL { internal static class BuildVersion { public const string Value = &quot;$(VRTRAKILLVersion)&quot;%3B } }" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(VRTRAKILLVersionFile)" Lines="@(VRTRAKILLVersionLine)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+    <ItemGroup>
+      <Compile Include="$(VRTRAKILLVersionFile)" />
+      <FileWrites Include="$(VRTRAKILLVersionFile)" />
+    </ItemGroup>
+  </Target>
+</Project>

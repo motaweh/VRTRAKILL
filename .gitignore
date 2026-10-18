@@ -367,3 +367,8 @@ lib/
 *.7z
 globalgamemanagers
 globalgamemanagers.*
+# release signing keys never go in the repo; tools/sign-release.ps1 keeps them in %USERPROFILE%\.vrtrakill
+*.dpapi
+release_signing_key*
+*.pem
+*.key

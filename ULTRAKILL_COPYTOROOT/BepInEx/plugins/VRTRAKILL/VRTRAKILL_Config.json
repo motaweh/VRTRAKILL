@@ -45,6 +45,7 @@
     },
     "Miscellaneous/Unsorted Settings": {
       "Game blood and oil stains (experimental)": false
-    }
+    },
+    "Auto update": "Notify"
   }
 }

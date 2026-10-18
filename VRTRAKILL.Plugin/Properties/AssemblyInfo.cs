@@ -14,5 +14,4 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("3fbb1fc9-b424-404c-b0c5-1a8afff14f5b")]
 
-[assembly: AssemblyVersion("0.16.0.0")]
-[assembly: AssemblyFileVersion("0.16.0.0")]
+// AssemblyVersion and AssemblyFileVersion come from VRTRAKILLVersion (Directory.Build.targets)
