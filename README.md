@@ -10,8 +10,12 @@ It was built and tested on build 22957324 only. If Steam updates the game, the m
 
 Get the latest release from the [Releases page](../../releases). There are two zips:
 
-- `VRTRAKILL-1.0.0-full.zip`: the mod plus BepInEx 5.4.23.5 (x64). Use this one if you have never installed BepInEx.
-- `VRTRAKILL-1.0.0-modonly.zip`: the mod only, for players who already have BepInEx 5.4.23.5.
+- `VRTRAKILL-1.0.1-full.zip`: the mod plus BepInEx 5.4.23.5 (x64). Use this one if you have never installed BepInEx.
+- `VRTRAKILL-1.0.1-modonly.zip`: the mod only, for players who already have BepInEx 5.4.23.5.
+
+The release also has `SHA256SUMS.txt` and its signature `SHA256SUMS.txt.sig`, which the in-game updater checks.
+
+For r2modman or Gale, use the Thunderstore package `VRTRAKILL-1.0.1.zip` instead. Its install steps are in [thunderstore/README.md](thunderstore/README.md).
 
 The zip root is the ULTRAKILL game folder. It contains `BepInEx/`, `ULTRAKILL_Data/` and (in the full zip) `winhttp.dll`, `doorstop_config.ini`, `.doorstop_version` and `changelog.txt`.
 
@@ -133,19 +137,23 @@ Mod settings are in `BepInEx/plugins/VRTRAKILL/VRTRAKILL_Config.json` (turning, 
 - One flick of the right stick up or down switches exactly one weapon.
 - A held punch no longer fires on its own while you walk or use the weapon wheel.
 - Punches use stamina and cooldown like in the normal game.
-- Jump moved to Cross on PS VR2 and A on Quest. Change weapon variation moved to the left stick click.
+- Jump moved to Cross on PS VR2 and A on Quest. Change weapon variation and menu select moved to the left stick click.
 - Held buttons are released when the SteamVR menu opens.
-- Jackhammer impact, coin toss and dual wield fixes.
+- Jackhammer impact, coin toss, dual wield and parry fixes.
 - The SteamVR NoData errors at startup are gone.
 - A broken or empty config file no longer disables the mod.
 - Turning off "Draw controller models" no longer breaks the hands.
 - The weapon wheel uses its own stick and you stop walking while it is open.
 - Shop enemy and weapon previews render in the headset.
 - 4-S and Clash mode show the platformer camera in the headset.
-- HUD and menus that appear after a level loads are converted for VR.
+- HUD and menus that appear after a level loads are converted for VR, so the HUD stays visible.
 - The desktop view toggle (T key) works.
+- Faster start: VRPatcher no longer makes BepInEx rewrite Assembly-CSharp on every start.
 - "Enable Controller Rumble" and "Enable Crosshair" in the config file now work.
-- New experimental option: "Game blood and oil stains (experimental)" in the config file.
+- New option "Finger tracking" (experimental, off by default): the punch arm fingers follow the SteamVR finger data.
+- New option "Auto update". "Notify" (default) shows a notice in the main menu when a new release is out. "Download" (opt-in) downloads a signed update and installs it at the next start. "Off" turns the check off.
+- New option "Game blood and oil stains (experimental)", off by default.
+- Thunderstore package for r2modman and Gale. VRPatcher copies the VR game files into `ULTRAKILL_Data` at start-up, so the mod works from a mod manager profile. The zip install works as before.
 
 The full list is in [CHANGELOG.md](CHANGELOG.md).
 
@@ -158,6 +166,8 @@ The `"Auto update"` setting in `VRTRAKILL_Config.json` controls what happens:
 - `"Notify"` (default): if a newer release exists, the log says so and a short notice shows at the bottom of the main menu for 15 seconds. Nothing is downloaded.
 - `"Download"`: the mod also downloads `VRTRAKILL-<version>-modonly.zip`, `SHA256SUMS.txt` and `SHA256SUMS.txt.sig` into `BepInEx/VRTRAKILL_update/staging/`. It checks that the signature file is a valid signature of `SHA256SUMS.txt` made with the VRTRAKILL release key, and that the zip matches its SHA-256 line. If a check fails, the download is deleted. Nothing is installed while the game runs. At the next start, before any plugin loads, VRPatcher checks the files again and installs them. It moves the files it replaces to `BepInEx/VRTRAKILL_update/backup/<old version>/`. If a file cannot be written, it puts the old files back. Your `VRTRAKILL_Config.json` is kept. The result is in `BepInEx/VRTRAKILL_update/last_update.txt` and in `BepInEx/LogOutput.log`. A new `VRPatcher.dll` takes effect from the start after the install.
 - `"Off"`: no request is sent.
+
+In a mod manager install (r2modman, Gale), `"Download"` works like `"Notify"`. Update the mod in the mod manager.
 
 An install only writes to `BepInEx/plugins/VRTRAKILL/`, `BepInEx/patchers/` and the mod's folders under `ULTRAKILL_Data`. A zip with any other path is rejected. Files that are not in the new zip are left in place. If an install fails, that version is not downloaded again until you delete `BepInEx/VRTRAKILL_update/failed_<version>.txt`. To uninstall the updater's files, delete `BepInEx/VRTRAKILL_update/`.
 
@@ -181,7 +191,7 @@ An install only writes to `BepInEx/plugins/VRTRAKILL/`, `BepInEx/patchers/` and 
 ## Uninstall
 
 1. Close ULTRAKILL.
-2. If no other mods use BepInEx, delete the `BepInEx` folder and the doorstop files `winhttp.dll`, `doorstop_config.ini` and `.doorstop_version` from the game folder. If you have other BepInEx mods, keep those and delete only `BepInEx/plugins/VRTRAKILL/` and this mod's three files in `BepInEx/patchers/` (`VRPatcher.dll`, `AssetsTools.NET.dll`, `classdata.tpk`).
+2. If no other mods use BepInEx, delete the `BepInEx` folder and the doorstop files `winhttp.dll`, `doorstop_config.ini` and `.doorstop_version` from the game folder. If you have other BepInEx mods, keep those and delete only `BepInEx/plugins/VRTRAKILL/` and this mod's three files in `BepInEx/patchers/` (`VRPatcher.dll`, `AssetsTools.NET.dll`, `classdata.tpk`). Also delete `BepInEx/VRTRAKILL_update/` if it exists.
 3. In Steam, right-click ULTRAKILL > Properties > Installed Files > Verify integrity of game files. This restores the original `globalgamemanagers`, which turns VR off.
 
 The other files the zip added under `ULTRAKILL_Data` can stay. Only the mod starts OpenVR, so without it they are not used.

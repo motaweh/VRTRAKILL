@@ -1,6 +1,6 @@
 # VRTRAKILL
 
-VR mod for ULTRAKILL, through SteamVR.
+VR mod for ULTRAKILL, through SteamVR. Version 1.0.1.
 
 This version runs on the current ULTRAKILL on Steam: build 22957324 (Unity 2022.3.29f1). You do not need to downgrade the game. It was built and tested on build 22957324 only. If Steam updates the game, the mod can break until it gets an update.
 
@@ -34,7 +34,7 @@ If VR does not start, open `BepInEx/LogOutput.log` in your profile (mod manager 
 | Headset | Status |
 |---|---|
 | PlayStation VR2 (PC adapter) | Tested |
-| Meta Quest 2, 3, 3S, Pro (Link, Air Link, Steam Link, or Virtual Desktop in SteamVR mode) | Configured, not tested |
+| Meta Quest 2, 3, 3S, Pro (through SteamVR) | Tested |
 | Valve Index | Configured, not tested |
 | HTC Vive, Vive Pro | Configured, not tested |
 | Windows Mixed Reality | Configured, not tested |
@@ -42,18 +42,72 @@ If VR does not start, open `BepInEx/LogOutput.log` in your profile (mod manager 
 | Logitech VR Ink stylus | Not supported |
 | Hand tracking, OpenXR without SteamVR | Not supported |
 
-"Configured" means the default binding covers every game action and was checked against the SteamVR driver's input profile. Nobody has played with it yet. Reports from Quest, Index, Vive and WMR players are welcome.
+"Tested" means it was played on hardware through SteamVR. "Configured" means the default binding covers every game action and was checked against the SteamVR driver's input profile. Nobody has played with it yet. Reports from Index, Vive and WMR players are welcome.
 
-You can change any binding in SteamVR > Settings > Controllers > Manage Controller Bindings > ULTRAKILL.
+## Controls
+
+(R) is the right controller, (L) is the left controller. You can change any binding in SteamVR > Settings > Controllers > Manage Controller Bindings > ULTRAKILL.
+
+### PS VR2 Sense controllers
+
+| Action | Button |
+|---|---|
+| Move | (L) stick |
+| Turn | (R) stick left or right |
+| Jump | (R) Cross |
+| Slide / slam | (R) stick click |
+| Dash | (L) Triangle |
+| Shoot | (R) R2 |
+| Alternate fire | (R) R1 |
+| Punch | (L) L2 |
+| Whiplash | (L) Square |
+| Change hand | (L) L1 |
+| Change weapon variation | (L) stick click |
+| Next / previous weapon | (R) stick flick up or down |
+| Weapon wheel | Hold (R) Circle, aim with the (L) stick, let go to switch |
+| Pause / back | (R) Options, or double tap (R) Circle |
+
+### Meta Quest Touch controllers
+
+| Action | Button |
+|---|---|
+| Move | (L) stick |
+| Turn | (R) stick left or right |
+| Jump | (R) A |
+| Slide / slam | (R) stick click |
+| Dash | (L) Y |
+| Shoot | (R) trigger |
+| Alternate fire | (R) grip |
+| Punch | (L) trigger |
+| Whiplash | (L) X |
+| Change hand | (L) grip |
+| Change weapon variation | (L) stick click |
+| Next / previous weapon | (R) stick flick up or down |
+| Weapon wheel | Hold (R) B, aim with the (L) stick, let go to switch |
+| Pause / back | Double tap (R) B |
+
+On Quest, the (L) menu button opens the SteamVR menu. Games cannot use it.
+
+In menus, point with either controller and press its trigger to click. The (L) stick moves the selection and the left stick click selects it.
+
+One flick of the (R) stick up or down switches one weapon. Return the stick to the center before the next flick.
+
+Maps for Index, Vive and WMR, and launch steps for other connections, are in [docs/HEADSETS.md](https://github.com/motaweh/VRTRAKILL/blob/ultrakill-22957324/docs/HEADSETS.md) on GitHub.
+
+## Settings
 
 Mod settings are in `VRTRAKILL_Config.json`, in the mod's folder under `BepInEx/plugins` in your profile. A mod update replaces this file, so note your changes before you update.
 
+Once per start the mod asks GitHub for the latest VRTRAKILL release and shows a notice in the main menu when a newer one exists. Nothing is downloaded. Set "Auto update" to "Off" in the config file to turn the check off. In a mod manager install, "Download" works like "Notify". Update the mod in the mod manager.
+
+"Finger tracking" (off by default) makes the punch arm fingers follow the SteamVR finger data. It is experimental.
+
 ## Known issues
 
-- Only PS VR2 has been played. The other bindings are checked on paper only.
+- Index, Vive and WMR have not been played. Their bindings are checked against the driver input profiles only.
 - Left-handed mode is broken.
-- Rumble during play is not confirmed on any controller.
-- Finger tracking does nothing. Hands use fixed poses.
+- Finger tracking is off by default and is not confirmed on hardware. It moves the punch arm fingers only.
+- After an update that changes a default binding, SteamVR can keep the old one. Select the default binding again in the binding screen.
 - Portals seen in a mirror do not render correctly.
 - Whiplash is unreliable through portals.
 - A future ULTRAKILL update can break the mod.
@@ -76,7 +130,7 @@ Steam's verify step does not remove extra files, so do step 2 as well. "Start va
 
 - whateverusername0 created VRTRAKILL ([original repo](https://github.com/whateverusername0/VRTRAKILL)). The original README put development on indefinite hold and pointed players to forks for newer game versions. This is one of those forks.
 - Squaresweets (Matthew Collier) made the [VRTRAKILL_FRAUD](https://github.com/Squaresweets/VRTRAKILL_FRAUD) fork. This version builds on it.
-- Guillaume-Lechevallier: the VRPatcher, portal overlay and OpenVR start-up code are ported from the [Guillaume-Lechevallier VRTRAKILL_FRAUD](https://github.com/Guillaume-Lechevallier/VRTRAKILL_FRAUD) fork. So are the weapon wheel stick fix, the desktop view cameras, the 4-S and Clash mode camera, the late HUD and menu conversion, and the opt-in VR body loading.
+- Guillaume-Lechevallier: thank you for your [VRTRAKILL_FRAUD fork](https://github.com/Guillaume-Lechevallier/VRTRAKILL_FRAUD), which did the groundwork for the current game build (the Unity 2022.3 VRPatcher, the OpenVR start-up and the portal overlay). Our weapon wheel, desktop view, 4-S and Clash camera, late HUD conversion and opt-in VR body are based on your work, and your notes pointed us at the shop preview problem.
 - Graze, Rokic, Party Wumpus and NavaShield contributed to the original mod.
 - Raicuparta: the globalgamemanagers patcher approach comes from Two Forks VR (MIT).
 
