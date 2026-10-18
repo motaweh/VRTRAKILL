@@ -13,17 +13,16 @@ using AssetsTools.NET.Extra;
 
 namespace VRPatcher
 {
-    /// <summary>
-    ///     This is used to patch the original classdata and globalgamemanagers to even allow VR to launch.
-    ///     Goes into BepInEx/patchers folder
-    /// </summary>
+    // Patches globalgamemanagers so the game starts in VR; runs from BepInEx/patchers.
     public class Patcher
     {
         // code successfully borrowed from https://github.com/Raicuparta/two-forks-vr/blob/main/TwoForksVrPatcher/Patcher.cs
 
         public static IEnumerable<string> TargetDLLs { get; } = new[] { "Assembly-CSharp.dll" };
+        // Leaves the assembly unchanged; BepInEx requires a Patch method on a preloader patcher.
         public static void Patch(AssemblyDefinition assembly) { }
 
+        // Finds the game data folder and patches globalgamemanagers before the game loads.
         public static void Initialize()
         {
             string InstallerPath = Assembly.GetExecutingAssembly().Location,
@@ -41,7 +40,7 @@ namespace VRPatcher
             PatchGameManagers(GameManagersPath, ClassDataPath);
         }
 
-        // public so the patch can be tested against a copy of the file
+        // Patches globalgamemanagers unless it is already patched; public so tests can use a copy of the file.
         public static void PatchGameManagers(string GameManagersPath, string ClassDataPath)
         {
             string GameManagersBackupPath = PrepareCurrentGameManagers(GameManagersPath);
@@ -56,7 +55,7 @@ namespace VRPatcher
             Console.WriteLine("Epic conversion from ULTRAKILL to VRTRAKILL is complete.");
         }
 
-        // back up the file as it is now, so a game update is never replaced by an old patched copy
+        // Backs up the current file and returns the backup path, or returns null if the file is already patched.
         private static string PrepareCurrentGameManagers(string GameManagersPath)
         {
             string statePath = GetPatchStatePath(GameManagersPath);
@@ -75,9 +74,11 @@ namespace VRPatcher
             return BackupPath;
         }
 
+        // Returns the path of the file that stores the hash of the patched file.
         private static string GetPatchStatePath(string gameManagersPath)
             => gameManagersPath + ".vrtrakill.sha256";
 
+        // Returns the SHA-256 hash of a file as lowercase hex.
         private static string ComputeSha256(string path)
         {
             using (SHA256 sha256 = SHA256.Create())
@@ -91,6 +92,7 @@ namespace VRPatcher
             }
         }
 
+        // Writes and verifies a patched copy, then replaces the live file with it.
         private static void PatchVR(string GameManagersBackupPath, string GameManagersPath, string ClassDataPath)
         {
             Console.WriteLine($"Using ClassData file from '{ClassDataPath}'");
@@ -111,6 +113,7 @@ namespace VRPatcher
             }
         }
 
+        // Writes a copy of the source file with OpenVR as the only enabled VR device.
         private static void WritePatchedGameManagers(string sourcePath, string outputPath, string classDataPath)
         {
             AssetsManager AM = new AssetsManager();
@@ -145,6 +148,7 @@ namespace VRPatcher
             }
         }
 
+        // Throws if the file does not list OpenVR as its only enabled VR device.
         private static void VerifyPatchedGameManagers(string path, string classDataPath)
         {
             AssetsManager AM = new AssetsManager();
@@ -170,6 +174,7 @@ namespace VRPatcher
             }
         }
 
+        // Returns the BuildSettings asset, or throws if there is not exactly one.
         private static AssetFileInfo GetBuildSettings(AssetsFile file)
         {
             List<AssetFileInfo> matches = file.GetAssetsOfType(AssetClassID.BuildSettings);

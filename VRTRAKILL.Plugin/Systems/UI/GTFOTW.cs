@@ -17,6 +17,7 @@ namespace Plugin.Systems.UI
         };
         private bool ChangeText = false;
 
+        // Gets the canvas group and text and hides the warning.
         public void OnEnable()
         {
             CG = GetComponent<CanvasGroup>();
@@ -24,6 +25,7 @@ namespace Plugin.Systems.UI
             Text = GetComponentInChildren<UnityEngine.UI.Text>();
         }
 
+        // Fades the warning in while the head is inside level geometry and out after it leaves, with a new random text each time.
         public void Update()
         {
             if (VRTRAKILL.Utilities.Unity.DetectCollisions(DetectorTransform.position, .1f, (int)Layers.Environment) > 0)

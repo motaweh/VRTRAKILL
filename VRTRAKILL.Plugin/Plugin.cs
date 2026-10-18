@@ -23,6 +23,7 @@ namespace Plugin
         private const int VRInitAttempts = 90;
         private const float VRInitRetryDelay = 2f;
 
+        // Loads the config, applies the patches, starts the scene worker, then starts VR init.
         public void Awake()
         {
             Log = Logger;
@@ -40,7 +41,7 @@ namespace Plugin
             StartCoroutine(InitVRWhenReady());
         }
 
-        // SteamVR may still be starting when the game boots, so keep retrying instead of giving up
+        // Retries VR init every 2 seconds for up to 3 minutes, as SteamVR may still be starting.
         private IEnumerator InitVRWhenReady()
         {
             for (int attempt = 1; attempt <= VRInitAttempts; attempt++)
@@ -52,6 +53,7 @@ namespace Plugin
             Log.LogError("OpenVR did not respond after three minutes. Keep SteamVR open and restart the game.");
         }
 
+        // Applies the Harmony patches in the mod patch namespaces.
         private void PatchStuff()
         {
             System.Collections.Generic.List<string> Namespaces = new System.Collections.Generic.List<string>
@@ -77,6 +79,7 @@ namespace Plugin
             }.PatchAll();
         }
 
+        // Starts OpenVR through XR Management and SteamVR, then SteamVR input; returns false on failure.
         public static bool InitVRLoader(bool logFailure = true)
         {
             try
@@ -140,6 +143,7 @@ namespace Plugin
             }
         }
 
+        // Deinitializes and destroys the XR loader objects so the next attempt starts clean.
         private static void CleanupVRLoader()
         {
             try

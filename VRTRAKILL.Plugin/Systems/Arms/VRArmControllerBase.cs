@@ -10,6 +10,7 @@ internal class VRArmControllerBase : MonoBehaviour
     public Vector3 OffsetPos = Vector3.zero,
                    OffsetRot = new Vector3(-90, 180, 0);
 
+    // Returns the arm position offset for the arm type.
     protected Vector3 ResolveOffsetPos()
     {
         switch (Arm.Type)
@@ -23,10 +24,12 @@ internal class VRArmControllerBase : MonoBehaviour
         }
     }
 
+    // Sets the position offset from the arm type if no offset is set.
     public virtual void Start()
     {
         if (Arm != null && OffsetPos == Vector3.zero) OffsetPos = ResolveOffsetPos();
     }
+    // Hides the arm mesh while the whiplash model is shown.
     public virtual void LateUpdate()
     {
         if (HookArm.Instance != null && HookArm.Instance.model != null && HookArm.Instance.model.activeSelf)

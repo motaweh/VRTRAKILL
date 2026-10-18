@@ -22,6 +22,7 @@ namespace Plugin.Systems.VRAvatar.Armature
 
         public Hand Hand { get; set; }
 
+        // Maps the bones of a game Feedbacker arm.
         public static Arm FeedbackerPreset(Transform GameObjectT)
         {
             Arm A = new Arm
@@ -37,6 +38,7 @@ namespace Plugin.Systems.VRAvatar.Armature
             A.Hand = Hand.FeedbackerPreset(A.Forearm.GetChild(0));
             return A;
         }
+        // Maps the bones of a game Knuckleblaster arm.
         public static Arm KnuckleblasterPreset(Transform GameObjectT)
         {
             Arm A = new Arm
@@ -52,6 +54,7 @@ namespace Plugin.Systems.VRAvatar.Armature
             A.Hand = Hand.KnuckleblasterPreset(A.Forearm.GetChild(0));
             return A;
         }
+        // Creates a spear arm with no bones.
         public static Arm SpearPreset(Transform T)
         {
             try
@@ -69,6 +72,7 @@ namespace Plugin.Systems.VRAvatar.Armature
                 return null;
             }
         }
+        // Maps the bones of a game whiplash arm, or returns null on failure.
         public static Arm WhiplashPreset(Transform GameObjectT)
         {
             try
@@ -92,6 +96,7 @@ namespace Plugin.Systems.VRAvatar.Armature
                 return null;
             }
         }
+        // Maps the bones of a game sandbox arm, or returns null on failure.
         public static Arm SandboxerPreset(Transform GameObjectT)
         {
             try
@@ -116,6 +121,7 @@ namespace Plugin.Systems.VRAvatar.Armature
             }
         }
 
+        // Maps the bones of the avatar Feedbacker arm, or returns null on failure.
         public static Arm MRFeedbackerPreset(Transform GameObjectT)
         {
             try
@@ -138,6 +144,7 @@ namespace Plugin.Systems.VRAvatar.Armature
                 return null;
             }
         }
+        // Maps the bones of the avatar Knuckleblaster arm.
         public static Arm MRKnuckleblasterPreset(Transform GameObjectT)
         {
             Arm A = new Arm
@@ -152,6 +159,7 @@ namespace Plugin.Systems.VRAvatar.Armature
             A.Hand = Hand.MRKnuckleblasterPreset(A.Forearm.GetChild(0));
             return A;
         }
+        // Maps the bones of the avatar whiplash arm.
         public static Arm MRWhiplashPreset(Transform GameObjectT)
         {
             Arm A = new Arm
@@ -166,6 +174,7 @@ namespace Plugin.Systems.VRAvatar.Armature
             A.Hand = Hand.MRFeedbackerPreset(A.Forearm.GetChild(0));
             return A;
         }
+        // Creates an avatar spear arm with no bones.
         public static Arm MRSpearPreset(Transform GameObjectT)
         {
             Arm A = new Arm
@@ -175,6 +184,7 @@ namespace Plugin.Systems.VRAvatar.Armature
             };
             return A;
         }
+        // Maps the bones of the avatar sandbox arm.
         public static Arm MRSandboxerPreset(Transform GameObjectT)
         {
             Arm A = new Arm

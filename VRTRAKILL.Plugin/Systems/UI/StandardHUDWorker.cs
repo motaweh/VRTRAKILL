@@ -6,6 +6,7 @@ namespace Plugin.Systems.UI
     {
         public GameObject StandardHUD;
 
+        // Shows the standard HUD only when the HUD type setting is 1.
         public void Update()
         {
             if (StandardHUD == null) return;

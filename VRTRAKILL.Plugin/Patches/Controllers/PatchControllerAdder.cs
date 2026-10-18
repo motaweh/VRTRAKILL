@@ -9,6 +9,7 @@ namespace Plugin.Patches.Controllers;
 [HarmonyPatch(typeof(NewMovement))]
 internal sealed class PatchControllerAdder
 {
+    // Adds the left and right VR controllers, their models and the guns and arms systems to the player.
     [HarmonyPostfix]
     [HarmonyPatch(nameof(NewMovement.Start))]
     public static void AddHands(NewMovement __instance)
@@ -56,10 +57,12 @@ internal sealed class PatchControllerAdder
         __instance.gameObject.SetActive(true);
     }
 
+    // Creates an empty controller object on the IgnoreRaycast layer.
     private static GameObject CreateController(string Name)
     {
         return new GameObject(Name) { layer = (int)Layers.IgnoreRaycast };
     }
+    // Creates the controller model for a hand, plus the sandbox model for the dominant hand.
     private static GameObject CreateControllerModel(SteamVR_Input_Sources Source, out GameObject SandboxRM, string Name = "Model")
     {
         GameObject GO = new GameObject(Name) { layer = (int)Layers.IgnoreRaycast };

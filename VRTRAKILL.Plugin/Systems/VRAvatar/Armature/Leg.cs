@@ -11,6 +11,7 @@ namespace Plugin.Systems.VRAvatar.Armature
         public Transform Heel { get; set; }
         public Transform Toe { get; set; }
 
+        // Maps the leg bones of the avatar rig.
         public static Leg MRPreset(Transform T)
         {
             Leg L = new Leg
@@ -24,6 +25,7 @@ namespace Plugin.Systems.VRAvatar.Armature
             L.Toe = L.Foot.GetChild(1);
             return L;
         }
+        // Maps the leg bones of the avatar IK rig, where the heel and toe sit under one more bone.
         public static Leg MRIKPreset(Transform T)
         {
             Leg L = new Leg

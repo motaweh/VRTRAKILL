@@ -7,7 +7,7 @@ namespace Plugin.Systems.Input
 {
     internal static class SVRActionsManager
     {
-        // simulate keyboard presses (windows only)
+        // Returns a new Windows input simulator for keyboard and mouse events.
         private static InputSimulator InpSim => new InputSimulator();
 
         public static bool
@@ -36,6 +36,7 @@ namespace Plugin.Systems.Input
 
         public static bool Escape = false;
 
+        // Returns the input origin name of the action, with Left or Right for the active device.
         public static string FriendlyBindingName(this ISteamVR_Action_In SVRAI)
         {
             string Direction;
@@ -57,17 +58,19 @@ namespace Plugin.Systems.Input
             else return $"{Direction} {SVRAI.GetLocalizedOrigin(SteamVR_Input_Sources.Any)}";
         }
 
+        // Presses or releases the given key and the given mouse button.
         private static void TriggerKey(bool Started, bool Ended, VirtualKeyCode? KeyCode = null, MouseButton? Button = null)
         {
             if (KeyCode != null) TriggerKey((VirtualKeyCode)KeyCode, Started, Ended);
             if (Button != null) TriggerKey((MouseButton)Button, Started, Ended);
         }
+        // Presses the key when the action starts and releases it when the action ends.
         private static void TriggerKey(VirtualKeyCode KeyCode, bool Started, bool Ended)
         {
             if (Started) InpSim.Keyboard.KeyDown(KeyCode);
             else if (Ended) InpSim.Keyboard.KeyUp(KeyCode);
         }
-        // InputMap.KeysM: 3 = mouse4/backButton (XBUTTON1), 4 = mouse5/forwardButton (XBUTTON2), 10 = scroll (no release)
+        // Presses or releases a mouse button; 3 is XBUTTON1, 4 is XBUTTON2 and 10 scrolls up with no release.
         private static void TriggerKey(MouseButton Button, bool Started, bool Ended)
         {
             if (Started)
@@ -101,11 +104,13 @@ namespace Plugin.Systems.Input
                         InpSim.Mouse.XButtonUp(2); break;
                 }
         }
+        // Scrolls the mouse wheel by the given amount.
         private static void MouseScroll(int Amount)
         {
             InpSim.Mouse.VerticalScroll(Amount);
         }
 
+        // Adds the SteamVR action listeners that drive movement, guns, arms and key presses.
         public static void Init()
         {
             // Movement
@@ -148,19 +153,23 @@ namespace Plugin.Systems.Input
             SteamVR_Actions._default.Escape.AddOnUpdateListener(EscapeH, SteamVR_Input_Sources.Any);
         }
 
-        // Movement
+        // Stores the movement stick axis.
         private static void MovementH(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
         { InputVars.MoveVector = axis; }
+        // Stores the turn stick axis.
         private static void TurnH(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
         { InputVars.TurnVector = axis; }
+        // Presses or releases the jump bind when the jump action changes.
         private static void JumpH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Jump) { Jump = newState; TriggerKey(Jump, !Jump, ConfigMaster.KJump, ConfigMaster.MJump); } }
+        // Presses or releases the slide bind when the slide action changes.
         private static void SlideH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Slide) { Slide = newState; TriggerKey(Slide, !Slide, ConfigMaster.KSlide, ConfigMaster.MSlide); } }
+        // Presses or releases the dash bind when the dash action changes.
         private static void DashH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Dash) { Dash = newState; TriggerKey(Dash, !Dash, ConfigMaster.KDash, ConfigMaster.MDash); } }
 
-        // Arms
+        // Presses or releases the punch bind, or the shoot bind while the player is frozen or in a shop.
         private static void PunchH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         {
             if (newState != Punch)
@@ -170,18 +179,21 @@ namespace Plugin.Systems.Input
                 else TriggerKey(Punch, !Punch, ConfigMaster.KPunch, ConfigMaster.MPunch);
             }
         }
+        // Presses or releases the change fist bind when the swap hand action changes.
         private static void SwapHandH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != SwapHand) { SwapHand = newState; TriggerKey(SwapHand, !SwapHand, ConfigMaster.KSwapHand, ConfigMaster.MSwapHand); } }
+        // Presses or releases the whiplash bind when the whiplash action changes.
         private static void WhiplashH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Whiplash) { Whiplash = newState; TriggerKey(Whiplash, !Whiplash, ConfigMaster.KWhiplash, ConfigMaster.MWhiplash); } }
 
-        // Shooting
+        // Presses or releases the shoot bind when the shoot action changes.
         private static void RHShootH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != RHPrimaryFire) { RHPrimaryFire = newState; TriggerKey(RHPrimaryFire, !RHPrimaryFire, ConfigMaster.KShoot, ConfigMaster.MShoot); } }
+        // Presses or releases the alt fire bind when the alt shoot action changes.
         private static void RHAltShootH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != RHAltFire) { RHAltFire = newState; TriggerKey(RHAltFire, !RHAltFire, ConfigMaster.KAltShoot, ConfigMaster.MAltShoot); } }
 
-        // Weapon scroll
+        // Scrolls the mouse wheel when the stick passes the deadzone, unless the weapon wheel is open.
         private static void IterateWeaponH(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
         {
             if (Vars.IsWeaponWheelPresent) return;
@@ -189,42 +201,55 @@ namespace Plugin.Systems.Input
             if (axis.y > 0 + Vars.Config.Controllers.Deadzone * 1.5f) MouseScroll(Up);
             if (axis.y < 0 - Vars.Config.Controllers.Deadzone * 1.5f) MouseScroll(-Up);
         }
+        // Presses or releases the change variation bind when the action changes.
         private static void ChangeWeaponVariationH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != ChangeVariation) { ChangeVariation = newState; TriggerKey(ChangeVariation, !ChangeVariation, ConfigMaster.KChangeVariation, ConfigMaster.MChangeVariation); } }
+        // Scrolls the mouse wheel up while the next weapon action is held.
         private static void NextWeaponH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != NextWeapon) NextWeapon = newState; if (NextWeapon) MouseScroll(1); }
+        // Scrolls the mouse wheel down while the previous weapon action is held.
         private static void PrevWeaponH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != PrevWeapon) PrevWeapon = newState; if (PrevWeapon) MouseScroll(-1); }
 
-        // Quick swap & Weapon wheel
+        // Presses or releases the last weapon bind, which opens the weapon wheel while held.
         private static void OpenWeaponWheelH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != OpenWeaponWheel) { OpenWeaponWheel = newState; TriggerKey(OpenWeaponWheel, !OpenWeaponWheel, ConfigMaster.KLastWeapon, ConfigMaster.MLastWeapon); } }
+        // Stores the weapon wheel stick axis.
         private static void WeaponWheelScrollH(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
         { InputVars.WWVector = axis; }
 
-        // Slots
+        // Presses or releases the slot 0 bind when the slot 0 action changes.
         private static void Slot0H(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Slot0) { Slot0 = newState; TriggerKey(Slot0, !Slot0, ConfigMaster.KSlot0, ConfigMaster.MSlot0); } }
+        // Presses or releases the slot 1 bind when the slot 1 action changes.
         private static void Slot1H(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Slot1) { Slot1 = newState; TriggerKey(Slot1, !Slot1, ConfigMaster.KSlot1, ConfigMaster.MSlot1); } }
+        // Presses or releases the slot 2 bind when the slot 2 action changes.
         private static void Slot2H(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Slot2) { Slot2 = newState; TriggerKey(Slot2, !Slot2, ConfigMaster.KSlot2, ConfigMaster.MSlot2); } }
+        // Presses or releases the slot 3 bind when the slot 3 action changes.
         private static void Slot3H(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Slot3) { Slot3 = newState; TriggerKey(Slot3, !Slot3, ConfigMaster.KSlot3, ConfigMaster.MSlot3); } }
+        // Presses or releases the slot 4 bind when the slot 4 action changes.
         private static void Slot4H(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Slot4) { Slot4 = newState; TriggerKey(Slot4, !Slot4, ConfigMaster.KSlot4, ConfigMaster.MSlot4); } }
+        // Presses or releases the slot 5 bind when the slot 5 action changes.
         private static void Slot5H(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Slot5) { Slot5 = newState; TriggerKey(Slot5, !Slot5, ConfigMaster.KSlot5, ConfigMaster.MSlot5); } }
+        // Presses or releases the slot 6 bind when the slot 6 action changes.
         private static void Slot6H(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Slot6) { Slot6 = newState; TriggerKey(Slot6, !Slot6, ConfigMaster.KSlot6, ConfigMaster.MSlot6); } }
+        // Presses or releases the slot 7 bind when the slot 7 action changes.
         private static void Slot7H(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Slot7) { Slot7 = newState; TriggerKey(Slot7, !Slot7, ConfigMaster.KSlot7, ConfigMaster.MSlot7); } }
+        // Presses or releases the slot 8 bind when the slot 8 action changes.
         private static void Slot8H(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Slot8) { Slot8 = newState; TriggerKey(Slot8, !Slot8, ConfigMaster.KSlot8, ConfigMaster.MSlot8); } }
+        // Presses or releases the slot 9 bind when the slot 9 action changes.
         private static void Slot9H(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Slot9) { Slot9 = newState; TriggerKey(Slot9, !Slot9, ConfigMaster.KSlot9, ConfigMaster.MSlot9); } }
 
-        // Go back, pause, etc.
+        // Presses or releases Escape when the escape action changes.
         private static void EscapeH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Escape) { Escape = newState; TriggerKey(Escape, !Escape, VirtualKeyCode.ESCAPE, null); } }
     }

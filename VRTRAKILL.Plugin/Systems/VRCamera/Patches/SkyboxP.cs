@@ -6,6 +6,7 @@ namespace Plugin.Systems.VRCamera.Patches
     [HarmonyPatch]
     public class SkyboxP
     {
+        // Replaces the Limbo skybox camera update to copy the eye projection matrix, and adds the skybox to both eyes.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(LimboSkybox), nameof(LimboSkybox.UpdateCamera))]
         static bool LimboFix2(Camera cam, LimboSkybox __instance)
@@ -35,6 +36,7 @@ namespace Plugin.Systems.VRCamera.Patches
 
             return false;
         }
+        // Replaces the space skybox camera update to copy the eye projection matrix.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(SpaceSkybox), nameof(SpaceSkybox.UpdateCamera))]
         static bool SpaceFix(Camera cam, SpaceSkybox __instance)
@@ -52,6 +54,7 @@ namespace Plugin.Systems.VRCamera.Patches
 
             return false;
         }
+        // Replaces SkyboxEnabler.Activate to set the clear flags on both eye cameras.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(SkyboxEnabler), nameof(SkyboxEnabler.Activate))]
         static bool EnablerFix(SkyboxEnabler __instance)

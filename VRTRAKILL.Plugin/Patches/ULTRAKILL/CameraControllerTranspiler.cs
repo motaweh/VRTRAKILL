@@ -10,6 +10,7 @@ namespace Plugin.Patches.ULTRAKILL;
 [HarmonyPatch]
 internal class CameraControllerTranspiler
 {
+    // Lists the weapon methods whose camera transform reads go to the gun hand.
     static IEnumerable<MethodBase> TargetMethods()
     {
         yield return AccessTools.Method(typeof(Chainsaw), nameof(Chainsaw.Update));
@@ -44,6 +45,7 @@ internal class CameraControllerTranspiler
 
         yield return AccessTools.Method(typeof(Revolver), nameof(Revolver.Shoot));
     }
+    // Replaces camera transform reads in the target methods with the dominant hand transform.
     static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         // this.cc, CameraController.Instance, Camera.main or this.cam/camObj, then .transform -> the dominant hand's transform

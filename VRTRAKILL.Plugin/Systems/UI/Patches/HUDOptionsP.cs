@@ -7,6 +7,7 @@ namespace Plugin.Systems.UI.Patches
     [HarmonyPatch]
     internal class HUDOptionsP
     {
+        // Scales screen effects to fill the VR HUD, hides the power-up vignette, relayers the 2-4 skybox and converts the HUD canvases.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(CanvasController), nameof(CanvasController.Awake))]
         static void ResizeCanvases(CanvasController __instance)
@@ -43,6 +44,7 @@ namespace Plugin.Systems.UI.Patches
 
             UIConverter.RecursiveConvertCanvas(__instance.gameObject);
         }
+        // Adds one wall warning canvas to the HUD that shows when the head is inside level geometry.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(CanvasController), nameof(CanvasController.OnEnable))]
         static void DeployGTFOTW(CanvasController __instance)
@@ -67,6 +69,7 @@ namespace Plugin.Systems.UI.Patches
             GTFOTW.DetectorTransform = Vars.MainCamera.transform;
         }
 
+        // Converts new scene canvases when the player enters a screen zone.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ScreenZone), nameof(ScreenZone.OnTriggerEnter))]
         static void ConvertThing()
@@ -74,6 +77,7 @@ namespace Plugin.Systems.UI.Patches
             UIConverter.RecursiveConvertCanvas();
         }
 
+        // Scales up white and black screen flashes so they cover the view.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(FlashImage), nameof(FlashImage.Flash))]
         static void FlashImageTweak(FlashImage __instance)

@@ -20,6 +20,7 @@ internal class PatchGunTransform
                        AltScale = new Vector3(.085f, .085f, .085f),
                        HandOffsetRotation = new Vector3(0, -90, -90);
 
+        // Adds the hand rotation lock to the revolver and moves it to its VR position.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(Revolver.Start))]
         static void Retransform(Revolver __instance)
@@ -41,6 +42,7 @@ internal class PatchGunTransform
             Rotation = new Vector3(),
             Scale = new Vector3(.1f, .1f, .1f);
 
+        // Moves the shotgun to its VR position.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(Shotgun.Start))]
         static void Retransform(Shotgun __instance)
@@ -48,6 +50,7 @@ internal class PatchGunTransform
             ApplyTransform(ref __instance.wpos, Position, Rotation, Scale);
         }
 
+        // Rolls the shotgun model 25 degrees while it saws, and back to 0 after.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(Shotgun.Update))]
         static void Update(Shotgun __instance)
@@ -66,6 +69,7 @@ internal class PatchGunTransform
             Rotation = new Vector3(),
             Scale = new Vector3(.45f, .45f, .45f);
 
+        // Moves the jackhammer to its VR position, turns its model and turns off its animator.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(ShotgunHammer.OnEnable))]
         static void Retransform(ShotgunHammer __instance)
@@ -74,6 +78,7 @@ internal class PatchGunTransform
             __instance.transform.GetChild(1).localRotation = Quaternion.Euler(0, 90, 0);
             __instance.gameObject.GetComponent<Animator>().enabled = false;
         }
+        // Holds the jackhammer model bone at its VR position and angle each frame.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(ShotgunHammer.LateUpdate))]
         static void More(ShotgunHammer __instance)
@@ -92,6 +97,7 @@ internal class PatchGunTransform
                        AltRotation = new Vector3(),
                        AltScale = new Vector3(.35f, .35f, .35f);
 
+        // Moves the nailgun or sawblade launcher to its VR position.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(Nailgun.Start))]
         static void Retransform(Nailgun __instance)
@@ -106,6 +112,7 @@ internal class PatchGunTransform
         static Vector3 Position = new Vector3(-.15f, .15f, -.175f);
         static Vector3 Scale = new Vector3(.25f, .25f, .25f);
 
+        // Offsets the railcannon position and sets its VR scale.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(Railcannon.Start))]
         static void Retransform(Railcannon __instance)
@@ -121,6 +128,7 @@ internal class PatchGunTransform
                        Rotation = new Vector3(),
                        Scale = new Vector3(.65f, .65f, .65f);
 
+        // Moves the rocket launcher to its VR position and centers its model when the avatar is active.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(RocketLauncher.Start))]
         static void Retransform(RocketLauncher __instance)
@@ -133,6 +141,7 @@ internal class PatchGunTransform
     [HarmonyPatch(typeof(Chainsaw))]
     static class ChainsawT
     {
+        // Starts the chainsaw chain line at the current weapon, or at the gun hand.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(Chainsaw.Start))]
         static void ChainSaw(Chainsaw __instance)
@@ -146,6 +155,7 @@ internal class PatchGunTransform
     {
         static Vector3 Scale = new Vector3(-.275f, .275f, .275f);
 
+        // Adds the VR arm controller to the sandbox arm with its offset and a mirrored scale.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(Sandbox.Arm.SandboxArm.Awake))]
         static void Retransform(Sandbox.Arm.SandboxArm __instance)
@@ -164,6 +174,7 @@ internal class PatchGunTransform
                        Rotation = new Vector3(10, 90, 20),
                        Scale = new Vector3(-.0023f, .0023f, .0023f);
 
+        // Moves the fishing rod to its VR position and adds the hand rotation lock.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(FishingRodWeapon.Awake))]
         static void Retransform(FishingRodWeapon __instance)
@@ -182,6 +193,7 @@ internal class PatchGunTransform
             Position = new Vector3(0.065f, -0.075f, -0.175f),
             Rotation = new Vector3(10, 90, 20),
             Scale = new Vector3(-.0025f, .0025f, .0025f);
+        // Moves the washer to its VR position, adds the hand rotation lock and sets the VR spray origin.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(WeaponIdentifier.Start))]
         static void Retransform(WeaponIdentifier __instance)
@@ -215,6 +227,7 @@ internal class PatchGunTransform
             Position = new Vector3(0, -.35f, 2.15f),
             Rotation = new Vector3(0, 90, 20),
             Scale = new Vector3(.125f, .125f, .125f);
+        // Moves the vacuum to its VR position and adds the hand rotation lock.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(WeaponIdentifier.Start))]
         static void Retransform(WeaponIdentifier __instance)
@@ -230,6 +243,7 @@ internal class PatchGunTransform
         }
     }
 
+    // Sets the weapon middle pose to its default pose before WeaponPos starts.
     [HarmonyPrefix]
     [HarmonyPatch(typeof(WeaponPos), nameof(WeaponPos.Start))]
     static void Start(WeaponPos __instance)
@@ -239,6 +253,7 @@ internal class PatchGunTransform
         __instance.middleScale = __instance.defaultScale;
     }
 
+    // Sets the default, middle and current weapon position, and the rotation and scale; zero values are skipped.
     public static void ApplyTransform(ref WeaponPos WPos, Vector3 Position = new Vector3(), Vector3 EulerAngles = new Vector3(), Vector3 Scale = new Vector3())
     {
         if (WPos == null) return;
@@ -258,6 +273,7 @@ internal class PatchGunTransform
             WPos.transform.localScale = Scale;
         }
     }
+    // Sets the default and middle weapon position, rotation and scale; zero values are skipped.
     public static void ApplyTransform(WeaponPos WPos, Vector3 Position = new Vector3(), Vector3 EulerAngles = new Vector3(), Vector3 Scale = new Vector3())
     {
         if (WPos == null) return;

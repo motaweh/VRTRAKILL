@@ -7,6 +7,7 @@ namespace Plugin.Patches.ULTRAKILL;
 [HarmonyPatch(typeof(Revolver))]
 internal class PatchRevolver
 {
+    // Replaces ThrowCoin to throw coins from the arm hand, the gun hand or the camera, based on the aim settings.
     [HarmonyPrefix]
     [HarmonyPatch(nameof(Revolver.ThrowCoin))]
     private static bool ThrowCoin(Revolver __instance)
@@ -29,6 +30,7 @@ internal class PatchRevolver
 
         return false;
     }
+    // Moves the revolver muzzle to the VR hand before firing.
     [HarmonyPrefix]
     [HarmonyPatch(nameof(Revolver.Shoot))]
     private static void Shoot(Revolver __instance)

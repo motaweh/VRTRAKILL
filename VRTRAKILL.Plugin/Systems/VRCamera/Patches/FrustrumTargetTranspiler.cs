@@ -9,12 +9,14 @@ namespace Plugin.Systems.VRCamera.Patches;
 [HarmonyPatch]
 internal class FrustrumTargetTranspiler
 {
+    // Lists the weapon methods that get the frustum targeter from Camera.main.
     static IEnumerable<MethodBase> TargetMethods()
     {
         yield return AccessTools.Method(typeof(Railcannon), nameof(Railcannon.GetStuff));
         yield return AccessTools.Method(typeof(ShotgunHammer), nameof(ShotgunHammer.Awake));
         yield return AccessTools.Method(typeof(SecondaryRevolver), nameof(SecondaryRevolver.Start));
     }
+    // Replaces the Camera.main lookup of the frustum targeter with CameraFrustumTargeter.Instance.
     static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         // Camera.main.GetComponent<CameraFrustumTargeter>() -> CameraFrustumTargeter.Instance

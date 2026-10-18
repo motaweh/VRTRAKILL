@@ -5,31 +5,21 @@ namespace Plugin.Systems.VRAvatar
     // FABRIK solver, see https://www.youtube.com/watch?v=UNoX65PRehA
     internal class IKChain : MonoBehaviour
     {
-        /// <summary>
-        /// Chain length of bones
-        /// </summary>
+        // Number of bones in the chain.
         public int ChainLength = 2;
 
-        /// <summary>
-        /// Target the chain should bent to
-        /// </summary>
+        // Target the chain bends toward.
         public Transform Target;
         public Transform Pole;
 
-        /// <summary>
-        /// Solver iterations per update
-        /// </summary>
+        // Solver iterations per update.
         [Header("Solver Parameters")]
         public int Iterations = 10;
 
-        /// <summary>
-        /// Distance when the solver stops
-        /// </summary>
+        // Distance at which the solver stops.
         public float Delta = 0.001f;
 
-        /// <summary>
-        /// Strength of going back to the start position.
-        /// </summary>
+        // Strength of the pull back to the start pose.
         [Range(0, 1)]
         public float SnapBackStrength = 1f;
 
@@ -44,8 +34,10 @@ namespace Plugin.Systems.VRAvatar
         protected Transform Root;
 
 
+        // Sets up the chain on start.
         public void Start() => Init();
 
+        // Finds the chain bones and root, creates a target if none is set, and stores the bone lengths and start rotations.
         public void Init()
         {
             Bones = new Transform[ChainLength + 1];
@@ -91,11 +83,13 @@ namespace Plugin.Systems.VRAvatar
             }
         }
 
+        // Solves the chain each frame.
         public void LateUpdate()
         {
             ResolveIK();
         }
 
+        // Moves the bones toward the target with FABRIK, bends them toward the pole and sets their rotations.
         private void ResolveIK()
         {
             if (Target == null)
@@ -166,6 +160,7 @@ namespace Plugin.Systems.VRAvatar
             }
         }
 
+        // Returns the position of a transform in root space.
         private Vector3 GetPositionRootSpace(Transform current)
         {
             if (Root == null)
@@ -174,6 +169,7 @@ namespace Plugin.Systems.VRAvatar
                 return Quaternion.Inverse(Root.rotation) * (current.position - Root.position);
         }
 
+        // Sets the position of a transform from a root space position.
         private void SetPositionRootSpace(Transform current, Vector3 position)
         {
             if (Root == null)
@@ -182,6 +178,7 @@ namespace Plugin.Systems.VRAvatar
                 current.position = Root.rotation * position + Root.position;
         }
 
+        // Returns the rotation of a transform in root space.
         private Quaternion GetRotationRootSpace(Transform current)
         {
             // inverse(after) * before => rot: before -> after
@@ -191,6 +188,7 @@ namespace Plugin.Systems.VRAvatar
                 return Quaternion.Inverse(current.rotation) * Root.rotation;
         }
 
+        // Sets the rotation of a transform from a root space rotation.
         private void SetRotationRootSpace(Transform current, Quaternion rotation)
         {
             if (Root == null)

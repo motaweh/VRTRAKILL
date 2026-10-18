@@ -12,8 +12,10 @@ internal sealed class PatchControllerHaptics
     static readonly SteamVR_Action_Vibration HapticAction = SteamVR_Actions._default.Haptic;
     // RumbleManager.OnDisable runs at quit after OpenVR shut down (OpenVR.Input is null -> NRE in Execute)
     static bool Quitting;
+    // Sets Quitting when the application starts to quit.
     static PatchControllerHaptics() { Application.quitting += () => Quitting = true; }
 
+    // Replaces the gamepad rumble update: drops ended vibrations and sends the strongest one to its controller.
     [HarmonyPrefix]
     [HarmonyPatch(nameof(RumbleManager.Update))]
     static bool Update(RumbleManager __instance)
@@ -47,6 +49,7 @@ internal sealed class PatchControllerHaptics
 
         return false;
     }
+    // Stops controller vibration in place of the game's rumble stop and disable methods.
     [HarmonyPrefix]
     [HarmonyPatch(nameof(RumbleManager.OnDisable))]
     [HarmonyPatch(nameof(RumbleManager.StopVibration))]
@@ -57,12 +60,14 @@ internal sealed class PatchControllerHaptics
         return false;
     }
 
+    // Sends a haptic pulse to a controller unless SteamVR input is not ready or the game is quitting.
     public static void Vibrate(float Duration, float Frequency, float Amplitude, SteamVR_Input_Sources Source)
     {
         if (Quitting || !SteamVR_Input.initialized) return;
         HapticAction.Execute(0, Duration, Frequency, Amplitude, Source);
     }
 
+    // Returns the controller a rumble key belongs to: the arm hand, the gun hand or both.
     public static SteamVR_Input_Sources ResolveController(string Key)
     {
         switch (Key)

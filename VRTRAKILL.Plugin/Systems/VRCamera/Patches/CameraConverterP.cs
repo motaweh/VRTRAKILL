@@ -15,6 +15,7 @@ namespace Plugin.Systems.VRCamera.Patches
         public static Camera DesktopWorldCam, DesktopUICam;
         public static Camera leftEye, rightEye;
 
+        // Sets up the main camera for VR and creates the left and right eye cameras.
         public static void SetupEyeCameras()
         {
             CameraController cc = CameraController.Instance;
@@ -36,6 +37,7 @@ namespace Plugin.Systems.VRCamera.Patches
             rightEye.transform.SetParent(cc.transform.parent);
             rightEye.stereoTargetEye = StereoTargetEyeMask.Right;
         }
+        // Turns off the virtual camera and the main camera before the camera controller starts.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(CameraController), nameof(CameraController.Start))]
         static void ConvertCameras(CameraController __instance)
@@ -47,6 +49,7 @@ namespace Plugin.Systems.VRCamera.Patches
 
             __instance.cam.enabled = false;
         }
+        // Restores the player rigidbody constraints and turns cc back on when a hit kills the player.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(NewMovement), nameof(NewMovement.GetHurt))]
         public static void FixWeirdDeathThing(NewMovement __instance)
@@ -58,6 +61,7 @@ namespace Plugin.Systems.VRCamera.Patches
             }
 
         }
+        // Adds the VR keybinds controller to the player and resets the turn offset.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(NewMovement), nameof(NewMovement.Start))]
         static void ScaleObjects(NewMovement __instance)
@@ -68,6 +72,7 @@ namespace Plugin.Systems.VRCamera.Patches
         }
 
 
+        // Drives the camera rotation from the headset and places the eye cameras, through portals if needed.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(CameraController), nameof(CameraController.LateUpdate))]
         static void HandleRotationsAndPositions(CameraController __instance)
@@ -83,6 +88,7 @@ namespace Plugin.Systems.VRCamera.Patches
             PortalAwareSetTransformFromBody(rightEye.transform, InputTracking.GetLocalPosition(XRNode.RightEye), __instance.transform.rotation);
         }
 
+        // Places a transform at a pose relative to the player body, with turn and gravity applied, then moves it through crossed portals.
         public static void PortalAwareSetTransformFromBody(Transform t, Vector3 localPosition, Quaternion worldRotation, bool hands = false)
         {
             CameraController cc = CameraController.Instance;
@@ -99,6 +105,7 @@ namespace Plugin.Systems.VRCamera.Patches
             MoveFromPlayerThroughPortals(t);
         }
 
+        // Moves a transform through any portal crossed between the player and the transform.
         public static void MoveFromPlayerThroughPortals(Transform t)
         {
             CameraController cc = CameraController.Instance;
@@ -151,12 +158,14 @@ namespace Plugin.Systems.VRCamera.Patches
             }
         }
 
+        // Stores the camera yaw before CameraController.Transform runs.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(CameraController), nameof(CameraController.Transform))]
         static void TransformBefore(CameraController __instance, ref float __state)
         {
             __state = __instance.rotationY;
         }
+        // Adds the yaw change from CameraController.Transform to the turn offset.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(CameraController), nameof(CameraController.Transform))]
         static void TransformAfter(CameraController __instance, ref float __state)
@@ -164,6 +173,7 @@ namespace Plugin.Systems.VRCamera.Patches
             InputVars.TurnOffset += __instance.rotationY - __state;
         }
 
+        // Returns the gun hand position as the camera default position.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(CameraController), nameof(CameraController.GetDefaultPos))]
         static bool GetDefaultPos(ref Vector3 __result)
@@ -174,6 +184,7 @@ namespace Plugin.Systems.VRCamera.Patches
             return false;
         }
 
+        // Adds the VR head to the left eye and removes the player model renderers.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlayerAnimations), nameof(PlayerAnimations.Start))]
         static void RemovePlayerModel(PlayerAnimations __instance)

@@ -11,11 +11,13 @@ namespace Plugin.Systems.Controllers
 
         public Vector3 ArmIKOffset = new Vector3(.05f, .0525f, -.1765f);
 
+        // Gets the controller and its gun offset.
         public void Awake()
         {
             CC = gameObject.GetComponent<VRControllersSystem>();
             GunOffset = CC.GunOffset;
         }
+        // Finds the controller and sandbox hand models and hides them.
         public void Start()
         {
             RM = CC.RenderModel.transform.GetChild(0).gameObject;
@@ -24,12 +26,14 @@ namespace Plugin.Systems.Controllers
             SandboxHandRM.SetActive(false);
         }
 
+        // Sets the arm IK offset and toggles the controller models.
         public void Update()
         {
             CC.ArmOffset.transform.localPosition = ArmIKOffset;
             SetControllers();
         }
 
+        // Shows the controller or sandbox hand model while no gun is active, and hides both while one is.
         private void SetControllers()
         {
             if ((bool)!GunControl.Instance?.activated || (bool)GunControl.Instance?.noWeapons)

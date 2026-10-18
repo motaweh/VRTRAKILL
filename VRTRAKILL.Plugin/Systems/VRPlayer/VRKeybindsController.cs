@@ -6,8 +6,10 @@ namespace Plugin.Systems.VRPlayer
     {
         public static bool WasDVActive { get; set; }
 
+        // Does nothing.
         public void Start() { }
 
+        // Toggles the desktop view or the avatar size adjustment when their keys are pressed.
         public void Update()
         {
             if (UnityEngine.Input.GetKeyDown((KeyCode)Prefs.ConfigMaster.ToggleDesktopView))
@@ -28,6 +30,7 @@ namespace Plugin.Systems.VRPlayer
             }
         }
 
+        // Shows or hides the desktop world and UI cameras.
         public void ToggleDesktopView()
         {
             if (!Vars.DesktopCamera.gameObject.activeSelf) Vars.DesktopCamera.gameObject.SetActive(true);

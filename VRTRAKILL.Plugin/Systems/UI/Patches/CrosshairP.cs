@@ -7,6 +7,7 @@ namespace Plugin.Systems.UI.Patches
     [HarmonyPatch]
     internal class CrosshairP
     {
+        // Turns the crosshair into a VR canvas with a crosshair controller and keeps the auto aim offset at zero.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Crosshair), nameof(Crosshair.Start))]
         static void SetCrosshair(Crosshair __instance)
@@ -20,12 +21,14 @@ namespace Plugin.Systems.UI.Patches
             __instance.transform.localEulerAngles = Vector3.zero;
             __instance.gameObject.AddComponent<CrosshairController>();
         }
+        // Parents the crosshair to the gun hand after it starts.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Crosshair), nameof(Crosshair.Start))]
         static void Reparent(Crosshair __instance)
         {
             __instance.transform.parent = Vars.DominantHand.transform;
         }
+        // Replaces StatsManager.HideShit to end the combo and hide the weapons, crosshair and gun canvas, finding missing references first.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(StatsManager), nameof(StatsManager.HideShit))]
         static bool FixShit(StatsManager __instance)

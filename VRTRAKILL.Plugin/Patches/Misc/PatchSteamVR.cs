@@ -7,7 +7,7 @@ namespace Plugin.Patches.Misc;
 [HarmonyPatch]
 internal static class PatchSteamVR
 {
-    // skip Expand: its renaming and re-parenting breaks the game's camera hierarchy
+    // Skips SteamVR_Camera.Expand, whose renaming and re-parenting breaks the game camera hierarchy, and adds only the ears.
     [HarmonyPrefix]
     [HarmonyPatch(typeof(SteamVR_Camera), nameof(SteamVR_Camera.Expand))]
     static bool SVRCExpand(SteamVR_Camera __instance, Transform ____ears, Transform ____head)

@@ -6,6 +6,7 @@ namespace Plugin.Systems.Arms;
 internal class VRArmController : VRArmControllerBase
 {
     public Transform RawTarget { get; set; }
+    // Picks the hand the arm follows: the gun hand for left handed or sandbox arms, else the arm hand.
     public override void Start()
     {
         base.Start();
@@ -15,6 +16,7 @@ internal class VRArmController : VRArmControllerBase
         else { Target = Vars.NonDominantHand.transform; RawTarget = Vars.DHC.transform; }
     }
 
+    // Moves the arm to its target hand and turns the hand with it.
     public override void LateUpdate()
     {
         if (Vars.IsMainMenu || Arm == null) return;

@@ -24,6 +24,7 @@ namespace Plugin.Systems
         private static Vector3 DefaultPos = new Vector3(2048, -4048, 2048); // parks the loaded templates far from the level
         private static Quaternion DefaultRot = Quaternion.identity;
 
+        // Loads the mod asset bundle, spawns the rig, hand, controller and UI templates far from the level, then unloads the bundle.
         public static void LoadAllCustomAssets()
         {
             AssetBundle Assets = LoadBundle("vrtrakillassetbundle");
@@ -44,12 +45,14 @@ namespace Plugin.Systems
             Assets.Unload(false);
         }
 
+        // Loads an asset from the bundle at the given path, or logs an error and returns null.
         public static T LoadAsset<T>(AssetBundle Bundle, string PrefabName, string PathToPrefab = "Assets/AssetsBundles") where T : Object
         {
             T Asset = Bundle.LoadAsset<T>($"{PathToPrefab}/{PrefabName}");
             if (Asset != null) return Asset;
             else { Systems.Vars.Log.LogError($"Failed to load {PrefabName}."); return null; }
         }
+        // Loads an asset bundle from the plugin folder or from the given path.
         public static AssetBundle LoadBundle(string BundleName, string Path = null)
         {
             if (Path == null) Path = $"{PluginInfo.PluginPath}";

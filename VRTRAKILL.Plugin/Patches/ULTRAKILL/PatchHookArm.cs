@@ -12,6 +12,7 @@ namespace Plugin.Patches.ULTRAKILL;
 [HarmonyPatch(typeof(HookArm))]
 internal sealed class PatchHookArm
 {
+    // Adds the VR arm transformer and controller to the whiplash with the whiplash arm preset.
     [HarmonyPostfix]
     [HarmonyPatch(nameof(HookArm.Start))]
     static void Start(HookArm __instance)
@@ -22,7 +23,7 @@ internal sealed class PatchHookArm
         AR.Arm = A; AC.Arm = A;
     }
 
-    // native Update stays (portal traversal, line renderer); only the throw origin moves from the arm to the VR hand
+    // Moves the whiplash throw origin from the arm to the VR hand; the native Update stays for portals and the line renderer.
     [HarmonyTranspiler]
     [HarmonyPatch(nameof(HookArm.Update))]
     static IEnumerable<CodeInstruction> Update(IEnumerable<CodeInstruction> instructions)
@@ -39,12 +40,13 @@ internal sealed class PatchHookArm
         return SkipHandOffsets(codes);
     }
 
+    // Removes the FOV based hand offsets from StopThrow.
     [HarmonyTranspiler]
     [HarmonyPatch(nameof(HookArm.StopThrow))]
     static IEnumerable<CodeInstruction> StopThrow(IEnumerable<CodeInstruction> instructions)
         => SkipHandOffsets(instructions);
 
-    // the FOV based hand.localPosition offsets fight the VR arm rig, so drop the assignments
+    // Removes the FOV based hand.localPosition assignments, which fight the VR arm rig.
     static IEnumerable<CodeInstruction> SkipHandOffsets(IEnumerable<CodeInstruction> instructions)
     {
         MethodInfo setLocalPosition = AccessTools.PropertySetter(typeof(Transform), nameof(Transform.localPosition));

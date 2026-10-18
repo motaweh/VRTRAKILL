@@ -6,14 +6,10 @@ using System.Reflection;
 
 namespace Plugin.Prefs
 {
-    /// <summary>
-    /// Represents the Binds.json file located in ULTRAKILL\\Preferences\\Binds.json
-    /// </summary>
+    // Represents the ULTRAKILL\Preferences\Binds.json file.
     public class UKBindings
     {
-        /// <summary>
-        /// Represents the modifiedActions object in Binds.json
-        /// </summary>
+        // Represents the modifiedActions object in Binds.json.
         public class ModifiedActions
         {
             [JsonProperty("Dodge")] public ModifiedAction[] Dodge { get; set; }
@@ -40,9 +36,7 @@ namespace Plugin.Prefs
             [JsonProperty("Previous Weapon")] public ModifiedAction[] PrevWeapon { get; set; }
             [JsonProperty("Last Used Weapon")] public ModifiedAction[] LastWeapon { get; set; }
 
-            /// <summary>
-            /// Creates a new <see cref="ModifiedActions"/> class with the default game parameters.
-            /// </summary>
+            // Creates the actions with the game's default keys.
             public ModifiedActions()
             {
                 Dodge = new ModifiedAction[] { new ModifiedAction("LeftShift") };
@@ -70,14 +64,13 @@ namespace Plugin.Prefs
                 LastWeapon = new ModifiedAction[] { new ModifiedAction("") }; // the game has no keyboard default for it
             }
         }
-        /// <summary>
-        /// Represents a modified action object of Binds.json.
-        /// If it's an array, use only the zeroth index.
-        /// </summary>
+        // Represents one action of Binds.json; only the first entry of an array is used.
         public class ModifiedAction
         {
             [JsonProperty("path")] public string LocalPath { get; set; }
+            // Returns the key name of the binding path.
             [JsonIgnore] public string Path => GetPath();
+            // Returns the last part of the binding path, such as "space" from "<Keyboard>/space".
             public string GetPath()
             {
                 if (LocalPath.Contains("/"))
@@ -87,6 +80,7 @@ namespace Plugin.Prefs
                 }
                 return LocalPath;
             }
+            // Creates an action with the given binding path.
             public ModifiedAction(string LocalPath)
             {
                 this.LocalPath = LocalPath;
@@ -101,6 +95,7 @@ namespace Plugin.Prefs
         [JsonProperty("controlScheme")] public string ControlScheme { get; set; } = "Keyboard & Mouse";
         [JsonProperty("modifiedActions")] public ModifiedActions Actions { get; set; }
 
+        // Returns the binds from Binds.json, with defaults for missing, unbound or unreadable actions.
         public static ModifiedActions GetBinds()
         {
             var Binds = new ModifiedActions();

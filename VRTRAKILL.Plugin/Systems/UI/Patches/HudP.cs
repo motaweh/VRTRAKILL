@@ -6,6 +6,7 @@ namespace Plugin.Systems.UI.Patches
     [HarmonyPatch]
     internal sealed class HudP
     {
+        // Moves the standard HUD under the main canvas, unless it is the alt HUD.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(HudController), nameof(HudController.Start))]
         static void ReparentHUD(HudController __instance)
@@ -18,6 +19,7 @@ namespace Plugin.Systems.UI.Patches
                 __instance.transform.localEulerAngles = Vector3.zero;
             }
         }
+        // Converts a HUD canvas to world space, hides it in menus and sets VR positions for the gun and style panels.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(HUDPos), nameof(HUDPos.CheckPos))]
         static void RetransformElements(HUDPos __instance)
@@ -46,6 +48,7 @@ namespace Plugin.Systems.UI.Patches
                     break;
             }
         }
+        // Converts the final rank canvas to world space and scales it for VR.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(FinalRank), nameof(FinalRank.Start))]
         static void CFinalRank(FinalRank __instance)
@@ -54,6 +57,7 @@ namespace Plugin.Systems.UI.Patches
             __instance.transform.localPosition = Vector3.zero;
             __instance.transform.localScale = new Vector3(8, 4, 4) * 0.3f;
         }
+        // Makes the blood splatters on the screen bigger.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(ScreenBlood), nameof(ScreenBlood.Start))]
         static void CScreenBlood(ScreenBlood __instance)

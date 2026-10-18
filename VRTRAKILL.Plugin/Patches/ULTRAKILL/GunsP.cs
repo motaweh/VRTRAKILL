@@ -7,6 +7,7 @@ namespace Plugin.Patches.ULTRAKILL;
 [HarmonyPatch]
 internal sealed class GunsP
 {
+    // Adds the VR guns controller to the gun control, turns off the walking bob and centers the guns.
     [HarmonyPostfix]
     [HarmonyPatch(typeof(GunControl), nameof(GunControl.Start))]
     static void RLPGC(GunControl __instance)
@@ -15,10 +16,12 @@ internal sealed class GunsP
         __instance.GetComponent<WalkingBob>().enabled = false;
         __instance.transform.localPosition = Vector3.zero;
     }
+    // Centers the gun setter after its weapons reset.
     [HarmonyPostfix]
     [HarmonyPatch(typeof(GunSetter), nameof(GunSetter.ResetWeapons))]
     static void RLPGS(GunSetter __instance, bool firstTime = false)
     { __instance.transform.localPosition = Vector3.zero; }
+    // Makes the gun meshes keep updating when off screen.
     [HarmonyPostfix]
     [HarmonyPatch(typeof(GunSetter), nameof(GunSetter.Start))]
     static void MakeThemUndisappear(GunSetter __instance)
@@ -27,7 +30,7 @@ internal sealed class GunsP
             SMR.updateWhenOffscreen = true;
     }
 
-    // weapon wheel controller interaction
+    // Replaces the weapon wheel update so the movement stick selects the segments.
     [HarmonyPrefix]
     [HarmonyPatch(typeof(WeaponWheel), nameof(WeaponWheel.Update))]
     static bool WWUpdate(WeaponWheel __instance)

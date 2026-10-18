@@ -16,6 +16,7 @@ namespace Plugin.Systems.VRCamera.Patches
 
         static Camera rightEyePortalCam;
 
+        // Replaces InitCam so the pre-render callback is added only once.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PortalManagerV2), nameof(PortalManagerV2.InitCam))]
         static bool InitStopDuplicate(PortalManagerV2 __instance)
@@ -24,6 +25,7 @@ namespace Plugin.Systems.VRCamera.Patches
             Camera.onPreRender += __instance.OnPreRenderCallback;
             return false;
         }
+        // Creates the eye cameras and makes the left eye the portal manager camera.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PortalManagerV2), nameof(PortalManagerV2.OnEnable))]
         static void SetCamToLeft(PortalManagerV2 __instance)
@@ -31,6 +33,7 @@ namespace Plugin.Systems.VRCamera.Patches
             CameraConverterP.SetupEyeCameras();
             __instance.mainCamera = CameraConverterP.leftEye;
         }
+        // Creates the right eye portal renderer, post-processing handler and portal camera as copies of the left eye ones.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(PortalManagerV2), nameof(PortalManagerV2.OnEnable))]
         static void SetupDuplicates(PortalManagerV2 __instance)
@@ -73,6 +76,7 @@ namespace Plugin.Systems.VRCamera.Patches
             rightEyePortalCam.enabled = false;
         }
 
+        // Points each eye's post-processing handler at its eye camera.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(PostProcessV2_Handler), nameof(PostProcessV2_Handler.Start))]
         [HarmonyPatch(typeof(PostProcessV2_Handler), nameof(PostProcessV2_Handler.ChangeCamera))]
@@ -81,6 +85,7 @@ namespace Plugin.Systems.VRCamera.Patches
             if (__instance == leftEyePP) __instance.mainCam = CameraConverterP.leftEye;
             else if (__instance == rightEyePP) __instance.mainCam = CameraConverterP.rightEye;
         }
+        // Sets the left eye post-processing and stereo matrices before the portal manager updates.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PortalManagerV2), nameof(PortalManagerV2.LateUpdate))]
         static void LateUpdateLeft(PortalManagerV2 __instance)
@@ -96,6 +101,7 @@ namespace Plugin.Systems.VRCamera.Patches
                 __instance.mainCamera.projectionMatrix = __instance.mainCamera.GetStereoProjectionMatrix(Camera.StereoscopicEye.Left);
             }
         }
+        // Sets the right eye post-processing and stereo matrices and sets up its portal renderer after the portal manager updates.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(PortalManagerV2), nameof(PortalManagerV2.LateUpdate))]
         static void LateUpdateRight(PortalManagerV2 __instance)
@@ -114,6 +120,7 @@ namespace Plugin.Systems.VRCamera.Patches
             PostProcessV2_Handler.Instance = leftEyePP;
         }
 
+        // Selects the left eye post-processing before a camera pre-renders.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PortalManagerV2), nameof(PortalManagerV2.OnPreRenderCallback))]
         static void OnPreRenderCalbackLeft(PortalManagerV2 __instance, Camera cam)
@@ -126,6 +133,7 @@ namespace Plugin.Systems.VRCamera.Patches
         private static readonly AccessTools.FieldRef<PortalManagerV2, Action<Camera>> RenderFromRef =
             AccessTools.FieldRefAccess<PortalManagerV2, Action<Camera>>("RenderFrom"); // resolved once; reflection is slow
 
+        // Renders the right eye portals and look-at-camera objects when the right eye camera pre-renders.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(PortalManagerV2), nameof(PortalManagerV2.OnPreRenderCallback))]
         static void OnPreRenderCallbackRight(PortalManagerV2 __instance, Camera cam)
@@ -144,19 +152,21 @@ namespace Plugin.Systems.VRCamera.Patches
             PostProcessV2_Handler.Instance = leftEyePP;
         }
 
+        // Applies portal occlusion changes to the right eye renderer too.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(PortalManagerV2), nameof(PortalManagerV2.SetPortalOcclusion))]
         static void SetPortalOcclusion(bool enabled)
         {
             rightEyeRender.SetPortalOcclusion(enabled);
         }
-        // Setup copies the stereo eye into portalCam, which is rendered manually so must stay mono
+        // Keeps the portal camera mono after Setup copies the stereo eye into it, since it is rendered manually.
         [HarmonyPostfix]
         [HarmonyPatch(typeof(PortalRenderV2), nameof(PortalRenderV2.Setup))]
         static void KeepPortalCameraMonoAfterSetup(PortalRenderV2 __instance)
         {
             if (__instance.portalCam) __instance.portalCam.stereoTargetEye = StereoTargetEyeMask.None;
         }
+        // Restores the portal shader textures the other eye overwrote and keeps the portal camera mono before it renders.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PortalRenderV2), nameof(PortalRenderV2.Render))]
         static void PortalRenderFix2(PortalRenderV2 __instance)
@@ -176,13 +186,14 @@ namespace Plugin.Systems.VRCamera.Patches
                 __instance.portalCam.stereoTargetEye = StereoTargetEyeMask.None;
         }
 
+        // Turns off usedComputeShadersAtStart before each post-processing pre-render.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PostProcessV2_Handler), nameof(PostProcessV2_Handler.OnPreRenderCallback))]
         static void FixRed(PostProcessV2_Handler __instance, Camera cam)
         {
             __instance.usedComputeShadersAtStart = false;
         }
-        // the arm side is handled in VRArmTransformer
+        // Makes weapons render through portals; VRArmTransformer does the same for arms.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(WeaponPos), nameof(WeaponPos.Start))]
         static void AddWeaponRenderers(WeaponPos __instance)
@@ -191,6 +202,7 @@ namespace Plugin.Systems.VRCamera.Patches
                 __instance.gameObject.AddComponent<PortalAwareRenderer>().objectType = PortalAwareRenderer.ObjectType.Player;
         }
 
+        // Adds a Limbo skybox to the post-processing of both eyes.
         public static void AddLimboSkyboxToAllPPHs(LimboSkybox l)
         {
             leftEyePP.AddLimboSkybox(l);

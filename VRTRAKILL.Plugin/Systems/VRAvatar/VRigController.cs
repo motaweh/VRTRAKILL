@@ -8,7 +8,7 @@ namespace Plugin.Systems.VRAvatar
     // the NewMovement of the player's avatar
     internal class VRigController : MonoBehaviour
     {
-        // hand-rolled singleton so this class can use Awake
+        // Returns the single instance; hand-rolled so this class can use Awake.
         private static VRigController _Instance; public static VRigController Instance { get { return _Instance; } }
 
         public MetaRig Rig; private EZSoftBone WingBone;
@@ -16,6 +16,7 @@ namespace Plugin.Systems.VRAvatar
                        HeadOffsetAngles = new Vector3(-90, 0, 0);
         public Animator Anim;
 
+        // Adds an IK chain to the object with the given target, length and pole.
         private IKChain AddIK(GameObject GO, Transform Target, int ChainLen = 2, Transform Pole = null)
         {
             IKChain IK = GO.AddComponent<IKChain>();
@@ -23,12 +24,14 @@ namespace Plugin.Systems.VRAvatar
             return IK;
         }
 
+        // Keeps one instance and destroys the game object of any duplicate.
         public void Awake()
         {
             if (_Instance != null && _Instance != this) Destroy(this.gameObject);
             else _Instance = this;
         }
 
+        // Sets up the avatar: arm IK, animator, wing physics, neck IK and the size adjustor.
         public void Start()
         {
             Rig = Rig ?? MetaRig.CreateVCustomPreset(null, "VR Avatar");
@@ -90,6 +93,7 @@ namespace Plugin.Systems.VRAvatar
             this.gameObject.SetActive(true);
         }
 
+        // Updates the avatar body, head, arms and wings, plus the animations and pelvis when legs IK is on.
         public void LateUpdate()
         {
             if (Rig == null) return;
@@ -106,6 +110,7 @@ namespace Plugin.Systems.VRAvatar
             MakeArmCannonsFun();
         }
 
+        // Moves and turns the avatar body toward the camera.
         private void HandleBodyTransform()
         {
             // Smooth body's position and rotation towards the camera
@@ -113,11 +118,13 @@ namespace Plugin.Systems.VRAvatar
             Quaternion Rotation = Quaternion.Lerp(Rig.Abdomen.rotation, Vars.MainCamera.transform.rotation, Time.deltaTime * 2.5f);
             Rig.Root.rotation = Quaternion.Euler(0, Rotation.eulerAngles.y, 0);
         }
+        // Moves the avatar head target to the camera.
         private void HandleHead()
         {
             Rig.Head.GetChild(0).position = Vars.MainCamera.transform.position;
             Rig.Head.GetChild(0).eulerAngles = Vars.MainCamera.transform.eulerAngles;
         }
+        // Shows the avatar arms that match the current fist, the sandbox arm and the whiplash state.
         private void HandleArms()
         {
             // This method decides which arm to render
@@ -181,6 +188,7 @@ namespace Plugin.Systems.VRAvatar
             }
         }
 
+        // Makes the wing physics stiffer while moving and looser while still.
         private void HandleWings()
         {
             // stiffer wings while moving; tune these values in the Unity editor
@@ -200,6 +208,7 @@ namespace Plugin.Systems.VRAvatar
             }
         }
 
+        // Sets the jumping and sliding animator flags from the player state.
         private void HandleAnimations()
         {
             // triggers in the air
@@ -211,6 +220,7 @@ namespace Plugin.Systems.VRAvatar
             { Anim.SetBool("Jumping", false); Anim.SetBool("Sliding", true); }
             else Anim.SetBool("Sliding", false);
         }
+        // Turns the avatar pelvis toward the movement direction.
         private void HandlePelvisRotation()
         {
             // turn the pelvis toward the movement, since foot placement does not handle sideways steps
@@ -221,6 +231,7 @@ namespace Plugin.Systems.VRAvatar
         }
 
         private bool macf = false;
+        // Sets macf while the rocket launcher or jackhammer is held; nothing reads it yet.
         private void MakeArmCannonsFun()
         {
             if (!GunControl.Instance || !GunControl.Instance.currentWeapon) return;

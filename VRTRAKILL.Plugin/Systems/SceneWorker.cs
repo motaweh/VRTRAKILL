@@ -8,9 +8,11 @@ namespace Plugin.Systems
     // per-scene setup
     internal static class SceneWorker
     {
+        // Runs the scene setup each time the active scene changes.
         public static void Init()
         => SceneManager.activeSceneChanged += (_, _) => SceneChanged();
 
+        // Reloads the config and assets, moves the assets to the AlwaysOnTop layer and converts the canvases.
         private static void SceneChanged()
         {
             VRTRAKILL.Utilities.Unity.EnableOffscreenRendering();
@@ -24,6 +26,7 @@ namespace Plugin.Systems
 
             UI.UIConverter.ConvertAllCanvases();
         }
+        // Moves every loaded mod asset and its children to the AlwaysOnTop layer.
         private static void RelayerAssetsStuff()
         {
             // the Assets properties hold references to the instantiated objects, so this relayers them in place

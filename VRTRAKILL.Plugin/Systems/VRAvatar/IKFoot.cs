@@ -18,10 +18,12 @@ namespace Plugin.Systems.VRAvatar
         public int DetectionLayerMask = 1 << (int)Layers.Environment,
                    RaycastDistance = 10;
 
+        // Returns true while the foot is mid step.
         public bool IsMoving => Lerp < 1;
 
         Vector3 LastFootPos = default;
 
+        // Sets the ground layers, the foot spacing and the start position of the foot.
         public void Start()
         {
             DetectionLayerMask |= 1 << (int)Layers.Outdoors;
@@ -31,6 +33,7 @@ namespace Plugin.Systems.VRAvatar
             LastFootPos = transform.localPosition;
         }
 
+        // Steps the foot to the ground under the body when it is too far away and the other foot is planted.
         public void Update()
         {
             if ((Anim?.GetBool("Jumping") == true || Anim?.GetBool("Sliding") == true) // animations

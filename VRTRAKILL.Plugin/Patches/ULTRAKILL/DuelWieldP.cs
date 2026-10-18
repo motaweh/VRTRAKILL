@@ -7,6 +7,7 @@ namespace Plugin.Patches.ULTRAKILL;
 [HarmonyPatch(typeof(DualWieldPickup))]
 internal class DuelWieldP
 {
+    // Replaces the dual wield pickup so each extra gun copy sits close to the hand.
     [HarmonyPrefix]
     [HarmonyPatch(nameof(DualWieldPickup.PickedUp))]
     static bool FixTransform(DualWieldPickup __instance)

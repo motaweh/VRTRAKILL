@@ -5,7 +5,9 @@ namespace Plugin.Systems.VRCamera
     internal class DesktopCamera : MonoBehaviour
     {
         Camera C;
+        // Gets the camera on this object.
         public void Start() { C = gameObject.GetComponent<Camera>(); }
+        // Copies the main camera settings to the desktop camera each frame and keeps it off the headset.
         public void Update()
         {
             C.nearClipPlane = Vars.MainCamera.nearClipPlane;

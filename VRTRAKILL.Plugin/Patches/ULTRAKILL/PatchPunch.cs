@@ -12,6 +12,7 @@ namespace Plugin.Patches.ULTRAKILL;
 [HarmonyPatch(typeof(Punch))]
 public sealed class PatchPunch
 {
+    // Adds the VR arm parts for the fist type, keeps its meshes updating off screen and turns off the punch trail.
     [HarmonyPostfix]
     [HarmonyPatch(nameof(Punch.Start))]
     private static void Start(Punch __instance)
@@ -33,6 +34,7 @@ public sealed class PatchPunch
         __instance.tr.enabled = false;
     }
 
+    // Starts a punch when the arm moves fast enough with punch held, and blocks the game's own punch for this frame.
     [HarmonyPrefix]
     [HarmonyPatch(nameof(Punch.Update))]
     private static void Update(Punch __instance, out bool __state)
@@ -52,12 +54,14 @@ public sealed class PatchPunch
         __state = __instance.ready;
         __instance.ready = false; // blocks the game's own punch this frame; UpdateEnd restores it
     }
+    // Restores the punch ready state after Update.
     [HarmonyPostfix]
     [HarmonyPatch(nameof(Punch.Update))]
     private static void UpdateEnd(Punch __instance, bool __state)
     {
         __instance.ready = __state;
     }
+    // Makes ActiveFrame use the arm hand position, the punch direction and the arm hand rotation in place of the camera.
     [HarmonyTranspiler]
     [HarmonyPatch(nameof(Punch.ActiveFrame))]
     static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -108,6 +112,7 @@ public sealed class PatchPunch
         return sequence;
     }
 
+    // Fires the Knuckleblaster blast wave from the arm hand while punch is held.
     [HarmonyPrefix]
     [HarmonyPatch(nameof(Punch.BlastCheck))]
     private static bool BlastCheck(Punch __instance)
@@ -125,6 +130,7 @@ public sealed class PatchPunch
         }
         return false;
     }
+    // Returns the parry target along the arm hand, or toward the auto aim target.
     [HarmonyPrefix]
     [HarmonyPatch(nameof(Punch.GetParryLookTarget))]
     private static bool GetParryLookTarget(ref Vector3 __result)

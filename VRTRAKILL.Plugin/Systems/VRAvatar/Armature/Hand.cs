@@ -12,6 +12,7 @@ namespace Plugin.Systems.VRAvatar.Armature
         public Finger FRing { get; set; }
         public Finger FPinky { get; set; }
 
+        // Maps the finger bones of a game Feedbacker hand.
         public static Hand FeedbackerPreset(Transform Base)
         {
             Hand H = new Hand
@@ -26,6 +27,7 @@ namespace Plugin.Systems.VRAvatar.Armature
             H.FThumb = new Finger(H.Root.GetChild(0), true);
             return H;
         }
+        // Maps the finger bones of a game Knuckleblaster hand.
         public static Hand KnuckleblasterPreset(Transform Base)
         {
             Hand H = new Hand
@@ -38,6 +40,7 @@ namespace Plugin.Systems.VRAvatar.Armature
             H.FThumb = new Finger(H.Root.GetChild(6), true);
             return H;
         }
+        // Maps the finger bones of an avatar Feedbacker hand.
         public static Hand MRFeedbackerPreset(Transform Base)
         {
             Hand H = new Hand
@@ -52,6 +55,7 @@ namespace Plugin.Systems.VRAvatar.Armature
             H.FPinky = new Finger(H.Root.GetChild(4));
             return H;
         }
+        // Maps the finger bones of an avatar Knuckleblaster hand.
         public static Hand MRKnuckleblasterPreset(Transform Base)
         {
             Hand H = new Hand

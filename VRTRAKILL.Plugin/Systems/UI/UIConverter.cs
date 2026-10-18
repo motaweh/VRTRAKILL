@@ -10,6 +10,7 @@ namespace Plugin.Systems.UI
         public static Camera UICamera { get; private set; }
         public static Camera UIEventCamera { get; private set; }
 
+        // Creates the UI and UI event cameras and converts every canvas to world space.
         public static void ConvertAllCanvases()
         {
             if (Vars.MainCamera == null) return;
@@ -41,6 +42,7 @@ namespace Plugin.Systems.UI
                     RecursiveConvertCanvas(C.gameObject);
         }
 
+        // Converts the canvas on an object and its children, or every scene canvas when no object is given.
         public static void RecursiveConvertCanvas(GameObject GO = null)
         {
             if (GO != null)
@@ -58,6 +60,7 @@ namespace Plugin.Systems.UI
                         try { ConvertCanvas(C); } catch { }
             }
         }
+        // Sets the UI event camera on a canvas and turns a screen space overlay canvas into a world space VR canvas.
         public static void ConvertCanvas(Canvas C, bool Force = false, bool DontAddComponent = false)
         {
             C.worldCamera = UIEventCamera;
@@ -68,6 +71,7 @@ namespace Plugin.Systems.UI
 
             foreach (Transform Child in C.transform) ConvertElement(Child);
         }
+        // Makes the element and its children highlight red when hovered or selected.
         private static void ConvertElement(Transform Element)
         {
             if (Element.GetComponent<Selectable>() is Selectable Button)

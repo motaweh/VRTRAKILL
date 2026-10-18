@@ -6,6 +6,7 @@ namespace Plugin.Patches.ULTRAKILL;
 [HarmonyPatch(typeof(ShotgunHammer))]
 internal class PatchShotgunHammer
 {
+    // Places the jackhammer at the avatar forearm and points it at the avatar hand.
     [HarmonyPostfix]
     [HarmonyPatch(nameof(ShotgunHammer.LateUpdate))]
     static void LateUpdate_AddIK(ShotgunHammer __instance)

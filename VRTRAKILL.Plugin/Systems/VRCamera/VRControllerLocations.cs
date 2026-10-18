@@ -21,6 +21,7 @@ namespace VRBasePlugin.Systems.VRCamera
         public Quaternion rightRot = Quaternion.identity;
         private Transform _right;
 
+        // Creates the left and right SteamVR pose trackers and turns them on after their pose actions are set.
         IEnumerator Start()
         {
             transform.position = Vector3.zero;
@@ -52,6 +53,7 @@ namespace VRBasePlugin.Systems.VRCamera
         }
 
         private bool IsTurning; private float SnapTurnTimer;
+        // Reads the head and hand poses and updates the turn offset for smooth or snap turning.
         public void Update()
         {
             headPos = InputTracking.GetLocalPosition(XRNode.Head);

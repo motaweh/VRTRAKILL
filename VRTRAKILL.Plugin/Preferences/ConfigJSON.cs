@@ -10,17 +10,20 @@ namespace Plugin.Prefs
 
         public static ConfigJSON Instance { get; set; }
 
+        // Creates a config with default settings.
         public ConfigJSON()
         {
             Config = new NewConfig();
         }
 
+        // Returns the loaded config, reading the file on first use.
         public static ConfigJSON GetConfig()
         {
             if (Instance == null) Instance = Deserialize();
             return Instance;
         }
 
+        // Reads the config file; writes defaults if it is missing, and returns defaults if it is missing or invalid.
         public static ConfigJSON Deserialize()
         {
             try
@@ -45,6 +48,7 @@ namespace Plugin.Prefs
                 return new ConfigJSON();
             }
         }
+        // Writes the config to the config file as indented JSON.
         public static void Serialize(ConfigJSON Config)
         {
             string JSON = JsonConvert.SerializeObject(Config, Formatting.Indented);

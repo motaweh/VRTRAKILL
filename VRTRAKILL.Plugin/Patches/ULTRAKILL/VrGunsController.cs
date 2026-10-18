@@ -6,6 +6,7 @@ internal class VRGunsController : MonoSingleton<VRGunsController>
 {
     public Camera TargeterCamera;
 
+    // Creates the hidden targeter camera on the guns and gives it to the frustum targeter.
     public void Start()
     {
         if (TargeterCamera == null || TargeterCamera is null)
@@ -26,6 +27,7 @@ internal class VRGunsController : MonoSingleton<VRGunsController>
         CameraFrustumTargeter.Instance.camera = TargeterCamera;
     }
 
+    // Moves the guns and the targeter camera to the gun hand, and turns the guns with it unless auto aim has a target.
     public void LateUpdate()
     {
         if (TargeterCamera != null)

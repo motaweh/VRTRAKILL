@@ -12,6 +12,7 @@ namespace Plugin.Systems.Controllers
 
         private Vector3 _PreviousPosition, _CurrentVelocity; public float Speed = 0; // for punch detection
         private Vector3 LastPosition; // for direction
+        // Measures the hand speed from now to the end of the frame for punch detection.
         private IEnumerator CalculateSpeed()
         {
             _PreviousPosition = transform.position;
@@ -22,6 +23,7 @@ namespace Plugin.Systems.Controllers
             Speed = _CurrentVelocity.magnitude;
         }
 
+        // Gets the controller and gun offset, and puts the UI event camera on the hand for controller based UI.
         public void Awake()
         {
             CC = gameObject.GetComponent<VRControllersSystem>();
@@ -37,6 +39,7 @@ namespace Plugin.Systems.Controllers
             }
         }
 
+        // Sets the arm IK offset, measures hand speed, updates the punch direction and toggles the controller model.
         public void Update()
         {
             CC.ArmOffset.transform.localPosition = ArmIKOffset;
@@ -52,6 +55,7 @@ namespace Plugin.Systems.Controllers
             SetControllers();
         }
 
+        // Shows the controller model when no arms are spawned or in the main menu.
         private void SetControllers()
         {
             if ((FistControl.Instance?.spawnedArms.Count == 0 && !Vars.IsPlayerFrozen)

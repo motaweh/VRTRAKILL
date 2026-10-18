@@ -51,12 +51,14 @@ namespace Plugin.Prefs
 
             ToggleAvatarSizeAdj = UnityEngine.KeyCode.Joystick8Button9;
 
+        // Converts the game and VR binds in the config to key codes.
         public static void Init()
         {
             ConvertJSONToKeys(Vars.Config.UKBinds);
             ConvertJSONToKeys(Vars.Config.VRBinds);
         }
 
+        // Converts the game binds to keyboard keys and mouse buttons for the input simulator.
         private static void ConvertJSONToKeys(UKBindings.ModifiedActions Binds)
         {
             try
@@ -129,6 +131,7 @@ namespace Plugin.Prefs
                 Vars.Log.LogError(E);
             }
         }
+        // Converts the VR desktop view and avatar size toggles to Unity key codes.
         private static void ConvertJSONToKeys(NewConfig._VRBinds VRConfig)
         {
             try

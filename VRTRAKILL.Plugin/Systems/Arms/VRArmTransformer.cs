@@ -9,6 +9,7 @@ internal class VRArmTransformer : MonoBehaviour
     public Arm Arm;
     Vector3 ArmSize, HandSize;
 
+    // Picks the arm preset and sizes for the weapon or fist on this object, and makes it render through portals.
     public void Start()
     {
         Component[] C = gameObject.GetComponents<Component>();
@@ -76,6 +77,7 @@ internal class VRArmTransformer : MonoBehaviour
             gameObject.AddComponent<PortalAwareRenderer>().objectType = PortalAwareRenderer.ObjectType.Player;
     }
 
+    // Applies the arm and hand scales each frame.
     public void LateUpdate()
     {
         if (Arm != null)

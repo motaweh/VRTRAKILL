@@ -32,13 +32,16 @@ namespace Plugin.Systems.UI
         private bool NavHeld;
         private float NextNavTime;
 
+        // Returns true while the game is paused.
         private static bool IsMenu => Vars.IsPaused;
 
+        // Uses the camera on this object if none is set.
         public void Start()
         {
             if (Cam == null) Cam = GetComponent<Camera>();
         }
 
+        // Moves the laser to the active hand, handles hover, press, drag and release, and handles stick navigation in menus.
         public void LateUpdate()
         {
             if (EventSystem.current == null || Cam == null) return;
@@ -74,6 +77,7 @@ namespace Plugin.Systems.UI
         }
 
         #region Pointer
+        // Clears the old hover and press and creates a new pointer for the event system.
         private void ResetPointer(EventSystem NewES)
         {
             if (Pointer != null) { SetHover(null); ClearPress(); }
@@ -81,7 +85,7 @@ namespace Plugin.Systems.UI
             Pointer = new PointerEventData(ES) { button = PointerEventData.InputButton.Left, pointerId = -2 };
         }
 
-        // the game's StandaloneInputModule also casts the OS mouse through this camera, which doubled every click
+        // Hides the OS mouse from the game's input module, which also casts it through this camera and would double every click.
         private void HideModuleMouse()
         {
             if (!Vars.Config.UIInteraction.ControllerBased) return;
@@ -90,6 +94,7 @@ namespace Plugin.Systems.UI
             Module.inputOverride = Module.GetComponent<NoMouseInput>() ?? Module.gameObject.AddComponent<NoMouseInput>();
         }
 
+        // Parents the UI event camera to the gun offset of the active hand.
         private void AttachToHand()
         {
             if (!Vars.Config.UIInteraction.ControllerBased) return;
@@ -100,6 +105,7 @@ namespace Plugin.Systems.UI
             transform.localRotation = Quaternion.identity;
         }
 
+        // Casts the pointer from the screen center and returns the first UI object hit.
         private GameObject Raycast()
         {
             Pointer.position = new Vector2(Cam.pixelWidth / 2f, Cam.pixelHeight / 2f);
@@ -118,6 +124,7 @@ namespace Plugin.Systems.UI
             return First.gameObject;
         }
 
+        // Moves the hover to a new target and, in menus, selects it.
         private void UpdateHover(GameObject Target)
         {
             if (Target == Hovered) return;
@@ -129,7 +136,7 @@ namespace Plugin.Systems.UI
                 Select(S);
         }
 
-        // sends exit/enter to every object between the old and new target, like PointerInputModule
+        // Sends exit and enter events to every object between the old and new target, like PointerInputModule.
         private void SetHover(GameObject Target)
         {
             Transform Root = CommonRoot(Hovered, Target);
@@ -156,6 +163,7 @@ namespace Plugin.Systems.UI
             HoverMuted = true;
         }
 
+        // Returns the closest shared parent of two objects, or null.
         private static Transform CommonRoot(GameObject A, GameObject B)
         {
             if (A == null || B == null) return null;
@@ -164,6 +172,7 @@ namespace Plugin.Systems.UI
             return null;
         }
 
+        // Starts a press on the target with the active hand, unless the game's ControllerPointer handles it.
         private void Press(GameObject Target)
         {
             // the game's own ControllerPointer handles its screens (shop, terminals) through Fire1
@@ -189,6 +198,7 @@ namespace Plugin.Systems.UI
                 ExecuteEvents.Execute(Pointer.pointerDrag, Pointer, ExecuteEvents.initializePotentialDrag);
         }
 
+        // Starts and continues a drag once the hand turns past the drag angle since the press.
         private void Drag()
         {
             if (Pointer.pointerDrag == null) return;
@@ -202,6 +212,7 @@ namespace Plugin.Systems.UI
             if (Pointer.dragging) ExecuteEvents.Execute(Pointer.pointerDrag, Pointer, ExecuteEvents.dragHandler);
         }
 
+        // Sends pointer up, then click or drop, then end drag, and clears the press.
         private void Release(GameObject Target)
         {
             if (Pointer.pointerPress != null)
@@ -218,6 +229,7 @@ namespace Plugin.Systems.UI
             ClearPress();
         }
 
+        // Clears the press and drag state.
         private void ClearPress()
         {
             PressHand = SteamVR_Input_Sources.Any;
@@ -228,13 +240,16 @@ namespace Plugin.Systems.UI
             Pointer.pointerDrag = null;
         }
 
+        // Returns true on the frame the hand presses shoot or punch.
         private static bool TriggerDown(SteamVR_Input_Sources Hand)
             => SteamVR_Actions._default.Shoot.GetStateDown(Hand) || SteamVR_Actions._default.Punch.GetStateDown(Hand);
+        // Returns true while the hand holds shoot or punch.
         private static bool TriggerHeld(SteamVR_Input_Sources Hand)
             => SteamVR_Actions._default.Shoot.GetState(Hand) || SteamVR_Actions._default.Punch.GetState(Hand);
         #endregion
 
         #region Stick navigation
+        // Moves the menu selection with the movement stick, with a delay before it repeats.
         private void Navigate()
         {
             Vector2 Axis = InputVars.MoveVector;
@@ -261,6 +276,7 @@ namespace Plugin.Systems.UI
             if (CurrentSelection() is Selectable Next) Tint(Next);
         }
 
+        // Submits the selected item, or selects a first item if none is selected.
         private void Submit()
         {
             Selectable Current = CurrentSelection();
@@ -268,7 +284,7 @@ namespace Plugin.Systems.UI
             ExecuteEvents.Execute(Current.gameObject, new BaseEventData(ES), ExecuteEvents.submitHandler);
         }
 
-        // ScrollRects with the game's ScrollRectMouseControl already follow the simulated wheel
+        // Scrolls the hovered item with the turn stick; ScrollRects with ScrollRectMouseControl already follow the simulated wheel.
         private void Scroll()
         {
             float Y = InputVars.TurnVector.y;
@@ -280,6 +296,7 @@ namespace Plugin.Systems.UI
             Pointer.scrollDelta = Vector2.zero;
         }
 
+        // Returns the selected item if it can be selected, else null.
         private Selectable CurrentSelection()
         {
             GameObject GO = ES.currentSelectedGameObject;
@@ -287,7 +304,7 @@ namespace Plugin.Systems.UI
             return CanSelect(S) ? S : null;
         }
 
-        // the game only picks a default item for gamepads, so pick its GamepadObjectSelector target ourselves
+        // Returns the first item to select: the pointed item, the GamepadObjectSelector target or the top canvas item.
         private Selectable InitialSelection()
         {
             if (Hovered != null && Hovered.GetComponentInParent<Selectable>() is Selectable Pointed && CanSelect(Pointed)) return Pointed;
@@ -314,6 +331,7 @@ namespace Plugin.Systems.UI
         // s_Selectors is a Stack<> the plugin's reference set cannot resolve, so read it untyped; a stack enumerates top first
         private static readonly System.Reflection.FieldInfo SelectorsField = typeof(GamepadObjectSelector).GetField("s_Selectors",
             System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic);
+        // Returns the top GamepadObjectSelector on the selector stack, or null.
         private static GamepadObjectSelector TopSelector()
         {
             if (SelectorsField?.GetValue(null) is System.Collections.IEnumerable Stack)
@@ -321,6 +339,7 @@ namespace Plugin.Systems.UI
             return null;
         }
 
+        // Tints and selects the item unless it is already selected.
         private void Select(Selectable S)
         {
             if (S == null || ES.currentSelectedGameObject == S.gameObject) return;
@@ -328,7 +347,7 @@ namespace Plugin.Systems.UI
             ES.SetSelectedGameObject(S.gameObject, new BaseEventData(ES));
         }
 
-        // converted canvases only recolor the hover state, so the stick selection would be invisible
+        // Copies the hover color to the selected color, since converted canvases only recolor hover.
         private static void Tint(Selectable S)
         {
             if (S.transition != Selectable.Transition.ColorTint || S.colors.selectedColor == S.colors.highlightedColor) return;
@@ -337,10 +356,11 @@ namespace Plugin.Systems.UI
             S.colors = Block;
         }
 
+        // Returns true if the item is active, enabled and interactable.
         private static bool CanSelect(Selectable S)
             => S != null && S.isActiveAndEnabled && S.gameObject.activeInHierarchy && S.IsInteractable();
 
-        // selecting a text field opens it for typing, so the laser only highlights those
+        // Returns true for text fields, which the laser only highlights since selecting one opens it for typing.
         private static bool IsTextField(Selectable S)
             => S is InputField || S.GetType().Name == "TMP_InputField";
         #endregion
@@ -349,10 +369,15 @@ namespace Plugin.Systems.UI
     // hides the OS mouse from the game's input module; keyboard submit/cancel still go through
     internal sealed class NoMouseInput : BaseInput
     {
+        // Reports that no mouse is present.
         public override bool mousePresent => false;
+        // Reports no mouse button press.
         public override bool GetMouseButtonDown(int button) => false;
+        // Reports no mouse button release.
         public override bool GetMouseButtonUp(int button) => false;
+        // Reports no held mouse button.
         public override bool GetMouseButton(int button) => false;
+        // Reports no mouse scroll.
         public override Vector2 mouseScrollDelta => Vector2.zero;
     }
 }

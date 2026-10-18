@@ -8,6 +8,7 @@ namespace Plugin.Patches.ULTRAKILL;
 [HarmonyPatch(typeof(RocketLauncher))]
 internal class PatchRocketLauncher
 {
+    // Places the rocket launcher at the avatar forearm and points it at the gun hand.
     [HarmonyPostfix]
     [HarmonyPatch(nameof(RocketLauncher.Update))]
     private static void Update_AddIK(RocketLauncher __instance)
@@ -21,6 +22,7 @@ internal class PatchRocketLauncher
 
     static Vector3 oldPos;
     static Quaternion oldRot;
+    // Moves the camera to the gun hand before a rocket launcher shot so the shot fires from the hand.
     [HarmonyPrefix]
     [HarmonyPatch(nameof(RocketLauncher.Shoot))]
     [HarmonyPatch(nameof(RocketLauncher.ShootCannonball))]
@@ -36,6 +38,7 @@ internal class PatchRocketLauncher
         cam.transform.SetPositionAndRotation(Vars.DominantHand.transform.position, Vars.DominantHand.transform.rotation);
     }
 
+    // Puts the camera back after a rocket launcher shot.
     [HarmonyPostfix]
     [HarmonyPatch(nameof(RocketLauncher.Shoot))]
     [HarmonyPatch(nameof(RocketLauncher.ShootCannonball))]

@@ -53,6 +53,7 @@ namespace Plugin.Systems.VRAvatar
         public Transform Leg_IKPole_Right { get; private set; }
         #endregion
 
+        // Maps the body, arm and IK pole bones of the V1 avatar and picks the arms for the hand setting.
         public static MetaRig VCustomPreset(Transform T)
         {
             MetaRig MR = new MetaRig
@@ -101,6 +102,7 @@ namespace Plugin.Systems.VRAvatar
             MR.Leg_IKPole_Right = MR.Root.GetChild(0).GetChild(0).GetChild(1).GetChild(5);
             return MR;
         }
+        // Spawns a copy of the V1 avatar under the parent and maps its rig.
         public static MetaRig CreateVCustomPreset(GameObject Parent, string Name = null)
         {
             GameObject V1mdlGO = Object.Instantiate(Assets.VRig, Parent.transform, true);

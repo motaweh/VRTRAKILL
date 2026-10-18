@@ -21,12 +21,15 @@ namespace Plugin.Systems.Controllers
 
         // registered per hand so UI code never auto-creates a singleton before the hands exist
         private static VRControllersSystem Left, Right;
+        // Returns the controller for a hand, or null for any other source.
         public static VRControllersSystem Get(SteamVR_Input_Sources Hand)
             => Hand == SteamVR_Input_Sources.LeftHand ? Left : Hand == SteamVR_Input_Sources.RightHand ? Right : null;
 
         LineRenderer LR; Vector3 EndPosition;
+        // Returns the crosshair distance from the config.
         public float DefaultLength => Vars.Config.CBS.CrosshairDistance;
 
+        // Parents the gun and arm offsets to the controller and tilts the gun offset 45 degrees.
         private void SetupOffsets()
         {
             GunOffset.transform.parent = transform;
@@ -36,6 +39,7 @@ namespace Plugin.Systems.Controllers
             ArmOffset.transform.parent = transform;
         }
 
+        // Adds the laser line renderer with the configured start and end alpha.
         private void SetupControllerLines()
         {
             LR = gameObject.AddComponent<LineRenderer>();
@@ -53,6 +57,7 @@ namespace Plugin.Systems.Controllers
             LR.startColor = C1; LR.endColor = C2;
         }
 
+        // Raycasts ahead of the gun offset and sets the laser end to the hit point, or to the crosshair distance.
         private void CPRaycast()
         {
             bool Raycast = Physics.Raycast(GunOffset.transform.position, GunOffset.transform.forward,
@@ -60,6 +65,7 @@ namespace Plugin.Systems.Controllers
             EndPosition = GunOffset.transform.position + (GunOffset.transform.forward * DefaultLength);
             if (Raycast) EndPosition = Hit.point;
         }
+        // Draws the laser from the hand that owns the UI pointer while the player is frozen or shopping.
         private void DrawControllerLines()
         {
             if (LR == null) return;
@@ -77,6 +83,7 @@ namespace Plugin.Systems.Controllers
             }
         }
 
+        // Finds the model, sets up the offsets, registers the hand and adds the laser if enabled.
         public void Start()
         {
             RenderModel = RenderModel ?? transform.Find("Model").gameObject;
@@ -87,6 +94,7 @@ namespace Plugin.Systems.Controllers
             if (Vars.Config.UIInteraction.ControllerLines.Enabled)
                 SetupControllerLines();
         }
+        // Moves the controller to its tracked pose, then updates the guns, the laser and the model offsets.
         public void Update()
         {
             if (source == SteamVR_Input_Sources.LeftHand)

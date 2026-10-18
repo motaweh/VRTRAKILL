@@ -13,6 +13,7 @@ internal sealed class PatchGunHands
         static Vector3 Rotation = new Vector3(0, 180, 0),
                        Scale = new Vector3(15, 15, 15);
 
+        // Adds the VR hand pose to the shotgun bone.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(Shotgun.Start))]
         static void AddHand(Shotgun __instance)
@@ -40,6 +41,7 @@ internal sealed class PatchGunHands
                        AltRotation = new Vector3(0, 0, 0),
                        AltScale = new Vector3(3.5f, 3.5f, 3.5f);
 
+        // Adds the VR hand pose to the nailgun, or the sawblade hand pose to the alt version.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(Nailgun.Start))]
         static void AddHand(Nailgun __instance)
@@ -74,6 +76,7 @@ internal sealed class PatchGunHands
         static Vector3 Rotation = new Vector3(30, 180, 0),
                        Scale = new Vector3(3.5f, 3.5f, 3.5f);
 
+        // Adds the VR hand pose to the railcannon bone.
         [HarmonyPostfix]
         [HarmonyPatch(nameof(Railcannon.Start))]
         static void AddHand(Railcannon __instance)

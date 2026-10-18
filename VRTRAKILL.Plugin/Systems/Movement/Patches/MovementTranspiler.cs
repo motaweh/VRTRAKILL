@@ -10,6 +10,7 @@ namespace Plugin.Systems.Movement.Patches;
 [HarmonyPatch]
 internal class MovementTranspiler
 {
+    // Lists the movement methods that read the move input.
     static IEnumerable<MethodBase> TargetMethods()
     {
         yield return AccessTools.Method(typeof(PlatformerMovement), nameof(PlatformerMovement.Update));
@@ -20,6 +21,7 @@ internal class MovementTranspiler
         yield return AccessTools.Method(typeof(NewMovement), nameof(NewMovement.Update));
         yield return AccessTools.Method(typeof(NewMovement), nameof(NewMovement.Dodge));
     }
+    // Replaces move input reads in the target methods with the VR movement stick.
     static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         return new CodeMatcher(instructions)
@@ -31,5 +33,6 @@ internal class MovementTranspiler
                     .RemoveInstruction())
                 .InstructionEnumeration();
     }
+    // Returns the VR movement stick axis in place of the move input.
     static Vector2 GetReplacementMove(PlayerInput input) => InputVars.MoveVector;
 }

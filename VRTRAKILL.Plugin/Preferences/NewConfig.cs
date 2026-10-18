@@ -52,6 +52,7 @@ namespace Plugin.Prefs
             [JsonProperty("Enable arms IK")] public bool EnableArmsIK { get; set; } = true;
             [JsonProperty("Enable legs IK")] public bool EnableLegsIK { get; set; } = true;
 
+            // Creates the VR avatar settings with default values.
             public _VRBody()
             {
 
@@ -72,6 +73,7 @@ namespace Plugin.Prefs
                 [JsonProperty("End transparency (from 0 to 1)")] public float EndAlpha { get; set; } = 0.1f;
             }
 
+            // Creates the UI interaction settings with default controller line settings.
             public _UIInteraction()
             {
                 ControllerLines = new _ControllerLines();
@@ -91,6 +93,7 @@ namespace Plugin.Prefs
         {
         }
 
+        // Creates a config with default settings and the current game binds.
         public NewConfig()
         {
             UKBinds = UKBindings.GetBinds();

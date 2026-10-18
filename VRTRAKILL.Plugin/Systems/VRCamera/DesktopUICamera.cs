@@ -5,7 +5,9 @@ namespace Plugin.Systems.VRCamera
     internal class DesktopUICamera : MonoBehaviour
     {
         Camera C;
+        // Gets the camera on this object.
         public void Start() { C = gameObject.GetComponent<Camera>(); }
+        // Copies the UI camera layers and clear flags to the desktop UI camera, with the configured FOV, off the headset.
         public void Update()
         {
             C.nearClipPlane = 0.1f;
