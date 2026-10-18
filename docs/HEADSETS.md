@@ -76,7 +76,7 @@ The mod does not set or assume a refresh rate. Set 72, 80, 90 or 120 Hz in the L
 | Action | Quest Touch | PS VR2 Sense | Index | Vive wand | WMR |
 |---|---|---|---|---|---|
 | Move | (L) stick | (L) stick | (L) thumbstick | (L) trackpad touch | (L) stick |
-| Jump | (L) stick click | (L) stick click | (L) thumbstick click | (L) trackpad click up | (L) stick click |
+| Jump | (R) A | (R) cross | (L) thumbstick click | (L) trackpad click up | (L) stick click |
 | Turn | (R) stick | (R) stick | (R) thumbstick | (R) trackpad touch | (R) stick |
 | Slide / slam | (R) stick click | (R) stick click | (R) thumbstick click | (R) trackpad click down | (R) stick click |
 | Dash | (L) Y | (L) triangle | (L) B | (L) trackpad click down, left or right | (L) trackpad click up |
@@ -85,13 +85,13 @@ The mod does not set or assume a refresh rate. Set 72, 80, 90 or 120 Hz in the L
 | Punch | (L) trigger | (L) L2 | (L) trigger | (L) trigger | (L) trigger |
 | Whiplash | (L) X | (L) square | (L) A | (L) menu | (L) trackpad click left |
 | Change hand | (L) grip | (L) L1 | (L) grip | (L) grip | (L) grip |
-| Change weapon variation | (R) A | (R) cross | (R) A | (R) trackpad click up | (R) trackpad click down |
+| Change weapon variation | (L) stick click | (L) stick click | (R) A | (R) trackpad click up | (R) trackpad click down |
 | Next / previous weapon | (R) stick | (R) stick | (R) thumbstick | not bound | (R) stick |
 | Weapon wheel | (R) B held | (R) circle held | (R) B held | (R) menu held | (R) menu held |
 | Weapon wheel scroll | (L) stick | (L) stick | (L) thumbstick | (L) trackpad touch | (L) stick |
 | Pause / back | (R) B double | (R) Options, or (R) circle double | (R) B double | (R) menu double | (L) menu, or (R) menu double |
 
-In menus, point with either controller and press its trigger to click. The left stick moves the selection and the "Change weapon variation" button selects it.
+In menus, point with either controller and press its trigger to click. The left stick moves the selection and the "Change weapon variation" button selects it (left stick click on Quest and PS VR2, (R) A on Index).
 
 While the weapon wheel is open, the weapon wheel scroll stick points at a weapon and does not move the player. Let go of the wheel button to switch.
 

@@ -39,7 +39,7 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/jump"
+                     "output" : "/actions/default/in/changeweaponvariation"
                   },
                   "position" : {
                      "output" : "/actions/default/in/movement"
@@ -129,7 +129,7 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/changeweaponvariation"
+                     "output" : "/actions/default/in/jump"
                   }
                },
                "mode" : "button",

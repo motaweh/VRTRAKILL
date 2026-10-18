@@ -64,7 +64,7 @@ If you downgraded the game for an older release, switch it back to the current v
 
 "Configured" means the default binding covers every game action and was checked against the SteamVR driver's input profile. Nobody has played with it yet. Reports from Quest, Index, Vive and WMR players are welcome.
 
-Launch steps for each headset and the full button map are in [docs/HEADSETS.md](docs/HEADSETS.md). You can change any binding in SteamVR > Settings > Controllers > Manage Controller Bindings > ULTRAKILL.
+Launch steps for each headset and the full button map are in [docs/HEADSETS.md](docs/HEADSETS.md). On Quest, jump is (R) A; on PS VR2, jump is (R) cross. On both, change weapon variation (and select in menus) is the left stick click. You can change any binding in SteamVR > Settings > Controllers > Manage Controller Bindings > ULTRAKILL.
 
 Mod settings are in `BepInEx/plugins/VRTRAKILL/VRTRAKILL_Config.json` (turning, deadzone, snap turn, crosshair, punching and more).
 
