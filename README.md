@@ -113,6 +113,14 @@ pwsh tools/package.ps1 -ULTRAKILLDir "E:\SteamLibrary\steamapps\common\ULTRAKILL
 
 It builds Release, downloads the BepInEx 5.4.23.5 x64 zip from the BepInEx GitHub release, checks its SHA256, and writes `VRTRAKILL-1.0.0-full.zip`, `VRTRAKILL-1.0.0-modonly.zip` and `SHA256SUMS.txt` to `artifacts/`.
 
+To make the Thunderstore package (r2modman, Gale), run:
+
+```
+pwsh tools/package-thunderstore.ps1 -ULTRAKILLDir "E:\SteamLibrary\steamapps\common\ULTRAKILL"
+```
+
+It builds Release and writes `VRTRAKILL-<version>.zip` to `artifacts/thunderstore/`. The version, description and BepInExPack dependency come from `thunderstore/manifest.json`. A mod manager can only install into `BepInEx/`, so the package puts the `ULTRAKILL_Data` files in `BepInEx/patchers/<team>-VRTRAKILL/GameData/`. VRPatcher copies them into the game's `ULTRAKILL_Data` at start-up when they are missing or different. With the zip install that folder does not exist and VRPatcher skips the copy.
+
 Everything the mod installs besides its three DLLs is in `ULTRAKILL_COPYTOROOT`, laid out like the game folder.
 
 The Unity project for `vrtrakillassetbundle` is not in this repo. It is `_unityProject.7z` in the `ultra_revamp` branch of the [original repo](https://github.com/whateverusername0/VRTRAKILL/tree/ultra_revamp).
