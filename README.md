@@ -212,7 +212,7 @@ To make the release zips, run:
 pwsh tools/package.ps1 -ULTRAKILLDir "E:\SteamLibrary\steamapps\common\ULTRAKILL"
 ```
 
-It builds Release, downloads the BepInEx 5.4.23.5 x64 zip from the BepInEx GitHub release, checks its SHA256, and writes `VRTRAKILL-<version>-full.zip`, `VRTRAKILL-<version>-modonly.zip`, `SHA256SUMS.txt` and `SHA256SUMS.txt.sig` to `artifacts/`. The version is `VRTRAKILLVersion` in `Directory.Build.props`, which also sets the plugin and assembly versions. `tools/sign-release.ps1` makes the signature with the release key, which is kept outside the repo. Use `-NoSign` for a local test build; the in-game updater does not install unsigned zips.
+It builds Release, downloads the BepInEx 5.4.23.5 x64 zip from the BepInEx GitHub release, checks its SHA256, and writes `VRTRAKILL-<version>-full.zip`, `VRTRAKILL-<version>-modonly.zip`, `SHA256SUMS.txt` and `SHA256SUMS.txt.sig` to `artifacts/`. The version is `VRTRAKILLVersion` in `Directory.Build.props`, which also sets the plugin and assembly versions. `tools/sign-release.ps1` makes the signature with the release key, which is kept outside the repo. Use `-NoSign` for a local test build; the in-game updater does not install unsigned zips. `tools/backup-signing-key.ps1` backs up the release key to 1Password and restores it on a new Windows profile (`-Restore`).
 
 To make the Thunderstore package (r2modman, Gale), run:
 
