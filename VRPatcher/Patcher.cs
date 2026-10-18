@@ -18,7 +18,8 @@ namespace VRPatcher
     {
         // code successfully borrowed from https://github.com/Raicuparta/two-forks-vr/blob/main/TwoForksVrPatcher/Patcher.cs
 
-        public static IEnumerable<string> TargetDLLs { get; } = new[] { "Assembly-CSharp.dll" };
+        // no targets: a listed DLL counts as patched, so BepInEx rewrote Assembly-CSharp with Cecil and loaded it from memory each start (AssemblyPatcher.PatchAndLoad)
+        public static IEnumerable<string> TargetDLLs { get; } = new string[0];
         // Leaves the assembly unchanged; BepInEx requires a Patch method on a preloader patcher.
         public static void Patch(AssemblyDefinition assembly) { }
 
