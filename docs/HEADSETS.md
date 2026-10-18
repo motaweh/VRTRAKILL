@@ -77,7 +77,7 @@ The mod does not set or assume a refresh rate. Set 72, 80, 90 or 120 Hz in the L
 |---|---|---|---|---|---|
 | Move | (L) stick | (L) stick | (L) thumbstick | (L) trackpad touch | (L) stick |
 | Jump | (R) A | (R) cross | (L) thumbstick click | (L) trackpad click up | (L) stick click |
-| Turn | (R) stick | (R) stick | (R) thumbstick | (R) trackpad touch | (R) stick |
+| Turn | (R) stick left / right | (R) stick left / right | (R) thumbstick left / right | (R) trackpad touch left / right | (R) stick left / right |
 | Slide / slam | (R) stick click | (R) stick click | (R) thumbstick click | (R) trackpad click down | (R) stick click |
 | Dash | (L) Y | (L) triangle | (L) B | (L) trackpad click down, left or right | (L) trackpad click up |
 | Shoot | (R) trigger | (R) R2 | (R) trigger | (R) trigger | (R) trigger |
@@ -86,12 +86,14 @@ The mod does not set or assume a refresh rate. Set 72, 80, 90 or 120 Hz in the L
 | Whiplash | (L) X | (L) square | (L) A | (L) menu | (L) trackpad click left |
 | Change hand | (L) grip | (L) L1 | (L) grip | (L) grip | (L) grip |
 | Change weapon variation | (L) stick click | (L) stick click | (R) A | (R) trackpad click up | (R) trackpad click down |
-| Next / previous weapon | (R) stick | (R) stick | (R) thumbstick | not bound | (R) stick |
+| Next / previous weapon | (R) stick flick up / down | (R) stick flick up / down | (R) thumbstick flick up / down | not bound | (R) stick flick up / down |
 | Weapon wheel | (R) B held | (R) circle held | (R) B held | (R) menu held | (R) menu held |
 | Weapon wheel scroll | (L) stick | (L) stick | (L) thumbstick | (L) trackpad touch | (L) stick |
 | Pause / back | (R) B double | (R) Options, or (R) circle double | (R) B double | (R) menu double | (L) menu, or (R) menu double |
 
 In menus, point with either controller and press its trigger to click. The left stick moves the selection and the "Change weapon variation" button selects it (left stick click on Quest and PS VR2, (R) A on Index).
+
+One flick of the turn stick up or down switches one weapon. Return the stick to the center before the next flick. A push that is more up or down than left or right does not turn.
 
 While the weapon wheel is open, the weapon wheel scroll stick points at a weapon and does not move the player. Let go of the wheel button to switch.
 

@@ -69,11 +69,13 @@ namespace VRBasePlugin.Systems.VRCamera
                 rightRot = _right.rotation;
             }
 
+            // the same stick switches weapons on up and down (IterateWeaponH), so a mostly vertical push does not turn
+            float TurnX = Mathf.Abs(InputVars.TurnVector.x) >= Mathf.Abs(InputVars.TurnVector.y) ? InputVars.TurnVector.x : 0;
             if (!Vars.Config.Controllers.SnapTurn)
             {
-                if (InputVars.TurnVector.x > 0 + Vars.Config.Controllers.Deadzone)
+                if (TurnX > 0 + Vars.Config.Controllers.Deadzone)
                     InputVars.TurnOffset += Vars.Config.Controllers.SmoothSpeed * Time.deltaTime;
-                if (InputVars.TurnVector.x < 0 - Vars.Config.Controllers.Deadzone)
+                if (TurnX < 0 - Vars.Config.Controllers.Deadzone)
                     InputVars.TurnOffset -= Vars.Config.Controllers.SmoothSpeed * Time.deltaTime;
             }
             else
@@ -81,13 +83,13 @@ namespace VRBasePlugin.Systems.VRCamera
                 if (IsTurning)
                 {
                     SnapTurnTimer += Time.deltaTime;
-                    if (SnapTurnTimer >= .2f || InputVars.TurnVector.x == 0) { IsTurning = false; SnapTurnTimer = 0; }
+                    if (SnapTurnTimer >= .2f || TurnX == 0) { IsTurning = false; SnapTurnTimer = 0; }
                 }
                 else
                 {
-                    if (InputVars.TurnVector.x > 0 + Vars.Config.Controllers.Deadzone)
+                    if (TurnX > 0 + Vars.Config.Controllers.Deadzone)
                     { IsTurning = true; InputVars.TurnOffset += Vars.Config.Controllers.SnapAngles; }
-                    else if (InputVars.TurnVector.x < 0 - Vars.Config.Controllers.Deadzone)
+                    else if (TurnX < 0 - Vars.Config.Controllers.Deadzone)
                     { IsTurning = true; InputVars.TurnOffset -= Vars.Config.Controllers.SnapAngles; }
                 }
             }

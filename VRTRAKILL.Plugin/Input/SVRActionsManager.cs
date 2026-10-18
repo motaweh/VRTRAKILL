@@ -193,23 +193,41 @@ namespace Plugin.Systems.Input
         private static void RHAltShootH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != RHAltFire) { RHAltFire = newState; TriggerKey(RHAltFire, !RHAltFire, ConfigMaster.KAltShoot, ConfigMaster.MAltShoot); } }
 
-        // Scrolls the mouse wheel when the stick passes the deadzone, unless the weapon wheel is open.
+        private static bool IterateLatched;
+        // Scrolls once per up or down flick in play and every frame while paused, unless the weapon wheel is open.
         private static void IterateWeaponH(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
         {
             if (Vars.IsWeaponWheelPresent) return;
-            int Up = Vars.IsPaused ? 1 : -1; // menus scroll naturally: stick up moves the list up
-            if (axis.y > 0 + Vars.Config.Controllers.Deadzone * 1.5f) MouseScroll(Up);
-            if (axis.y < 0 - Vars.Config.Controllers.Deadzone * 1.5f) MouseScroll(-Up);
+            float Threshold = Vars.Config.Controllers.Deadzone * 1.5f;
+            if (Vars.IsPaused)
+            {
+                // menus scroll naturally: stick up moves the list up
+                if (axis.y > Threshold) MouseScroll(1);
+                if (axis.y < -Threshold) MouseScroll(-1);
+                return;
+            }
+            // onUpdate fires every frame and the game takes a scroll every 0.1 s, so latch until the stick returns
+            if (IterateLatched)
+            {
+                if (Mathf.Abs(axis.y) < Vars.Config.Controllers.Deadzone) IterateLatched = false;
+                return;
+            }
+            // left and right turn (VRControllerLocations), so only a mostly vertical push switches weapons
+            if (Mathf.Abs(axis.y) > Threshold && Mathf.Abs(axis.y) > Mathf.Abs(axis.x))
+            {
+                IterateLatched = true;
+                MouseScroll(axis.y > 0 ? -1 : 1);
+            }
         }
         // Presses or releases the change variation bind when the action changes.
         private static void ChangeWeaponVariationH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != ChangeVariation) { ChangeVariation = newState; TriggerKey(ChangeVariation, !ChangeVariation, ConfigMaster.KChangeVariation, ConfigMaster.MChangeVariation); } }
-        // Scrolls the mouse wheel up while the next weapon action is held.
+        // Scrolls the mouse wheel up once when the next weapon action is pressed.
         private static void NextWeaponH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
-        { if (newState != NextWeapon) NextWeapon = newState; if (NextWeapon) MouseScroll(1); }
-        // Scrolls the mouse wheel down while the previous weapon action is held.
+        { if (newState != NextWeapon) { NextWeapon = newState; if (NextWeapon) MouseScroll(1); } }
+        // Scrolls the mouse wheel down once when the previous weapon action is pressed.
         private static void PrevWeaponH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
-        { if (newState != PrevWeapon) PrevWeapon = newState; if (PrevWeapon) MouseScroll(-1); }
+        { if (newState != PrevWeapon) { PrevWeapon = newState; if (PrevWeapon) MouseScroll(-1); } }
 
         // Presses or releases the last weapon bind, which opens the weapon wheel while held.
         private static void OpenWeaponWheelH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
