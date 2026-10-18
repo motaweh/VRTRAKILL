@@ -2,8 +2,6 @@
 
 VRTRAKILL itself is AGPL-3.0 (see `LICENSE.md`). The release zips also contain files from other projects. They keep their own licenses. The full license texts ship in the zips under `BepInEx/plugins/VRTRAKILL/licenses/`, and the same files are in this repo under `ULTRAKILL_COPYTOROOT/BepInEx/plugins/VRTRAKILL/licenses/`.
 
-No ULTRAKILL game files are in this repo or in the zips. The build reads them from your own game install.
-
 ## VRTRAKILL code
 
 The mod code is AGPL-3.0 and includes work from these earlier versions, all under the same license:
