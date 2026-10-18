@@ -251,6 +251,7 @@
     <Compile Include="Systems\UI\Patches\CrosshairP.cs" />
     <Compile Include="Systems\UI\Patches\HUDOptionsP.cs" />
     <Compile Include="Systems\UI\Patches\HudP.cs" />
+    <Compile Include="Systems\UI\Patches\PauseLogP.cs" />
     <Compile Include="Systems\UI\StandardHUDWorker.cs" />
     <Compile Include="Systems\UI\UICanvas.cs" />
     <Compile Include="Systems\UI\UIConverter.cs" />
