@@ -59,7 +59,7 @@ namespace Plugin.Systems.Controllers
         private void SetControllers()
         {
             if (CC.RenderModel == null) return;
-            FistControl Fists = FistControl.Instance;
+            FistControl Fists = Vars.Registered<FistControl>();
             bool NoArms = Fists != null && Fists.spawnedArms.Count == 0;
             if ((NoArms && !Vars.IsPlayerFrozen) || (NoArms && !Fists.activated) || Vars.IsMainMenu)
                 CC.RenderModel.SetActive(true);

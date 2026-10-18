@@ -37,12 +37,12 @@ namespace Plugin.Systems.Controllers
         // Shows the controller or sandbox hand model while no gun is active, and hides both while one is.
         private void SetControllers()
         {
-            GunControl Guns = GunControl.Instance;
+            GunControl Guns = Vars.Registered<GunControl>();
             if (Guns == null || !Guns.activated || Guns.noWeapons)
             {
-                if (GunControl.Instance != null
-                && GunControl.Instance.currentWeapon != null
-                && GunControl.Instance.currentWeapon.HasComponent<Sandbox.Arm.SandboxArm>()
+                if (Guns != null
+                && Guns.currentWeapon != null
+                && Guns.currentWeapon.HasComponent<Sandbox.Arm.SandboxArm>()
                 && !Vars.IsMainMenu)
                 {
                     RM?.SetActive(false);

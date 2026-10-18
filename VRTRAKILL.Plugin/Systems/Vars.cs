@@ -35,23 +35,27 @@ namespace Plugin.Systems
         public static BepInEx.Logging.ManualLogSource Log => Plugin.Log;
 
         #region Checks
+        // Returns the registered instance of a game singleton or null; unlike Instance it never spends the one-shot Find (see c427221) or auto-creates.
+        public static T Registered<T>() where T : MonoSingleton
+            => MonoSingleton.GetInstance(typeof(T)) is T Found && Found != null ? Found : null;
+
         // Returns true in the main menu.
         public static bool IsMainMenu
-            => OptionsManager.Instance?.mainMenu ?? false;
-        // Returns true when the game is paused; GetInstance avoids spending the one-shot Find that Instance does.
+            => Registered<OptionsManager>() is OptionsManager O && O.mainMenu;
+        // Returns true when the game is paused.
         public static bool IsPaused
-            => MonoSingleton.GetInstance(typeof(OptionsManager)) is OptionsManager O && O != null && O.paused;
+            => Registered<OptionsManager>() is OptionsManager O && O.paused;
         // Returns true while the weapon wheel is open.
         public static bool IsWeaponWheelPresent
-        => WeaponWheel.Instance?.isActiveAndEnabled ?? false;
+            => Registered<WeaponWheel>() is WeaponWheel W && W.isActiveAndEnabled;
         // Returns true while the player is in a shop.
         public static bool IsPlayerUsingShop
-            => FistControl.Instance?.shopping ?? false;
+            => Registered<FistControl>() is FistControl F && F.shopping;
 
         // Returns true while player movement or the camera is not active.
         public static bool IsPlayerFrozen
-            => (!NewMovement.Instance?.activated ?? false) || (!NewMovement.Instance?.enabled ?? false)
-            || (!CameraController.Instance?.activated ?? false);
+            => (Registered<NewMovement>() is NewMovement NM && (!NM.activated || !NM.enabled))
+            || (Registered<CameraController>() is CameraController CC && !CC.activated);
         #endregion
 
         #region Cameras

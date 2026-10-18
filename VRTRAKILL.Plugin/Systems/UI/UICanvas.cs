@@ -22,7 +22,7 @@ namespace Plugin.Systems.UI
         // Flattens the stored direction against gravity and turns the canvas upright along it.
         private void ResetPos()
         {
-            Vector3 customUp = CameraController.Instance.gravityRotation * Vector3.up;
+            Vector3 customUp = Vars.Registered<CameraController>() is CameraController CC ? CC.gravityRotation * Vector3.up : Vector3.up;
 
             LastCamFwd = Vector3.ProjectOnPlane(LastCamFwd, customUp);
             if (LastCamFwd != Vector3.zero)
@@ -32,7 +32,7 @@ namespace Plugin.Systems.UI
         private void Recenter()
         {
             UpdatePos();
-            Vector3 customUp = CameraController.Instance.gravityRotation * Vector3.up;
+            Vector3 customUp = Vars.Registered<CameraController>() is CameraController CC ? CC.gravityRotation * Vector3.up : Vector3.up;
             Vector3 Flat = Vector3.ProjectOnPlane(LastCamFwd, customUp);
             if (Flat.sqrMagnitude < Distance * Distance * .0625f)
                 Flat = Vector3.ProjectOnPlane(Vars.MainCamera.transform.up * (Vector3.Dot(LastCamFwd, customUp) < 0 ? 1 : -1), customUp);
