@@ -97,24 +97,24 @@ namespace VRTRAKILL.Utilities
         public void Patch(string _Namespace)
         {
             Log.LogInfo($"Patching Namespace \"{_Namespace}\"...");
-            IEnumerable<Type> Q = GetTypes(_Namespace);
-            foreach (Type T in Q) try { Harmony.PatchAll(T); } catch { Log.LogError($"Nullref with type {T}"); }
+            Patch(GetTypes(_Namespace).ToArray());
         }
         // Applies every patch type in the given namespaces and logs the types that fail.
         public void Patch(string[] _Namespaces)
-        {
-            IEnumerable<Type> Q = GetTypes(_Namespaces);
-            foreach (Type T in Q) try { Harmony.PatchAll(T); } catch { Log.LogError($"Nullref with type {T}"); }
-        }
+        { Patch(GetTypes(_Namespaces).ToArray()); }
         // Applies one patch type and logs its full name.
         public void Patch(Type _T)
         {
             Log.LogInfo($"Patching Type \"{_T.FullName}\"...");
             Harmony.PatchAll(_T);
         }
-        // Applies each given patch type.
+        // Applies each given patch type; a type that fails is logged with its exception and the rest still apply.
         public void Patch(Type[] _T)
-        { foreach (Type T in _T) Harmony.PatchAll(T); }
+        {
+            foreach (Type T in _T)
+                try { Harmony.PatchAll(T); }
+                catch (Exception E) { Log.LogError($"Patching {T.FullName} failed: {E}"); }
+        }
 
         // Removes every patch this Harmony instance applied.
         public void UnpatchAll()

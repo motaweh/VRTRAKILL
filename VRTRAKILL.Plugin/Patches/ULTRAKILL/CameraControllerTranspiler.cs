@@ -48,7 +48,7 @@ internal class CameraControllerTranspiler
         yield return AccessTools.Method(typeof(Revolver), nameof(Revolver.Shoot));
     }
     // Replaces camera transform reads in the target methods with the dominant hand transform.
-    static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         // this.cc, CameraController.Instance, Camera.main or this.cam/camObj, then .transform -> the dominant hand's transform
         CodeMatch matchGettingCameraController = new CodeMatch(i =>
@@ -69,7 +69,7 @@ internal class CameraControllerTranspiler
                     newInstruction.labels.AddRange(matcher.Instruction.labels);
                     matcher.SetInstructionAndAdvance(newInstruction);
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(GameObject), "get_transform")));
-                })
+                }, original?.Name == nameof(ShotgunHammer.ImpactRoutine) ? null : Vars.NoMatch(original, "camera transform")) // the iterator stub has none; its MoveNext does
                 .InstructionEnumeration();
         return sequence;
     }

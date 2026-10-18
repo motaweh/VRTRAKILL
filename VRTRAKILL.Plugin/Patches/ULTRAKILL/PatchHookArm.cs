@@ -26,7 +26,7 @@ internal sealed class PatchHookArm
     // Moves the whiplash throw origin from the arm to the VR hand; the native Update stays for portals and the line renderer.
     [HarmonyTranspiler]
     [HarmonyPatch(nameof(HookArm.Update))]
-    static IEnumerable<CodeInstruction> Update(IEnumerable<CodeInstruction> instructions)
+    static IEnumerable<CodeInstruction> Update(IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         MethodInfo getTransform = AccessTools.PropertyGetter(typeof(Component), nameof(Component.transform));
         IEnumerable<CodeInstruction> codes = new CodeMatcher(instructions)
@@ -35,7 +35,7 @@ internal sealed class PatchHookArm
                 new CodeMatch(i => i.opcode == OpCodes.Call && i.operand is MethodInfo m && m == getTransform))
             .Repeat(matcher => matcher
                 .SetAndAdvance(OpCodes.Call, AccessTools.PropertyGetter(typeof(Vars), nameof(Vars.NonDominantHand)))
-                .SetAndAdvance(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(GameObject), nameof(GameObject.transform))))
+                .SetAndAdvance(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(GameObject), nameof(GameObject.transform))), Vars.NoMatch(original, "this.transform"))
             .InstructionEnumeration();
         return SkipHandOffsets(codes);
     }

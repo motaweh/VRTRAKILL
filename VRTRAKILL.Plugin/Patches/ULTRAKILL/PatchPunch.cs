@@ -67,7 +67,7 @@ public sealed class PatchPunch
     // Makes ActiveFrame use the arm hand position, the punch direction and the arm hand rotation in place of the camera, also at the cannonball, chainsaw and nail parries.
     [HarmonyTranspiler]
     [HarmonyPatch(nameof(Punch.ActiveFrame))]
-    static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         // this.cc.GetDefaultPos() -> Vars.NDHC.transform.position
         IEnumerable<CodeInstruction> sequence = new CodeMatcher(instructions)
@@ -80,7 +80,7 @@ public sealed class PatchPunch
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(Vars), "NDHC")) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Component), nameof(Component.transform))) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Transform), nameof(Transform.position))) { labels = matcher.Labels });
-                })
+                }, Vars.NoMatch(original, "cc.GetDefaultPos()"))
                 .InstructionEnumeration();
         // this.camObj.transform.forward -> Vars.punchDirection
         sequence = new CodeMatcher(sequence)
@@ -95,7 +95,7 @@ public sealed class PatchPunch
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
-                })
+                }, Vars.NoMatch(original, "camObj.transform.forward"))
                 .InstructionEnumeration();
         // this.camObj.transform.rotation -> Vars.NDHC.transform.rotation
         sequence = new CodeMatcher(sequence)
@@ -110,7 +110,7 @@ public sealed class PatchPunch
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Component), nameof(Component.transform))) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Transform), nameof(Transform.rotation))) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
-                })
+                }, Vars.NoMatch(original, "camObj.transform.rotation"))
                 .InstructionEnumeration();
 
         // the parry sites read this.cc.transform or CameraController.Instance instead of camObj (Punch.cs: cannonball, chainsaw, nail)
@@ -132,7 +132,7 @@ public sealed class PatchPunch
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
-                })
+                }, Vars.NoMatch(original, "cc.transform.forward"))
                 .InstructionEnumeration();
         // this.cc.transform.rotation -> Vars.NDHC.transform.rotation
         sequence = new CodeMatcher(sequence)
@@ -143,12 +143,12 @@ public sealed class PatchPunch
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Callvirt, GetTransform) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Callvirt, GetRotation) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
-                })
+                }, Vars.NoMatch(original, "cc.transform.rotation"))
                 .InstructionEnumeration();
         // CameraController.Instance.transform.position -> Vars.NDHC.transform.position
         sequence = new CodeMatcher(sequence)
                 .MatchForward(false, CallInstance, new CodeMatch(OpCodes.Callvirt, GetTransform), new CodeMatch(OpCodes.Callvirt, GetPosition))
-                .Repeat(matcher => matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Call, GetNDHC) { labels = matcher.Labels }))
+                .Repeat(matcher => matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Call, GetNDHC) { labels = matcher.Labels }), Vars.NoMatch(original, "Instance.transform.position"))
                 .InstructionEnumeration();
         // CameraController.Instance.transform.forward -> Vars.punchDirection
         sequence = new CodeMatcher(sequence)
@@ -158,7 +158,7 @@ public sealed class PatchPunch
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Ldsfld, PunchDirection) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
-                })
+                }, Vars.NoMatch(original, "Instance.transform.forward"))
                 .InstructionEnumeration();
         // CameraController.Instance.GetDefaultPos() -> Vars.NDHC.transform.position
         sequence = new CodeMatcher(sequence)
@@ -168,7 +168,7 @@ public sealed class PatchPunch
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Call, GetNDHC) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Callvirt, GetTransform) { labels = matcher.Labels });
                     matcher.InsertAndAdvance(new CodeInstruction(OpCodes.Callvirt, GetPosition));
-                })
+                }, Vars.NoMatch(original, "Instance.GetDefaultPos()"))
                 .InstructionEnumeration();
         return sequence;
     }

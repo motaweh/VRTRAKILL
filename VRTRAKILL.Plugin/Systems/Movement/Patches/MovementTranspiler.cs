@@ -22,7 +22,7 @@ internal class MovementTranspiler
         yield return AccessTools.Method(typeof(NewMovement), nameof(NewMovement.Dodge));
     }
     // Replaces move input reads in the target methods with the VR movement stick.
-    static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase original)
     {
         return new CodeMatcher(instructions)
                 .MatchForward(false,
@@ -30,7 +30,7 @@ internal class MovementTranspiler
                     new CodeMatch(i => i.opcode == OpCodes.Callvirt && i.operand is MethodInfo m && m.Name == "ReadValue"))
                 .Repeat(matcher =>
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(MovementTranspiler), nameof(GetReplacementMove))))
-                    .RemoveInstruction())
+                    .RemoveInstruction(), Vars.NoMatch(original, "Move.ReadValue"))
                 .InstructionEnumeration();
     }
     // Returns the VR movement stick axis in place of the move input, or zero while the weapon wheel uses the same stick.
