@@ -93,6 +93,21 @@ namespace Plugin.Prefs
         {
         }
 
+        // Replaces sections that the config file set to null with their defaults.
+        public void FillMissingSections()
+        {
+            UKBinds ??= UKBindings.GetBinds();
+            VRBinds ??= new _VRBinds();
+            Controllers ??= new _Controllers();
+            CBS ??= new _CBS();
+            MBP ??= new _MBP();
+            VRBody ??= new _VRBody();
+            UIInteraction ??= new _UIInteraction();
+            UIInteraction.ControllerLines ??= new _UIInteraction._ControllerLines();
+            DesktopView ??= new _DesktopView();
+            Misc ??= new _Misc();
+        }
+
         // Creates a config with default settings and the current game binds.
         public NewConfig()
         {
