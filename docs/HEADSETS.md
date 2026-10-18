@@ -6,8 +6,8 @@ VRTRAKILL runs through SteamVR (OpenVR) only. Every headset must reach the game 
 
 | Headset / controller | SteamVR controller type | Status | Default binding |
 |---|---|---|---|
-| PlayStation VR2 / Sense controllers | `playstation_vr2_sense` | Tested on hardware | `bindings_playstation_vr2_sense.json` |
-| Meta Quest 2, 3, 3S, Pro / Touch (through SteamVR) | `oculus_touch` | Tested on hardware | `bindings_oculus_touch.json` |
+| PlayStation VR2 / PS VR2 Sense controllers | `playstation_vr2_sense` | Tested on hardware | `bindings_playstation_vr2_sense.json` |
+| Meta Quest 2, 3, 3S, Pro / Meta Quest Touch controllers (through SteamVR) | `oculus_touch` | Tested on hardware | `bindings_oculus_touch.json` |
 | Valve Index / Index controllers (also Virtual Desktop with "Emulate Index controllers") | `knuckles` | Configured, not tested | `bindings_knuckles.json` |
 | HTC Vive, Vive Pro / Vive wands | `vive_controller` | Configured, not tested | `bindings_vive_controller.json` |
 | Windows Mixed Reality / motion controllers | `holographic_controller` | Configured, not tested | `bindings_holographic_controller.json` |
@@ -20,7 +20,7 @@ VRTRAKILL runs through SteamVR (OpenVR) only. Every headset must reach the game 
 
 ### What works
 
-- PS VR2 and Quest Touch: played on this game build through SteamVR. Head and hand tracking, the actions in the button map below and the menus with the controller laser are in use.
+- PS VR2 Sense controllers and Meta Quest Touch controllers: played on this game build through SteamVR. Head and hand tracking, the actions in the button map below and the menus with the controller laser are in use.
 - Configured controllers: the same actions are bound, so the same features are expected. Change any binding in SteamVR if one does not suit you.
 
 ### Finger tracking
@@ -29,9 +29,9 @@ The mod does not read finger (skeleton) data. Hands use fixed poses on every con
 
 | Controller | Skeleton input in driver profile | Skeleton bound in default binding |
 |---|---|---|
-| PS VR2 Sense | yes | yes |
+| PS VR2 Sense controllers | yes | yes |
 | Index | yes | yes |
-| Touch | yes | yes |
+| Meta Quest Touch controllers | yes | yes |
 | Vive wand | yes | yes |
 | WMR | not checked (driver profile not available) | no |
 

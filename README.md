@@ -42,7 +42,7 @@ If you downgraded the game for an older release, switch it back to the current v
 
 ### PlayStation VR2
 
-1. You need the PlayStation VR2 PC adapter, a PC with Windows 10 or 11 (64-bit), a graphics card with a DisplayPort 1.4 output, a free USB 3.0 port, and Bluetooth 4.0 or later for the Sense controllers.
+1. You need the PlayStation VR2 PC adapter, a PC with Windows 10 or 11 (64-bit), a graphics card with a DisplayPort 1.4 output, a free USB 3.0 port, and Bluetooth 4.0 or later for the PS VR2 Sense controllers.
 2. Connect the PC adapter to the PC: the DisplayPort cable directly to the graphics card, and the USB cable directly to the PC (no hub or extension cable).
 3. Install the free "PlayStation VR2 App" from the Steam store.
 4. Run its setup. It connects the adapter, pairs the Sense controllers over Bluetooth and sets up your play area.
@@ -78,7 +78,7 @@ Air Link and Virtual Desktop (in SteamVR mode) also connect a Quest over Wi-Fi, 
 
 (R) is the right controller, (L) is the left controller. You can change any binding in SteamVR > Settings > Controllers > Manage Controller Bindings > ULTRAKILL.
 
-### PS VR2 Sense
+### PS VR2 Sense controllers
 
 | Action | Button |
 |---|---|
@@ -97,7 +97,7 @@ Air Link and Virtual Desktop (in SteamVR mode) also connect a Quest over Wi-Fi, 
 | Weapon wheel | Hold (R) Circle, aim with the (L) stick, let go to switch |
 | Pause / back | (R) Options, or double tap (R) Circle |
 
-### Meta Quest Touch
+### Meta Quest Touch controllers
 
 | Action | Button |
 |---|---|
