@@ -81,8 +81,9 @@ The mod does not set or assume a refresh rate. Set 72, 80, 90 or 120 Hz in the L
 | Weapon wheel | (R) B held | (R) circle held | (R) B held | (R) menu held | (R) menu held |
 | Weapon wheel scroll | (L) stick | (L) stick | (L) thumbstick | (L) trackpad touch | (L) stick |
 | Pause / back | (R) B double | (R) Options, or (R) circle double | (R) B double | (R) menu double | (L) menu, or (R) menu double |
+| Menu select | (R) A, or a trigger | (R) cross, or R2 / L2 | (L) thumbstick click, or a trigger | (L) trackpad click up, or a trigger | (L) stick click, or a trigger |
 
-In menus, point with either controller and press its trigger to click. The left stick moves the selection and the "Change weapon variation" button selects it (left stick click on Quest and PS VR2, (R) A on Index).
+The jump button jumps in game and selects in menus (Cross / A on PS VR2 and Quest). In menus, point with either controller: its trigger selects what the laser points at. The left stick moves the highlight and the jump button selects the highlighted item. In menus the jump and trigger buttons do not jump, shoot or punch, also when the menu closes while you hold them. In a shop, the jump button on a shop button clicks it; anywhere else it jumps. "Change weapon variation" only changes the variation.
 
 One flick of the turn stick up or down switches one weapon. Return the stick to the center before the next flick. A push that is more up or down than left or right does not turn.
 

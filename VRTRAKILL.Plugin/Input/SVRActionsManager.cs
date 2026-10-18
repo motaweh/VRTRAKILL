@@ -181,9 +181,26 @@ namespace Plugin.Systems.Input
         // Stores the turn stick axis.
         private static void TurnH(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
         { InputVars.TurnVector = axis; }
-        // Presses or releases the jump bind when the jump action changes.
+        // true while the held jump selects in a menu or clicks a shop item instead of jumping
+        public static bool JumpSelects { get; private set; }
+        private static VirtualKeyCode? JumpKey; private static MouseButton? JumpButton;
+        // Presses the jump bind, nothing in a menu, or the shoot bind with the laser on a shop item, and releases the bind it pressed.
         private static void JumpH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
-        { if (newState != Jump) { Jump = newState; TriggerKey(Jump, !Jump, ConfigMaster.KJump, ConfigMaster.MJump); } }
+        {
+            if (newState != Jump)
+            {
+                Jump = newState;
+                // a menu or shop can close while held, so the release goes to whatever the press sent
+                if (Jump)
+                {
+                    bool Menu = Vars.IsPaused, Shop = !Menu && Vars.IsPlayerUsingShop && UI.UIInteraction.OverItem;
+                    JumpSelects = Menu || Shop;
+                    JumpKey = Menu ? null : Shop ? ConfigMaster.KShoot : ConfigMaster.KJump;
+                    JumpButton = Menu ? null : Shop ? ConfigMaster.MShoot : ConfigMaster.MJump;
+                }
+                TriggerKey(Jump, !Jump, JumpKey, JumpButton);
+            }
+        }
         // Presses or releases the slide bind when the slide action changes.
         private static void SlideH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Slide) { Slide = newState; TriggerKey(Slide, !Slide, ConfigMaster.KSlide, ConfigMaster.MSlide); } }
@@ -192,7 +209,7 @@ namespace Plugin.Systems.Input
         { if (newState != Dash) { Dash = newState; TriggerKey(Dash, !Dash, ConfigMaster.KDash, ConfigMaster.MDash); } }
 
         private static VirtualKeyCode? PunchKey; private static MouseButton? PunchButton;
-        // Presses the punch bind, or the shoot bind while the player is frozen or in a shop, and releases the bind it pressed.
+        // Presses the punch bind, the shoot bind while the player is frozen or in a shop, or nothing in a menu, and releases the bind it pressed.
         private static void PunchH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         {
             if (newState != Punch)
@@ -201,9 +218,10 @@ namespace Plugin.Systems.Input
                 // the frozen or shop state can change while held; releasing the other bind left this one down
                 if (Punch)
                 {
-                    bool Shoot = Vars.IsPlayerFrozen || Vars.IsPlayerUsingShop;
-                    PunchKey = Shoot ? ConfigMaster.KShoot : ConfigMaster.KPunch;
-                    PunchButton = Shoot ? ConfigMaster.MShoot : ConfigMaster.MPunch;
+                    // in a menu the trigger only clicks the laser target (UIInteraction)
+                    bool Menu = Vars.IsPaused, Shoot = Vars.IsPlayerFrozen || Vars.IsPlayerUsingShop;
+                    PunchKey = Menu ? null : Shoot ? ConfigMaster.KShoot : ConfigMaster.KPunch;
+                    PunchButton = Menu ? null : Shoot ? ConfigMaster.MShoot : ConfigMaster.MPunch;
                 }
                 TriggerKey(Punch, !Punch, PunchKey, PunchButton);
             }
@@ -215,9 +233,18 @@ namespace Plugin.Systems.Input
         private static void WhiplashH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Whiplash) { Whiplash = newState; TriggerKey(Whiplash, !Whiplash, ConfigMaster.KWhiplash, ConfigMaster.MWhiplash); } }
 
-        // Presses or releases the shoot bind when the shoot action changes.
+        private static bool ShootInMenu;
+        // Presses or releases the shoot bind, but sends nothing for a press that started in a menu, where the trigger clicks the laser target.
         private static void RHShootH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
-        { if (newState != RHPrimaryFire) { RHPrimaryFire = newState; TriggerKey(RHPrimaryFire, !RHPrimaryFire, ConfigMaster.KShoot, ConfigMaster.MShoot); } }
+        {
+            if (newState != RHPrimaryFire)
+            {
+                RHPrimaryFire = newState;
+                // decided at the press, so a menu that closes while held never fires on release
+                if (RHPrimaryFire) ShootInMenu = Vars.IsPaused;
+                if (!ShootInMenu) TriggerKey(RHPrimaryFire, !RHPrimaryFire, ConfigMaster.KShoot, ConfigMaster.MShoot);
+            }
+        }
         // Presses or releases the alt fire bind when the alt shoot action changes.
         private static void RHAltShootH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != RHAltFire) { RHAltFire = newState; TriggerKey(RHAltFire, !RHAltFire, ConfigMaster.KAltShoot, ConfigMaster.MAltShoot); } }

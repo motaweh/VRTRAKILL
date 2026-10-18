@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Menus: Cross on PS VR2 and A on Quest select (the jump button on other controllers). The trigger selects what the laser points at, on either hand. These buttons no longer also jump, shoot or punch in a menu, or when the menu closes while held. The left stick click only changes the weapon variation.
+- A small hand turn while you pull the trigger no longer cancels a click on a button in a scrolling list.
+
 ## 1.0.1
 
 - Controllers no longer keep vibrating after a slide, whiplash or nailgun shot.
