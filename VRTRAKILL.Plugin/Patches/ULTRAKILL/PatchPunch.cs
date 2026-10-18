@@ -34,7 +34,7 @@ public sealed class PatchPunch
         __instance.tr.enabled = false;
     }
 
-    // Starts a punch when the arm moves fast enough with punch held, and blocks the game's own punch for this frame.
+    // Starts a punch when the arm moves fast enough with punch held and the fist cooldown and stamina allow it, and blocks the game's own punch for this frame.
     [HarmonyPrefix]
     [HarmonyPatch(nameof(Punch.Update))]
     private static void Update(Punch __instance, out bool __state)
@@ -45,6 +45,9 @@ public sealed class PatchPunch
         if (Vars.NDHC.Speed * 2 >= Vars.Config.MBP.PunchingSpeed
             && MonoSingleton<InputManager>.Instance.InputSource.Punch.IsPressed
             && __instance.ready && !__instance.shopping
+            // the game's own gate (Punch.Update); without it stamina went negative
+            && __instance.fc.fistCooldown <= 0f
+            && MonoSingleton<WeaponCharges>.Instance is WeaponCharges Charges && Charges != null && Charges.punchStamina >= 1f
             && __instance.fc.activated
             && !GameStateManager.Instance.PlayerInputLocked)
         {
@@ -61,7 +64,7 @@ public sealed class PatchPunch
     {
         __instance.ready = __state;
     }
-    // Makes ActiveFrame use the arm hand position, the punch direction and the arm hand rotation in place of the camera.
+    // Makes ActiveFrame use the arm hand position, the punch direction and the arm hand rotation in place of the camera, also at the cannonball, chainsaw and nail parries.
     [HarmonyTranspiler]
     [HarmonyPatch(nameof(Punch.ActiveFrame))]
     static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -107,6 +110,64 @@ public sealed class PatchPunch
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Component), nameof(Component.transform))) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Transform), nameof(Transform.rotation))) { labels = matcher.Labels });
                     matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
+                })
+                .InstructionEnumeration();
+
+        // the parry sites read this.cc.transform or CameraController.Instance instead of camObj (Punch.cs: cannonball, chainsaw, nail)
+        MethodInfo GetInstance = AccessTools.PropertyGetter(typeof(CameraController), nameof(CameraController.Instance));
+        MethodInfo GetTransform = AccessTools.PropertyGetter(typeof(Component), nameof(Component.transform));
+        MethodInfo GetForward = AccessTools.PropertyGetter(typeof(Transform), nameof(Transform.forward));
+        MethodInfo GetRotation = AccessTools.PropertyGetter(typeof(Transform), nameof(Transform.rotation));
+        MethodInfo GetPosition = AccessTools.PropertyGetter(typeof(Transform), nameof(Transform.position));
+        MethodInfo GetNDHC = AccessTools.PropertyGetter(typeof(Vars), "NDHC");
+        FieldInfo PunchDirection = AccessTools.Field(typeof(Vars), nameof(Vars.punchDirection));
+        CodeMatch LoadCC = new CodeMatch(i => i.opcode == OpCodes.Ldfld && i.operand is FieldInfo f && f.FieldType == typeof(CameraController));
+        CodeMatch CallInstance = new CodeMatch(i => i.opcode == OpCodes.Call && i.operand is MethodInfo m && m == GetInstance);
+        // this.cc.transform.forward -> Vars.punchDirection
+        sequence = new CodeMatcher(sequence)
+                .MatchForward(false, new CodeMatch(OpCodes.Ldarg_0), LoadCC, new CodeMatch(OpCodes.Callvirt, GetTransform), new CodeMatch(OpCodes.Callvirt, GetForward))
+                .Repeat(matcher =>
+                {
+                    matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Ldsfld, PunchDirection) { labels = matcher.Labels });
+                    matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
+                    matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
+                    matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
+                })
+                .InstructionEnumeration();
+        // this.cc.transform.rotation -> Vars.NDHC.transform.rotation
+        sequence = new CodeMatcher(sequence)
+                .MatchForward(false, new CodeMatch(OpCodes.Ldarg_0), LoadCC, new CodeMatch(OpCodes.Callvirt, GetTransform), new CodeMatch(OpCodes.Callvirt, GetRotation))
+                .Repeat(matcher =>
+                {
+                    matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Call, GetNDHC) { labels = matcher.Labels });
+                    matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Callvirt, GetTransform) { labels = matcher.Labels });
+                    matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Callvirt, GetRotation) { labels = matcher.Labels });
+                    matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
+                })
+                .InstructionEnumeration();
+        // CameraController.Instance.transform.position -> Vars.NDHC.transform.position
+        sequence = new CodeMatcher(sequence)
+                .MatchForward(false, CallInstance, new CodeMatch(OpCodes.Callvirt, GetTransform), new CodeMatch(OpCodes.Callvirt, GetPosition))
+                .Repeat(matcher => matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Call, GetNDHC) { labels = matcher.Labels }))
+                .InstructionEnumeration();
+        // CameraController.Instance.transform.forward -> Vars.punchDirection
+        sequence = new CodeMatcher(sequence)
+                .MatchForward(false, CallInstance, new CodeMatch(OpCodes.Callvirt, GetTransform), new CodeMatch(OpCodes.Callvirt, GetForward))
+                .Repeat(matcher =>
+                {
+                    matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Ldsfld, PunchDirection) { labels = matcher.Labels });
+                    matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
+                    matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Nop) { labels = matcher.Labels });
+                })
+                .InstructionEnumeration();
+        // CameraController.Instance.GetDefaultPos() -> Vars.NDHC.transform.position
+        sequence = new CodeMatcher(sequence)
+                .MatchForward(false, CallInstance, new CodeMatch(i => i.opcode == OpCodes.Callvirt && i.operand is MethodInfo m && m == AccessTools.Method(typeof(CameraController), nameof(CameraController.GetDefaultPos))))
+                .Repeat(matcher =>
+                {
+                    matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Call, GetNDHC) { labels = matcher.Labels });
+                    matcher.SetInstructionAndAdvance(new CodeInstruction(OpCodes.Callvirt, GetTransform) { labels = matcher.Labels });
+                    matcher.InsertAndAdvance(new CodeInstruction(OpCodes.Callvirt, GetPosition));
                 })
                 .InstructionEnumeration();
         return sequence;

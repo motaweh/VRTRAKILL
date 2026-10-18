@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
+using Valve.VR;
+using VRBasePlugin.Systems.VRCamera;
 
 namespace Plugin.Systems.Controllers
 {
@@ -10,17 +11,16 @@ namespace Plugin.Systems.Controllers
 
         public Vector3 ArmIKOffset = new Vector3(0, .05f, -.11f);
 
-        private Vector3 _PreviousPosition, _CurrentVelocity; public float Speed = 0; // for punch detection
+        private Vector3 _PreviousPosition; private bool _HasPreviousPosition; public float Speed = 0; // for punch detection
         private Vector3 LastPosition; // for direction
-        // Measures the hand speed from now to the end of the frame for punch detection.
-        private IEnumerator CalculateSpeed()
+        // Measures the hand speed since the last frame in tracking space, for punch detection.
+        private void CalculateSpeed()
         {
-            _PreviousPosition = transform.position;
-
-            yield return new WaitForEndOfFrame();
-
-            _CurrentVelocity = (_PreviousPosition - transform.position) / Time.deltaTime;
-            Speed = _CurrentVelocity.magnitude;
+            // world position and scaled time added locomotion and multiplied by the weapon wheel and hitstop time scales
+            Vector3 Position = CC.source == SteamVR_Input_Sources.LeftHand ? VRControllerLocations.Instance.leftPos : VRControllerLocations.Instance.rightPos;
+            float Delta = Time.unscaledDeltaTime;
+            if (_HasPreviousPosition && Delta > 0f) Speed = (Position - _PreviousPosition).magnitude / Delta;
+            _PreviousPosition = Position; _HasPreviousPosition = true;
         }
 
         // Gets the controller and gun offset, and puts the UI event camera on the hand for controller based UI.
@@ -44,7 +44,7 @@ namespace Plugin.Systems.Controllers
         {
             CC.ArmOffset.transform.localPosition = ArmIKOffset;
 
-            StartCoroutine(CalculateSpeed());
+            CalculateSpeed();
 
             if (LastPosition != transform.position)
             {
