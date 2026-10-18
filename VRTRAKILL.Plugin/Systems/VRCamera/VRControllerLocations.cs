@@ -53,7 +53,7 @@ namespace VRBasePlugin.Systems.VRCamera
         }
 
         private bool IsTurning; private float SnapTurnTimer;
-        // Reads the head and hand poses, updates the menu back action and updates the turn offset for smooth or snap turning.
+        // Reads the head and hand poses, updates the runtime-built actions and updates the turn offset for smooth or snap turning.
         public void Update()
         {
             headPos = InputTracking.GetLocalPosition(XRNode.Head);
@@ -69,7 +69,7 @@ namespace VRBasePlugin.Systems.VRCamera
                 rightRot = _right.rotation;
             }
 
-            SVRActionsManager.UpdateMenuBack();
+            SVRActionsManager.UpdateRuntimeActions();
 
             // a mostly vertical push does not turn, so menu scrolls and Vive trackpad clicks up or down do not turn
             float TurnX = Mathf.Abs(InputVars.TurnVector.x) >= Mathf.Abs(InputVars.TurnVector.y) ? InputVars.TurnVector.x : 0;

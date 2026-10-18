@@ -161,7 +161,22 @@ namespace Plugin.Systems.Input
             // Go back, pause, etc.
             Listen(SteamVR_Actions._default.Escape, EscapeH);
 
-            // the generated SteamVR_Actions class has no MenuBack, so it is built from its path and updated in UpdateMenuBack
+            // the generated SteamVR_Actions class has no WeaponWheelHold or MenuBack, so they are built from their paths and updated in UpdateRuntimeActions
+            try
+            {
+                SteamVR_Action_Boolean Hold = SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/default/in/WeaponWheelHold");
+                Hold.Initialize(true, false);
+                if (Hold.handle == 0) Vars.Log.LogWarning("SteamVR has no handle for the WeaponWheelHold action. The weapon wheel closes after the long press delay.");
+                else
+                {
+                    Hold.ForceAddSourceToUpdateList(SteamVR_Input_Sources.Any);
+                    Listen(Hold, WeaponWheelHoldH);
+                    WeaponWheelHoldAction = Hold;
+                }
+            }
+            // a failed optional action must not stop VR start-up
+            catch (System.Exception E) { Vars.Log.LogWarning($"The weapon wheel closes after the long press delay, the WeaponWheelHold action failed: {E.Message}"); }
+            RuntimeActionsInitFrame = Time.frameCount;
             try
             {
                 SteamVR_Action_Boolean Back = SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/default/in/MenuBack");
@@ -169,7 +184,6 @@ namespace Plugin.Systems.Input
                 if (Back.handle == 0) { Vars.Log.LogWarning("SteamVR has no handle for the MenuBack action. Back in menus is off."); return; }
                 Back.ForceAddSourceToUpdateList(SteamVR_Input_Sources.Any);
                 Listen(Back, MenuBackH);
-                MenuBackInitFrame = Time.frameCount;
                 MenuBackAction = Back;
             }
             // a failed optional action must not stop VR start-up
@@ -299,9 +313,24 @@ namespace Plugin.Systems.Input
         private static void PrevWeaponH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != PrevWeapon) { PrevWeapon = newState; if (PrevWeapon) MouseScroll(-1); } }
 
-        // Presses or releases the last weapon bind, which opens the weapon wheel while held.
+        private static bool WeaponWheelHeld, LastWeaponDown;
+        private static SteamVR_Action_Boolean WeaponWheelHoldAction;
+        // Presses the last weapon bind, which opens the weapon wheel while held, and releases it once the button is also up.
         private static void OpenWeaponWheelH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
-        { if (newState != OpenWeaponWheel) { OpenWeaponWheel = newState; TriggerKey(OpenWeaponWheel, !OpenWeaponWheel, ConfigMaster.KLastWeapon, ConfigMaster.MLastWeapon); } }
+        {
+            if (newState == OpenWeaponWheel) return;
+            OpenWeaponWheel = newState;
+            if (OpenWeaponWheel && !LastWeaponDown) { LastWeaponDown = true; TriggerKey(true, false, ConfigMaster.KLastWeapon, ConfigMaster.MLastWeapon); }
+            // SteamVR's held output ends after the long press delay (1 s at most), so a held button keeps the bind down until WeaponWheelHoldH
+            else if (!OpenWeaponWheel && !WeaponWheelHeld && LastWeaponDown) { LastWeaponDown = false; TriggerKey(false, true, ConfigMaster.KLastWeapon, ConfigMaster.MLastWeapon); }
+        }
+        // Stores the weapon wheel button's click and releases the last weapon bind when the button goes up after the held output ended.
+        private static void WeaponWheelHoldH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
+        {
+            if (newState == WeaponWheelHeld) return;
+            WeaponWheelHeld = newState;
+            if (!WeaponWheelHeld && !OpenWeaponWheel && LastWeaponDown) { LastWeaponDown = false; TriggerKey(false, true, ConfigMaster.KLastWeapon, ConfigMaster.MLastWeapon); }
+        }
         // Stores the weapon wheel stick axis.
         private static void WeaponWheelScrollH(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
         { InputVars.WWVector = axis; }
@@ -342,14 +371,15 @@ namespace Plugin.Systems.Input
         { if (newState != Escape) { Escape = newState; TriggerKey(Escape, !Escape, VirtualKeyCode.ESCAPE, null); } }
 
         private static SteamVR_Action_Boolean MenuBackAction;
-        private static int MenuBackInitFrame;
+        private static int RuntimeActionsInitFrame;
         private static bool MenuBackSent;
-        // Updates the MenuBack action once per frame; SteamVR_Input only updates the actions of the generated class.
-        public static void UpdateMenuBack()
+        // Updates the WeaponWheelHold and MenuBack actions once per frame; SteamVR_Input only updates the actions of the generated class.
+        public static void UpdateRuntimeActions()
         {
             // a read before SteamVR_Input's first update of the action set logs NoData
-            if (MenuBackAction == null || Time.frameCount <= MenuBackInitFrame + 1) return;
-            MenuBackAction.UpdateValues();
+            if (Time.frameCount <= RuntimeActionsInitFrame + 1) return;
+            WeaponWheelHoldAction?.UpdateValues();
+            MenuBackAction?.UpdateValues();
         }
         // Presses Escape, the game's menu back key, for a press that starts in a menu, and releases it with the press.
         private static void MenuBackH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)

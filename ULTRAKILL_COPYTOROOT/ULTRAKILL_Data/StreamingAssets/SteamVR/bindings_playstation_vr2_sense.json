@@ -150,6 +150,15 @@
             {
                "inputs" : {
                   "click" : {
+                     "output" : "/actions/default/in/weaponwheelhold"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/circle"
+            },
+            {
+               "inputs" : {
+                  "click" : {
                      "output" : "/actions/default/in/escape"
                   }
                },

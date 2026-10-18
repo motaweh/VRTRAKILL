@@ -43,6 +43,11 @@
       "type": "boolean"
     },
     {
+      "name": "/actions/default/in/WeaponWheelHold",
+      "type": "boolean",
+      "requirement": "optional"
+    },
+    {
       "name": "/actions/default/in/ChangeWeaponVariation",
       "type": "boolean"
     },
@@ -232,6 +237,7 @@
       "/actions/default/in/MenuBack": "Back (in menus)",
       "/actions/default/in/Slide": "Slide (or Slam)",
       "/actions/default/in/OpenWeaponWheel": "(Press) Quick Swap / (Hold) Open Weapon Wheel",
+      "/actions/default/in/WeaponWheelHold": "Keep Weapon Wheel Open (same button, Click)",
       "/actions/default/in/ChangeWeaponVariation": "Change Weapon Variation",
       "/actions/default/in/IterateWeapon": "Weapon Scroll",
       "/actions/default/in/SwapHand": "Change Fist",
