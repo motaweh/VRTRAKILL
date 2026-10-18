@@ -39,7 +39,7 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/changeweaponvariation"
+                     "output" : "/actions/default/in/dash"
                   },
                   "position" : {
                      "output" : "/actions/default/in/movement"
@@ -50,8 +50,17 @@
             },
             {
                "inputs" : {
+                  "position" : {
+                     "output" : "/actions/default/in/weaponwheelscroll"
+                  }
+               },
+               "mode" : "joystick",
+               "path" : "/user/hand/left/input/left_stick"
+            },
+            {
+               "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/swaphand"
+                     "output" : "/actions/default/in/whiplash"
                   }
                },
                "mode" : "button",
@@ -69,7 +78,7 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/whiplash"
+                     "output" : "/actions/default/in/swaphand"
                   }
                },
                "mode" : "button",
@@ -78,20 +87,11 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/dash"
+                     "output" : "/actions/default/in/changeweaponvariation"
                   }
                },
                "mode" : "button",
                "path" : "/user/hand/left/input/triangle"
-            },
-            {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/altshoot"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/right/input/r1"
             },
             {
                "inputs" : {
@@ -108,6 +108,15 @@
             {
                "inputs" : {
                   "click" : {
+                     "output" : "/actions/default/in/altshoot"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/r1"
+            },
+            {
+               "inputs" : {
+                  "click" : {
                      "output" : "/actions/default/in/shoot"
                   }
                },
@@ -116,6 +125,18 @@
             },
             {
                "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/jump"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/cross"
+            },
+            {
+               "inputs" : {
+                  "single" : {
+                     "output" : "/actions/default/in/menuback"
+                  },
                   "double" : {
                      "output" : "/actions/default/in/escape"
                   },
@@ -129,38 +150,11 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/jump"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/right/input/cross"
-            },
-            {
-               "inputs" : {
-                  "click" : {
                      "output" : "/actions/default/in/escape"
                   }
                },
                "mode" : "button",
                "path" : "/user/hand/right/input/options"
-            },
-            {
-               "inputs" : {
-                  "position" : {
-                     "output" : "/actions/default/in/iterateweapon"
-                  }
-               },
-               "mode" : "joystick",
-               "path" : "/user/hand/right/input/right_stick"
-            },
-            {
-               "inputs" : {
-                  "position" : {
-                     "output" : "/actions/default/in/weaponwheelscroll"
-                  }
-               },
-               "mode" : "joystick",
-               "path" : "/user/hand/left/input/left_stick"
             }
          ]
       }

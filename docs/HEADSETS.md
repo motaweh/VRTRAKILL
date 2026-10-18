@@ -67,35 +67,42 @@ The mod does not set or assume a refresh rate. Set 72, 80, 90 or 120 Hz in the L
 | Action | Quest Touch | PS VR2 Sense | Index | Vive wand | WMR |
 |---|---|---|---|---|---|
 | Move | (L) stick | (L) stick | (L) thumbstick | (L) trackpad touch | (L) stick |
-| Jump | (R) A | (R) cross | (L) thumbstick click | (L) trackpad click up | (L) stick click |
 | Turn | (R) stick left / right | (R) stick left / right | (R) thumbstick left / right | (R) trackpad touch left / right | (R) stick left / right |
+| Jump | (R) A | (R) cross | (R) A | (R) trackpad click center or up | (R) trackpad click |
 | Slide / slam | (R) stick click | (R) stick click | (R) thumbstick click | (R) trackpad click down | (R) stick click |
-| Dash | (L) Y | (L) triangle | (L) B | (L) trackpad click down, left or right | (L) trackpad click up |
+| Dash | (L) stick click | (L) stick click | (L) thumbstick click | (L) trackpad click center, down, left or right | (L) stick click |
 | Shoot | (R) trigger | (R) R2 | (R) trigger | (R) trigger | (R) trigger |
 | Alternate fire | (R) grip | (R) R1 | (R) grip | (R) grip | (R) grip |
 | Punch | (L) trigger | (L) L2 | (L) trigger | (L) trigger | (L) trigger |
-| Whiplash | (L) X | (L) square | (L) A | (L) menu | (L) trackpad click left |
-| Change hand | (L) grip | (L) L1 | (L) grip | (L) grip | (L) grip |
-| Change weapon variation | (L) stick click | (L) stick click | (R) A | (R) trackpad click up | (R) trackpad click down |
-| Next / previous weapon | (R) stick flick up / down | (R) stick flick up / down | (R) thumbstick flick up / down | not bound | (R) stick flick up / down |
+| Whiplash | (L) grip | (L) L1 | (L) grip | (L) grip | (L) grip |
+| Change fist (Feedbacker / Knuckleblaster) | (L) X | (L) square | (L) A | (L) menu | (L) trackpad click down |
+| Change weapon variation | (L) Y | (L) triangle | (L) B | (L) trackpad click up | (L) trackpad click up |
 | Weapon wheel | (R) B held | (R) circle held | (R) B held | (R) menu held | (R) menu held |
 | Weapon wheel scroll | (L) stick | (L) stick | (L) thumbstick | (L) trackpad touch | (L) stick |
-| Pause / back | (R) B double | (R) Options, or (R) circle double | (R) B double | (R) menu double | (L) menu, or (R) menu double |
-| Menu select | (R) A, or a trigger | (R) cross, or R2 / L2 | (L) thumbstick click, or a trigger | (L) trackpad click up, or a trigger | (L) stick click, or a trigger |
+| Pause | (R) B double | (R) Options, or (R) circle double | (R) B double | (R) menu double | (L) menu, or (R) menu double |
+| Menu select | (R) A, or a trigger | (R) cross, or R2 / L2 | (R) A, or a trigger | (R) trackpad click center or up, or a trigger | (R) trackpad click, or a trigger |
+| Menu highlight | (L) stick | (L) stick | (L) thumbstick | (L) trackpad touch | (L) stick |
+| Menu scroll | (R) stick up / down | (R) stick up / down | (R) thumbstick up / down | (R) trackpad touch up / down | (R) stick up / down |
+| Menu back | (R) B once | (R) circle once | (R) B once | (R) menu once | (R) menu once |
 
-The jump button jumps in game and selects in menus (Cross / A on PS VR2 and Quest). In menus, point with either controller: its trigger selects what the laser points at. The left stick moves the highlight and the jump button selects the highlighted item. In menus the jump and trigger buttons do not jump, shoot or punch, also when the menu closes while you hold them. In a shop, the jump button on a shop button clicks it; anywhere else it jumps. "Change weapon variation" only changes the variation.
+This layout follows the common VR shooter layout: Meta's controller guidance and ULTRAKILL's own gamepad layout. No button switches to the next or previous weapon by default. Use the weapon wheel. PS VR2 Create is not bound, because SteamVR uses it for screenshots.
 
-One flick of the turn stick up or down switches one weapon. Return the stick to the center before the next flick. A push that is more up or down than left or right does not turn.
+The jump button jumps in game and selects in menus. In menus, point with either controller: its trigger selects what the laser points at. The left stick moves the highlight and the jump button selects the highlighted item. In menus the jump and trigger buttons do not jump, shoot or punch, also when the menu closes while you hold them. In a shop, the jump button on a shop button clicks it; anywhere else it jumps. "Change weapon variation" only changes the variation.
+
+A single press of the weapon wheel button goes back one menu page. On the first pause page it closes the pause menu, like Escape on a keyboard. In play a single press does nothing, so the button only pauses on a double press. In a menu a double press goes back once. A single press counts after the double press time has passed, so back comes a moment after the press.
+
+A push of the turn stick that is more up or down than left or right does not turn.
 
 While the weapon wheel is open, the weapon wheel scroll stick points at a weapon and does not move the player. Let go of the wheel button to switch.
+
+If the buttons still act like an older version, reset SteamVR to the default binding (SteamVR Settings > Controllers > Manage Controller Bindings > ULTRAKILL > Default).
 
 ## Known issues
 
 - PS VR2 and Quest are tested on hardware. Index, Vive and WMR bindings are checked against driver input profiles only.
 - Quest: the (L) menu button opens the SteamVR menu. Games cannot use it, so pause is a double tap of (R) B.
-- Vive wand: next / previous weapon is not bound. The right trackpad already turns, and a scroll there would also fire on every up or down click. Use the weapon wheel.
 - WMR: the binding was checked against Valve's WMR example binding and ALVR's WMR controller profile, not against Microsoft's own driver profile.
-- The weapon wheel button presses the key the game uses for "Last Used Weapon". The game has no keyboard key for it by default, so the mod presses the "Previous Variation" key (Q) instead, which opens the wheel when held. On Index a short press therefore changes to the previous variation. Bind a keyboard key to "Last Used Weapon" in the game's controls to get quick swap on a short press.
+- The weapon wheel button presses the key the game uses for "Last Used Weapon". The game has no keyboard key for it by default, so the mod presses the "Previous Variation" key (Q) instead, which opens the wheel when held. Bind a keyboard key to "Last Used Weapon" in the game's controls to get quick swap.
 - Left-handed mode is marked as broken in the config file ("Left handed (BROKEN)").
 - After an update that changes a default binding, SteamVR can keep the old one. Select the default binding again in the binding screen.
 - Issues in the game itself (portals, stains, 4-S, desktop view) are listed in the [README](../README.md#known-issues).

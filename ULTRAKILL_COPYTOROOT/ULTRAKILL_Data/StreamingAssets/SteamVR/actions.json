@@ -34,6 +34,11 @@
       "type": "boolean"
     },
     {
+      "name": "/actions/default/in/MenuBack",
+      "type": "boolean",
+      "requirement": "optional"
+    },
+    {
       "name": "/actions/default/in/OpenWeaponWheel",
       "type": "boolean"
     },
@@ -44,7 +49,7 @@
     {
       "name": "/actions/default/in/IterateWeapon",
       "type": "vector2",
-      "requirement": "suggested"
+      "requirement": "optional"
     },
     {
       "name": "/actions/default/in/SwapHand",
@@ -224,11 +229,12 @@
       "/actions/Default/in/Slide": "Slide",
       "/actions/Default/in/Dash": "Dash",
       "/actions/default/in/Escape": "Escape (Pause, etc.)",
+      "/actions/default/in/MenuBack": "Back (in menus)",
       "/actions/default/in/Slide": "Slide (or Slam)",
       "/actions/default/in/OpenWeaponWheel": "(Press) Quick Swap / (Hold) Open Weapon Wheel",
       "/actions/default/in/ChangeWeaponVariation": "Change Weapon Variation",
       "/actions/default/in/IterateWeapon": "Weapon Scroll",
-      "/actions/default/in/SwapHand": "Change Hand",
+      "/actions/default/in/SwapHand": "Change Fist",
       "/actions/default/in/Slot1": "Weapon Slot 1",
       "/actions/default/in/Slot2": "Weapon Slot 2",
       "/actions/default/in/Slot3": "Weapon Slot 3",

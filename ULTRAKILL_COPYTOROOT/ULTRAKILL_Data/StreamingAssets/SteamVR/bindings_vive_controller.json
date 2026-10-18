@@ -56,8 +56,11 @@
             },
             {
                "inputs" : {
+                  "center" : {
+                     "output" : "/actions/default/in/dash"
+                  },
                   "north" : {
-                     "output" : "/actions/default/in/jump"
+                     "output" : "/actions/default/in/changeweaponvariation"
                   },
                   "south" : {
                      "output" : "/actions/default/in/dash"
@@ -70,10 +73,19 @@
                   }
                },
                "mode" : "dpad",
+               "path" : "/user/hand/left/input/trackpad",
                "parameters" : {
                   "sub_mode" : "click"
+               }
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/whiplash"
+                  }
                },
-               "path" : "/user/hand/left/input/trackpad"
+               "mode" : "button",
+               "path" : "/user/hand/left/input/grip"
             },
             {
                "inputs" : {
@@ -91,15 +103,6 @@
                   }
                },
                "mode" : "button",
-               "path" : "/user/hand/left/input/grip"
-            },
-            {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/whiplash"
-                  }
-               },
-               "mode" : "button",
                "path" : "/user/hand/left/input/application_menu"
             },
             {
@@ -113,27 +116,21 @@
             },
             {
                "inputs" : {
+                  "center" : {
+                     "output" : "/actions/default/in/jump"
+                  },
                   "north" : {
-                     "output" : "/actions/default/in/changeweaponvariation"
+                     "output" : "/actions/default/in/jump"
                   },
                   "south" : {
                      "output" : "/actions/default/in/slide"
                   }
                },
                "mode" : "dpad",
+               "path" : "/user/hand/right/input/trackpad",
                "parameters" : {
                   "sub_mode" : "click"
-               },
-               "path" : "/user/hand/right/input/trackpad"
-            },
-            {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/shoot"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/right/input/trigger"
+               }
             },
             {
                "inputs" : {
@@ -146,6 +143,18 @@
             },
             {
                "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/shoot"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/trigger"
+            },
+            {
+               "inputs" : {
+                  "single" : {
+                     "output" : "/actions/default/in/menuback"
+                  },
                   "double" : {
                      "output" : "/actions/default/in/escape"
                   },

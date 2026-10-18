@@ -53,44 +53,58 @@ If VR does not start, open `BepInEx/LogOutput.log` in your profile (mod manager 
 | Action | Button |
 |---|---|
 | Move | (L) stick |
-| Turn | (R) stick left or right |
-| Jump | (R) Cross: jump in game, select in menus |
+| Turn | (R) stick left or right. Up and down do not turn or switch weapons. |
+| Jump | (R) Cross |
 | Slide / slam | (R) stick click |
-| Dash | (L) Triangle |
-| Shoot | (R) R2: shoot in game, select what the laser points at in menus |
+| Dash | (L) stick click |
+| Shoot | (R) R2 |
 | Alternate fire | (R) R1 |
-| Punch | (L) L2: punch in game, select what the left laser points at in menus |
-| Whiplash | (L) Square |
-| Change hand | (L) L1 |
-| Change weapon variation | (L) stick click |
-| Next / previous weapon | (R) stick flick up or down |
+| Punch | (L) L2 |
+| Whiplash | (L) L1 |
+| Change fist (Feedbacker / Knuckleblaster) | (L) Square |
+| Change weapon variation | (L) Triangle |
 | Weapon wheel | Hold (R) Circle, aim with the (L) stick, let go to switch |
-| Pause / back | (R) Options, or double tap (R) Circle |
+| Pause | (R) Options, or double tap (R) Circle |
+| Menu: point | Point either controller at the menu |
+| Menu: select | (R) R2 or (L) L2 selects what that laser points at. (R) Cross selects the highlighted item. |
+| Menu: move the highlight | (L) stick |
+| Menu: scroll | (R) stick up or down |
+| Menu: back | Press (R) Circle once. On the first pause page this closes the pause menu. |
+
+(L) Create is not used. SteamVR uses it for screenshots.
 
 ### Meta Quest Touch controllers
 
 | Action | Button |
 |---|---|
 | Move | (L) stick |
-| Turn | (R) stick left or right |
-| Jump | (R) A: jump in game, select in menus |
+| Turn | (R) stick left or right. Up and down do not turn or switch weapons. |
+| Jump | (R) A |
 | Slide / slam | (R) stick click |
-| Dash | (L) Y |
-| Shoot | (R) trigger: shoot in game, select what the laser points at in menus |
+| Dash | (L) stick click |
+| Shoot | (R) trigger |
 | Alternate fire | (R) grip |
-| Punch | (L) trigger: punch in game, select what the left laser points at in menus |
-| Whiplash | (L) X |
-| Change hand | (L) grip |
-| Change weapon variation | (L) stick click |
-| Next / previous weapon | (R) stick flick up or down |
+| Punch | (L) trigger |
+| Whiplash | (L) grip |
+| Change fist (Feedbacker / Knuckleblaster) | (L) X |
+| Change weapon variation | (L) Y |
 | Weapon wheel | Hold (R) B, aim with the (L) stick, let go to switch |
-| Pause / back | Double tap (R) B |
+| Pause | Double tap (R) B |
+| Menu: point | Point either controller at the menu |
+| Menu: select | (R) trigger or (L) trigger selects what that laser points at. (R) A selects the highlighted item. |
+| Menu: move the highlight | (L) stick |
+| Menu: scroll | (R) stick up or down |
+| Menu: back | Press (R) B once. On the first pause page this closes the pause menu. |
+
+If the buttons still act like an older version, reset SteamVR to the default binding (SteamVR Settings > Controllers > Manage Controller Bindings > ULTRAKILL > Default).
+
+This layout follows the common VR shooter layout: Meta's controller guidance and ULTRAKILL's own gamepad layout.
 
 On Quest, the (L) menu button opens the SteamVR menu. Games cannot use it.
 
-In menus, point with either controller. Its trigger selects what the laser points at. (R) Cross on PS VR2 or (R) A on Quest selects the highlighted item, and the (L) stick moves the highlight. In menus these buttons do not jump or shoot, also when the menu closes while you hold them. In a shop, (R) Cross or (R) A on a shop button clicks it; anywhere else it jumps.
+In menus the select buttons do not jump, shoot or punch, also when the menu closes while you hold them. In a shop, (R) Cross or (R) A on a shop button clicks it; anywhere else it jumps. A single press of (R) Circle or (R) B does nothing in play, so the button only pauses on a double tap. In a menu a double tap goes back once.
 
-One flick of the (R) stick up or down switches one weapon. Return the stick to the center before the next flick.
+To switch weapons, use the weapon wheel.
 
 Maps for Index, Vive and WMR, and launch steps for other connections, are in [docs/HEADSETS.md](https://github.com/motaweh/VRTRAKILL/blob/ultrakill-22957324/docs/HEADSETS.md) on GitHub.
 

@@ -39,16 +39,7 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/punch"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/left/input/trigger"
-            },
-            {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/jump"
+                     "output" : "/actions/default/in/dash"
                   },
                   "position" : {
                      "output" : "/actions/default/in/movement"
@@ -59,12 +50,12 @@
             },
             {
                "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/dash"
+                  "position" : {
+                     "output" : "/actions/default/in/weaponwheelscroll"
                   }
                },
-               "mode" : "button",
-               "path" : "/user/hand/left/input/b"
+               "mode" : "joystick",
+               "path" : "/user/hand/left/input/thumbstick"
             },
             {
                "inputs" : {
@@ -73,7 +64,16 @@
                   }
                },
                "mode" : "button",
-               "path" : "/user/hand/left/input/a"
+               "path" : "/user/hand/left/input/grip"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/punch"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/trigger"
             },
             {
                "inputs" : {
@@ -82,16 +82,16 @@
                   }
                },
                "mode" : "button",
-               "path" : "/user/hand/left/input/grip"
+               "path" : "/user/hand/left/input/a"
             },
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/shoot"
+                     "output" : "/actions/default/in/changeweaponvariation"
                   }
                },
                "mode" : "button",
-               "path" : "/user/hand/right/input/trigger"
+               "path" : "/user/hand/left/input/b"
             },
             {
                "inputs" : {
@@ -107,17 +107,35 @@
             },
             {
                "inputs" : {
-                  "position" : {
-                     "output" : "/actions/default/in/iterateweapon"
+                  "click" : {
+                     "output" : "/actions/default/in/altshoot"
                   }
                },
-               "mode" : "joystick",
-               "path" : "/user/hand/right/input/thumbstick"
+               "mode" : "button",
+               "path" : "/user/hand/right/input/grip"
             },
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/openweaponwheel"
+                     "output" : "/actions/default/in/shoot"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/trigger"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/jump"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/a"
+            },
+            {
+               "inputs" : {
+                  "single" : {
+                     "output" : "/actions/default/in/menuback"
                   },
                   "double" : {
                      "output" : "/actions/default/in/escape"
@@ -128,33 +146,6 @@
                },
                "mode" : "button",
                "path" : "/user/hand/right/input/b"
-            },
-            {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/changeweaponvariation"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/right/input/a"
-            },
-            {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/altshoot"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/right/input/grip"
-            },
-            {
-               "inputs" : {
-                  "position" : {
-                     "output" : "/actions/default/in/weaponwheelscroll"
-                  }
-               },
-               "mode" : "joystick",
-               "path" : "/user/hand/left/input/thumbstick"
             }
          ]
       }

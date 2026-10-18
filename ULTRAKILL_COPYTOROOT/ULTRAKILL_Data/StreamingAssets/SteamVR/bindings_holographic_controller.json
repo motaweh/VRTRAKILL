@@ -30,7 +30,7 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/jump"
+                     "output" : "/actions/default/in/dash"
                   },
                   "position" : {
                      "output" : "/actions/default/in/movement"
@@ -51,6 +51,15 @@
             {
                "inputs" : {
                   "click" : {
+                     "output" : "/actions/default/in/whiplash"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/grip"
+            },
+            {
+               "inputs" : {
+                  "click" : {
                      "output" : "/actions/default/in/punch"
                   }
                },
@@ -59,27 +68,18 @@
             },
             {
                "inputs" : {
-                  "click" : {
+                  "north" : {
+                     "output" : "/actions/default/in/changeweaponvariation"
+                  },
+                  "south" : {
                      "output" : "/actions/default/in/swaphand"
                   }
                },
-               "mode" : "button",
-               "path" : "/user/hand/left/input/grip"
-            },
-            {
-               "inputs" : {
-                  "north" : {
-                     "output" : "/actions/default/in/dash"
-                  },
-                  "west" : {
-                     "output" : "/actions/default/in/whiplash"
-                  }
-               },
                "mode" : "dpad",
+               "path" : "/user/hand/left/input/trackpad",
                "parameters" : {
                   "sub_mode" : "click"
-               },
-               "path" : "/user/hand/left/input/trackpad"
+               }
             },
             {
                "inputs" : {
@@ -104,12 +104,12 @@
             },
             {
                "inputs" : {
-                  "position" : {
-                     "output" : "/actions/default/in/iterateweapon"
+                  "click" : {
+                     "output" : "/actions/default/in/altshoot"
                   }
                },
-               "mode" : "joystick",
-               "path" : "/user/hand/right/input/joystick"
+               "mode" : "button",
+               "path" : "/user/hand/right/input/grip"
             },
             {
                "inputs" : {
@@ -123,26 +123,17 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/altshoot"
+                     "output" : "/actions/default/in/jump"
                   }
                },
                "mode" : "button",
-               "path" : "/user/hand/right/input/grip"
-            },
-            {
-               "inputs" : {
-                  "south" : {
-                     "output" : "/actions/default/in/changeweaponvariation"
-                  }
-               },
-               "mode" : "dpad",
-               "parameters" : {
-                  "sub_mode" : "click"
-               },
                "path" : "/user/hand/right/input/trackpad"
             },
             {
                "inputs" : {
+                  "single" : {
+                     "output" : "/actions/default/in/menuback"
+                  },
                   "double" : {
                      "output" : "/actions/default/in/escape"
                   },

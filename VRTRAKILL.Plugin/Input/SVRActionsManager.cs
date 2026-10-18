@@ -34,7 +34,7 @@ namespace Plugin.Systems.Input
             Slot4 = false, Slot5 = false, Slot6 = false,
             Slot7 = false, Slot8 = false, Slot9 = false;
 
-        public static bool Escape = false;
+        public static bool Escape = false, MenuBack = false;
 
         // Returns the input origin name of the action, with Left or Right for the active device.
         public static string FriendlyBindingName(this ISteamVR_Action_In SVRAI)
@@ -160,6 +160,20 @@ namespace Plugin.Systems.Input
 
             // Go back, pause, etc.
             Listen(SteamVR_Actions._default.Escape, EscapeH);
+
+            // the generated SteamVR_Actions class has no MenuBack, so it is built from its path and updated in UpdateMenuBack
+            try
+            {
+                SteamVR_Action_Boolean Back = SteamVR_Action.Create<SteamVR_Action_Boolean>("/actions/default/in/MenuBack");
+                Back.Initialize(true, false);
+                if (Back.handle == 0) { Vars.Log.LogWarning("SteamVR has no handle for the MenuBack action. Back in menus is off."); return; }
+                Back.ForceAddSourceToUpdateList(SteamVR_Input_Sources.Any);
+                Listen(Back, MenuBackH);
+                MenuBackInitFrame = Time.frameCount;
+                MenuBackAction = Back;
+            }
+            // a failed optional action must not stop VR start-up
+            catch (System.Exception E) { Vars.Log.LogWarning($"Back in menus is off, the MenuBack action failed: {E.Message}"); }
         }
 
         // Adds the update listener, and releases the bind when the action goes inactive (SteamVR dashboard, lost controller), since onUpdate then stops.
@@ -178,9 +192,16 @@ namespace Plugin.Systems.Input
         // Stores the movement stick axis.
         private static void MovementH(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
         { InputVars.MoveVector = axis; }
-        // Stores the turn stick axis.
+        // Stores the turn stick axis and, while paused, scrolls the menu every frame the stick is pushed up or down.
         private static void TurnH(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
-        { InputVars.TurnVector = axis; }
+        {
+            InputVars.TurnVector = axis;
+            if (!Vars.IsPaused || Vars.IsWeaponWheelPresent) return;
+            // menus scroll naturally: stick up moves the list up
+            float Threshold = Vars.Config.Controllers.Deadzone * 1.5f;
+            if (axis.y > Threshold) MouseScroll(1);
+            if (axis.y < -Threshold) MouseScroll(-1);
+        }
         // true while the held jump selects in a menu or clicks a shop item instead of jumping
         public static bool JumpSelects { get; private set; }
         private static VirtualKeyCode? JumpKey; private static MouseButton? JumpButton;
@@ -250,18 +271,11 @@ namespace Plugin.Systems.Input
         { if (newState != RHAltFire) { RHAltFire = newState; TriggerKey(RHAltFire, !RHAltFire, ConfigMaster.KAltShoot, ConfigMaster.MAltShoot); } }
 
         private static bool IterateLatched;
-        // Scrolls once per up or down flick in play and every frame while paused, unless the weapon wheel is open.
+        // Scrolls once per up or down flick in play, unless paused (TurnH scrolls menus) or the weapon wheel is open.
         private static void IterateWeaponH(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
         {
-            if (Vars.IsWeaponWheelPresent) return;
+            if (Vars.IsWeaponWheelPresent || Vars.IsPaused) return;
             float Threshold = Vars.Config.Controllers.Deadzone * 1.5f;
-            if (Vars.IsPaused)
-            {
-                // menus scroll naturally: stick up moves the list up
-                if (axis.y > Threshold) MouseScroll(1);
-                if (axis.y < -Threshold) MouseScroll(-1);
-                return;
-            }
             // onUpdate fires every frame and the game takes a scroll every 0.1 s, so latch until the stick returns
             if (IterateLatched)
             {
@@ -326,5 +340,25 @@ namespace Plugin.Systems.Input
         // Presses or releases Escape when the escape action changes.
         private static void EscapeH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
         { if (newState != Escape) { Escape = newState; TriggerKey(Escape, !Escape, VirtualKeyCode.ESCAPE, null); } }
+
+        private static SteamVR_Action_Boolean MenuBackAction;
+        private static int MenuBackInitFrame;
+        private static bool MenuBackSent;
+        // Updates the MenuBack action once per frame; SteamVR_Input only updates the actions of the generated class.
+        public static void UpdateMenuBack()
+        {
+            // a read before SteamVR_Input's first update of the action set logs NoData
+            if (MenuBackAction == null || Time.frameCount <= MenuBackInitFrame + 1) return;
+            MenuBackAction.UpdateValues();
+        }
+        // Presses Escape, the game's menu back key, for a press that starts in a menu, and releases it with the press.
+        private static void MenuBackH(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource, bool newState)
+        {
+            if (newState == MenuBack) return;
+            MenuBack = newState;
+            // in play the button pauses only on a double press (Escape action), so a single press there does nothing
+            if (MenuBack) MenuBackSent = Vars.IsPaused;
+            if (MenuBackSent) TriggerKey(MenuBack, !MenuBack, VirtualKeyCode.ESCAPE, null);
+        }
     }
 }
