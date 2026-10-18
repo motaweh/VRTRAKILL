@@ -102,10 +102,10 @@ namespace Plugin.Systems.VRAvatar
             MR.Leg_IKPole_Right = MR.Root.GetChild(0).GetChild(0).GetChild(1).GetChild(5);
             return MR;
         }
-        // Spawns a copy of the V1 avatar under the parent and maps its rig.
+        // Spawns a copy of the V1 avatar under the parent, or at the scene root when there is none, and maps its rig.
         public static MetaRig CreateVCustomPreset(GameObject Parent, string Name = null)
         {
-            GameObject V1mdlGO = Object.Instantiate(Assets.VRig, Parent.transform, true);
+            GameObject V1mdlGO = Object.Instantiate(Assets.VRig, Parent != null ? Parent.transform : null, true);
             if (Name != null) V1mdlGO.name = Name;
             return VCustomPreset(V1mdlGO.transform);
         }
