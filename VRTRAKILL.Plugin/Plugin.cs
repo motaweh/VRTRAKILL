@@ -34,7 +34,7 @@ namespace Plugin
             {
                 Prefs.ConfigMaster.Init();
                 PatchStuff();
-                SceneWorker.Init();
+                SceneWorker.Init(this);
             }
             catch (Exception e) { Log.LogError("VRTRAKILL setup failed: " + e); }
 
