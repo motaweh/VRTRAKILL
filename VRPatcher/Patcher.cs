@@ -22,7 +22,7 @@ namespace VRPatcher
         // Leaves the assembly unchanged; BepInEx requires a Patch method on a preloader patcher.
         public static void Patch(AssemblyDefinition assembly) { }
 
-        // Finds the game data folder and patches globalgamemanagers before the game loads.
+        // Finds the game data folder, installs the shipped game files and patches globalgamemanagers before the game loads.
         public static void Initialize()
         {
             string InstallerPath = Assembly.GetExecutingAssembly().Location,
@@ -34,10 +34,135 @@ namespace VRPatcher
                    DataPath = Path.Combine(GamePath, $"{GameName}_Data/"),
 
                    GameManagersPath = Path.Combine(DataPath, $"globalgamemanagers"),
-                   ClassDataPath = Path.Combine(PatcherPath, "classdata.tpk");
+                   ClassDataPath = Path.Combine(PatcherPath, "classdata.tpk"),
+                   // mod managers cannot write to the game folder, so a Thunderstore package ships these files next to the patcher
+                   PayloadDataPath = Path.Combine(PatcherPath, "GameData", $"{GameName}_Data");
 
             Console.WriteLine("Begin epic conversion from ULTRAKILL to VRTRAKILL...");
+            InstallGameFiles(PayloadDataPath, DataPath);
             PatchGameManagers(GameManagersPath, ClassDataPath);
+        }
+
+        // Copies the shipped game files and logs whether this session can still use them.
+        private static void InstallGameFiles(string PayloadDataPath, string DataPath)
+        {
+            if (!Directory.Exists(PayloadDataPath))
+            {
+                Console.WriteLine($"No game files next to the patcher ('{PayloadDataPath}'); the game folder is used as installed.");
+                return;
+            }
+
+            GameFileSyncResult result = SyncGameFiles(PayloadDataPath, DataPath);
+            Console.WriteLine($"Game files: {result.Copied} copied, {result.Unchanged} already up to date, {result.Failed} failed.");
+            if (result.Failed > 0)
+                Console.WriteLine("Some game files could not be copied. Close other programs that use the ULTRAKILL folder, then start the game again.");
+            if (!result.SubsystemsChanged)
+                return;
+
+            bool? scanned = HasUnityScannedSubsystems(DataPath);
+            if (scanned == true)
+                Console.WriteLine("RESTART NEEDED: Unity read UnitySubsystems before the VR files were copied. VR will not start this time. Close the game and start it again.");
+            else if (scanned == false)
+                Console.WriteLine("The VR files were copied before Unity read them. No restart is needed.");
+            else
+                Console.WriteLine("Could not read Player.log to check the start-up order. If VR does not start this time, close the game and start it again.");
+        }
+
+        // Counts of one game file sync.
+        public class GameFileSyncResult
+        {
+            public int Copied, Unchanged, Failed;
+            public bool SubsystemsChanged;
+        }
+
+        // Copies each payload file into the data folder when it is missing or its SHA-256 differs; public so tests can use a copy of the folder.
+        public static GameFileSyncResult SyncGameFiles(string PayloadDataPath, string DataPath)
+        {
+            GameFileSyncResult result = new GameFileSyncResult();
+            string payloadRoot = Path.GetFullPath(PayloadDataPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) + Path.DirectorySeparatorChar;
+
+            foreach (string source in Directory.GetFiles(payloadRoot, "*", SearchOption.AllDirectories).OrderBy(p => p, StringComparer.Ordinal))
+            {
+                string relative = source.Substring(payloadRoot.Length);
+                string target = Path.Combine(DataPath, relative);
+                try
+                {
+                    string sourceHash = ComputeSha256(source);
+                    if (File.Exists(target)
+                        && new FileInfo(target).Length == new FileInfo(source).Length
+                        && string.Equals(ComputeSha256(target), sourceHash, StringComparison.OrdinalIgnoreCase))
+                    {
+                        result.Unchanged++;
+                        continue;
+                    }
+
+                    Console.WriteLine(File.Exists(target) ? $"Updating game file '{relative}'." : $"Adding game file '{relative}'.");
+                    CopyFileAtomic(source, target, sourceHash);
+                    result.Copied++;
+                    if (relative.StartsWith("UnitySubsystems", StringComparison.OrdinalIgnoreCase))
+                        result.SubsystemsChanged = true;
+                }
+                catch (Exception e)
+                {
+                    result.Failed++;
+                    Console.WriteLine($"Could not copy game file '{relative}': {e.Message}");
+                }
+            }
+            return result;
+        }
+
+        // Writes the file to a temporary name, checks its hash, then swaps it in so the target is never half-written.
+        private static void CopyFileAtomic(string source, string target, string sourceHash)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(target));
+            string temporaryPath = target + ".vrtrakill.tmp";
+            try
+            {
+                File.Copy(source, temporaryPath, true);
+                if (!string.Equals(ComputeSha256(temporaryPath), sourceHash, StringComparison.OrdinalIgnoreCase))
+                    throw new IOException("The copied file does not match the shipped file.");
+
+                if (File.Exists(target))
+                    File.Replace(temporaryPath, target, null);
+                else
+                    File.Move(temporaryPath, target);
+            }
+            finally
+            {
+                if (File.Exists(temporaryPath))
+                    File.Delete(temporaryPath);
+            }
+        }
+
+        // Returns whether this session's Player.log already shows the UnitySubsystems scan, or null if the log cannot be read.
+        private static bool? HasUnityScannedSubsystems(string DataPath)
+        {
+            try
+            {
+                string logPath = null;
+                string[] args = Environment.GetCommandLineArgs();
+                for (int i = 0; i < args.Length - 1; i++)
+                    if (string.Equals(args[i], "-logFile", StringComparison.OrdinalIgnoreCase))
+                        logPath = args[i + 1];
+
+                if (logPath == null)
+                {
+                    // Unity writes Player.log to LocalLow\<company>\<product>; app.info holds those two names
+                    string[] appInfo = File.ReadAllLines(Path.Combine(DataPath, "app.info"));
+                    string localLow = Path.Combine(Environment.GetEnvironmentVariable("USERPROFILE"), "AppData", "LocalLow");
+                    logPath = Path.Combine(localLow, appInfo[0].Trim(), appInfo[1].Trim(), "Player.log");
+                }
+                if (logPath == "-" || !File.Exists(logPath))
+                    return null;
+
+                using (FileStream stream = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+                using (StreamReader reader = new StreamReader(stream))
+                    return reader.ReadToEnd().Contains("[Subsystems] Discovering subsystems");
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         // Patches globalgamemanagers unless it is already patched; public so tests can use a copy of the file.
