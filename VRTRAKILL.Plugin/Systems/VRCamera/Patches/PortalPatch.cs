@@ -196,12 +196,14 @@ namespace Plugin.Systems.VRCamera.Patches
                 __instance.portalCam.stereoTargetEye = StereoTargetEyeMask.None;
         }
 
-        // Turns off usedComputeShadersAtStart before each post-processing pre-render.
+        // Turns off usedComputeShadersAtStart before each post-processing pre-render, unless the experimental stains option restores the game's value.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PostProcessV2_Handler), nameof(PostProcessV2_Handler.OnPreRenderCallback))]
         static void FixRed(PostProcessV2_Handler __instance, Camera cam)
         {
-            __instance.usedComputeShadersAtStart = false;
+            // false skips binding the blood instance buffers and the oil draw in OnPreRenderCallback, so stains are mostly missing;
+            // why it was added (0d4fbc4) is not recorded, the name suggests a red view, so the game's value is opt-in
+            __instance.usedComputeShadersAtStart = Vars.Config.Misc.Stains && !SettingsMenu.Components.Pages.GraphicsSettings.disabledComputeShaders;
         }
         // Makes weapons render through portals; VRArmTransformer does the same for arms.
         [HarmonyPrefix]

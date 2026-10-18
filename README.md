@@ -80,7 +80,7 @@ Mod settings are in `BepInEx/plugins/VRTRAKILL/VRTRAKILL_Config.json` (turning, 
 - Portals seen in a mirror do not render correctly.
 - Portals can flicker for a moment when you go through them.
 - Whiplash is unreliable through portals.
-- Oil stains do not show, and blood stains are missing in most levels.
+- Oil stains do not show, and blood stains are missing in most levels. The mod turns off the game's compute shader stain path before each frame. Setting "Game blood and oil stains (experimental)" to true in the config file turns it back on. This is not tested in a headset and may tint the view red, which is probably why it was turned off.
 - The desktop view (T key, off by default) skips the game's post-processing, and portals look wrong in it.
 - 4-S and Clash mode have not been played in VR yet. The pause menu does not show in the headset while you are in them.
 - The VR body ("Enable VRAvatar" in the config file) is off by default and has not been tested.

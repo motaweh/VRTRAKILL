@@ -90,6 +90,8 @@ namespace Plugin.Prefs
         [JsonProperty("Miscellaneous/Unsorted Settings")] public _Misc Misc { get; set; }
         public class _Misc
         {
+            // off keeps PortalPatch.FixRed's behaviour: no blood instance buffers and no oil draw
+            [JsonProperty("Game blood and oil stains (experimental)")] public bool Stains { get; set; } = false;
         }
 
         // Replaces sections that the config file set to null with their defaults.
