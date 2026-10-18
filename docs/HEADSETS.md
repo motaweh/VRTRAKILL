@@ -1,6 +1,6 @@
 # Headsets
 
-VRTRAKILL runs through **SteamVR (OpenVR)** only. Every headset must reach the game through SteamVR. The OpenXR runtime that is set as active on the PC (Meta, SteamVR or VDXR) does not matter, because the mod does not use OpenXR.
+VRTRAKILL runs through SteamVR (OpenVR) only. Every headset must reach the game through SteamVR. The OpenXR runtime that is set as active on the PC (Meta, SteamVR or VDXR) does not matter, because the mod does not use OpenXR.
 
 ## Support status
 
@@ -38,32 +38,32 @@ The mod does not read finger (skeleton) data. Hands use fixed poses on every con
 ## How to launch
 
 ### PlayStation VR2
-1. Connect the PC adapter and start the **PlayStation VR2 App**.
-2. Start **SteamVR**.
+1. Connect the PC adapter and start the PlayStation VR2 App.
+2. Start SteamVR.
 3. Start ULTRAKILL from Steam.
 
 ### Quest with Quest Link or Air Link
-1. Start the **Meta Quest Link** app on the PC.
+1. Start the Meta Quest Link app on the PC.
 2. In the headset, turn on Link or Air Link.
-3. Start **SteamVR** (from Steam on the desktop, or from the Link desktop). Keep it running.
+3. Start SteamVR (from Steam on the desktop, or from the Link desktop). Keep it running.
 4. Start ULTRAKILL from Steam.
 
 The game uses OpenVR, so it always goes through SteamVR, even if Meta is the active OpenXR runtime.
 
 ### Quest with Virtual Desktop
-1. Start the **Virtual Desktop Streamer** on the PC and connect from the headset.
-2. Start **SteamVR** from the Virtual Desktop Games tab, or from Steam.
+1. Start the Virtual Desktop Streamer on the PC and connect from the headset.
+2. Start SteamVR from the Virtual Desktop Games tab, or from Steam.
 3. Start ULTRAKILL from Steam.
 
 VDXR (Virtual Desktop's OpenXR runtime) is not used. "Emulate Index controllers" is optional. When it is on, the Index button map applies.
 
 ### Quest with Steam Link
-1. Install **Steam Link** on the Quest and connect it to the PC.
+1. Install Steam Link on the Quest and connect it to the PC.
 2. SteamVR starts with the connection.
 3. Start ULTRAKILL from Steam.
 
 ### Valve Index
-1. Start **SteamVR**.
+1. Start SteamVR.
 2. Start ULTRAKILL from Steam.
 
 ### Refresh rate
@@ -71,7 +71,7 @@ The mod does not set or assume a refresh rate. Set 72, 80, 90 or 120 Hz in the L
 
 ## Button maps
 
-`(R)` is the right controller, `(L)` is the left controller. "Double" is a fast double press. "Held" is a long press. Change any of these in **SteamVR > Settings > Controllers > Manage Controller Bindings > ULTRAKILL**.
+`(R)` is the right controller, `(L)` is the left controller. "Double" is a fast double press. "Held" is a long press. Change any of these in SteamVR > Settings > Controllers > Manage Controller Bindings > ULTRAKILL.
 
 | Action | Quest Touch | PS VR2 Sense | Index | Vive wand | WMR |
 |---|---|---|---|---|---|
@@ -97,10 +97,10 @@ In menus, point with either controller and press its trigger to click. The left 
 
 - Only PS VR2 is tested on hardware. Quest, Index, Vive and WMR bindings are checked against driver input profiles only.
 - Vive wand: next / previous weapon is not bound. The right trackpad already turns, and a scroll there would also fire on every up or down click. Use the weapon wheel.
-- WMR: the binding was checked against Valve's WMR example binding and ALVR's WMR controller profile, not against the Microsoft driver, which is not installed here.
+- WMR: the binding was checked against Valve's WMR example binding and ALVR's WMR controller profile, not against Microsoft's own driver profile.
 - The weapon wheel button presses the key the game uses for "Last Used Weapon". The game has no keyboard key for it by default, so the mod presses the "Previous Variation" key (Q) instead, which opens the wheel when held. On Index a short press therefore changes to the previous variation. Bind a keyboard key to "Last Used Weapon" in the game's controls to get quick swap on a short press.
 - Left-handed mode is marked as broken in the config file ("Left handed (BROKEN)").
-- Rumble at game exit: the mod now skips rumble once the game starts to quit, to stop the NullReferenceException that Player.log showed at shutdown. Not yet confirmed on hardware.
+- Rumble is skipped once the game starts to quit, which stops an error at shutdown. Not yet confirmed on hardware.
 - Rumble during play is not confirmed on any controller.
 - After an update that changes a default binding, SteamVR can keep the old one. Select the default binding again in the binding screen.
 
