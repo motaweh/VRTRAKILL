@@ -121,7 +121,7 @@ The Unity project for `vrtrakillassetbundle` is not in this repo. It is `_unityP
 
 - whateverusername0 created VRTRAKILL ([original repo](https://github.com/whateverusername0/VRTRAKILL)). The original README put development on indefinite hold and pointed players to forks for newer game versions. This is one of those forks.
 - Squaresweets (Matthew Collier) made the [VRTRAKILL_FRAUD](https://github.com/Squaresweets/VRTRAKILL_FRAUD) fork. This version builds on it.
-- Guillaume-Lechevallier: the VRPatcher, portal overlay and OpenVR start-up code are ported from the [Guillaume-Lechevallier VRTRAKILL_FRAUD](https://github.com/Guillaume-Lechevallier/VRTRAKILL_FRAUD) fork. So are the weapon wheel stick fix, the desktop view cameras, the 4-S and Clash mode camera, the late HUD and menu conversion, and the opt-in VR body loading.
+- Guillaume-Lechevallier: thank you for your [VRTRAKILL_FRAUD fork](https://github.com/Guillaume-Lechevallier/VRTRAKILL_FRAUD), which did the groundwork for the current game build (the Unity 2022.3 VRPatcher, the OpenVR start-up and the portal overlay). Our weapon wheel, desktop view, 4-S and Clash camera, late HUD conversion and opt-in VR body are based on your work, and your notes pointed us at the shop preview problem.
 - Graze, Rokic, Party Wumpus and NavaShield contributed to the original mod.
 - Raicuparta: the globalgamemanagers patcher approach comes from Two Forks VR (MIT).
 

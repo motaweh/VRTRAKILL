@@ -4,6 +4,16 @@ VRTRAKILL itself is AGPL-3.0 (see `LICENSE.md`). The release zips also contain f
 
 No ULTRAKILL game files are in this repo or in the zips. The build reads them from your own game install.
 
+## VRTRAKILL code
+
+The mod code is AGPL-3.0 and includes work from these earlier versions, all under the same license:
+
+| Author | Repository | What this version uses |
+|---|---|---|
+| whateverusername0 | https://github.com/whateverusername0/VRTRAKILL | the original mod and its asset bundle |
+| Squaresweets (Matthew Collier) | https://github.com/Squaresweets/VRTRAKILL_FRAUD | the fork this version builds on |
+| Guillaume-Lechevallier | https://github.com/Guillaume-Lechevallier/VRTRAKILL_FRAUD | the Unity 2022.3 VRPatcher, OpenVR start-up and portal overlay code, and the basis of the weapon wheel, desktop view, 4-S and Clash camera, late HUD conversion and opt-in VR body |
+
 ## Loader (full zip only)
 
 | Files | Project | License | Source |
