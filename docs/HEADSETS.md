@@ -108,8 +108,6 @@ While the weapon wheel is open, the weapon wheel scroll stick points at a weapon
 - WMR: the binding was checked against Valve's WMR example binding and ALVR's WMR controller profile, not against Microsoft's own driver profile.
 - The weapon wheel button presses the key the game uses for "Last Used Weapon". The game has no keyboard key for it by default, so the mod presses the "Previous Variation" key (Q) instead, which opens the wheel when held. On Index a short press therefore changes to the previous variation. Bind a keyboard key to "Last Used Weapon" in the game's controls to get quick swap on a short press.
 - Left-handed mode is marked as broken in the config file ("Left handed (BROKEN)").
-- Rumble is skipped once the game starts to quit, which stops an error at shutdown. Not yet confirmed on hardware.
-- Rumble during play is not confirmed on any controller.
 - After an update that changes a default binding, SteamVR can keep the old one. Select the default binding again in the binding screen.
 - Issues in the game itself (portals, stains, 4-S, desktop view) are listed in the [README](../README.md#known-issues).
 
