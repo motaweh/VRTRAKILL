@@ -83,7 +83,7 @@ namespace Plugin.Prefs
         [JsonProperty("DesktopView Settings")] public _DesktopView DesktopView { get; set; }
         public class _DesktopView
         {
-            [JsonProperty("Enabled by default")] public bool Enabled { get; set; } = true;
+            [JsonProperty("Enabled by default")] public bool Enabled { get; set; } = false;
             [JsonProperty("World view FOV")] public float WorldCamFOV { get; set; } = 90;
             [JsonProperty("UI view FOV")] public float UICamFOV { get; set; } = 90;
         }

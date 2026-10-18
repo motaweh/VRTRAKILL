@@ -14,6 +14,8 @@ namespace Plugin.Systems.VRCamera.Patches
         // adapted from HuskVR
         public static Camera DesktopWorldCam, DesktopUICam;
         public static Camera leftEye, rightEye;
+        // null until the desktop view is toggled; then the toggle state carries over to the next scene
+        public static bool? DesktopViewOn;
 
         // Sets up the main camera for VR and creates the left and right eye cameras.
         public static void SetupEyeCameras()
@@ -36,6 +38,31 @@ namespace Plugin.Systems.VRCamera.Patches
             VRTRAKILL.Utilities.Unity.CopyCameraValues(rightEye, cc.cam);
             rightEye.transform.SetParent(cc.transform.parent);
             rightEye.stereoTargetEye = StereoTargetEyeMask.Right;
+
+            SetupDesktopCameras(cc);
+        }
+        // Creates the monitor-only world and UI cameras on the left eye, shown when the desktop view is on.
+        static void SetupDesktopCameras(CameraController cc)
+        {
+            if (DesktopWorldCam != null) Object.Destroy(DesktopWorldCam.gameObject);
+            if (DesktopUICam != null) Object.Destroy(DesktopUICam.gameObject);
+
+            DesktopWorldCam = new GameObject("Desktop World Camera", typeof(Camera)).GetComponent<Camera>();
+            VRTRAKILL.Utilities.Unity.CopyCameraValues(DesktopWorldCam, cc.cam);
+            DesktopWorldCam.transform.SetParent(leftEye.transform, false);
+            DesktopWorldCam.stereoTargetEye = StereoTargetEyeMask.None;
+            DesktopWorldCam.gameObject.AddComponent<DesktopCamera>();
+
+            DesktopUICam = new GameObject("Desktop UI Camera", typeof(Camera)).GetComponent<Camera>();
+            DesktopUICam.transform.SetParent(leftEye.transform, false);
+            DesktopUICam.stereoTargetEye = StereoTargetEyeMask.None;
+            DesktopUICam.clearFlags = CameraClearFlags.Depth;
+            DesktopUICam.cullingMask = 1 << (int)Layers.UI;
+            DesktopUICam.gameObject.AddComponent<DesktopUICamera>();
+
+            bool on = DesktopViewOn ?? Vars.Config.DesktopView.Enabled;
+            DesktopWorldCam.gameObject.SetActive(on);
+            DesktopUICam.gameObject.SetActive(on);
         }
         // Turns off the virtual camera and the main camera before the camera controller starts.
         [HarmonyPrefix]

@@ -10,6 +10,7 @@ namespace Plugin.Systems.VRCamera
         // Copies the UI camera layers and clear flags to the desktop UI camera, with the configured FOV, off the headset.
         public void Update()
         {
+            if (C == null || Vars.UICamera == null) return;
             C.nearClipPlane = 0.1f;
             C.depth = 70;
             C.stereoTargetEye = StereoTargetEyeMask.None;

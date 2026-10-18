@@ -40,7 +40,7 @@
       }
     },
     "DesktopView Settings": {
-      "Enabled by default": true,
+      "Enabled by default": false,
       "World view FOV": 90.0,
       "UI view FOV": 90.0
     },

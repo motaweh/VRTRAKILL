@@ -7,9 +7,10 @@ namespace Plugin.Systems.VRCamera
         Camera C;
         // Gets the camera on this object.
         public void Start() { C = gameObject.GetComponent<Camera>(); }
-        // Copies the main camera settings to the desktop camera each frame and keeps it off the headset.
+        // Copies the main camera settings to the desktop camera each frame, with the configured FOV, off the headset.
         public void Update()
         {
+            if (C == null || Vars.MainCamera == null) return;
             C.nearClipPlane = Vars.MainCamera.nearClipPlane;
             C.farClipPlane = Vars.MainCamera.farClipPlane;
             C.depth = 69;
@@ -17,7 +18,7 @@ namespace Plugin.Systems.VRCamera
             C.backgroundColor = Vars.MainCamera.backgroundColor;
             C.cullingMask = Vars.MainCamera.cullingMask;
             C.clearFlags = Vars.MainCamera.clearFlags;
-            C.fieldOfView = Vars.MainCamera.fieldOfView;
+            C.fieldOfView = Vars.Config.DesktopView.WorldCamFOV;
         }
     }
 }

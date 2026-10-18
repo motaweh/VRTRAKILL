@@ -30,15 +30,15 @@ namespace Plugin.Systems.VRPlayer
             }
         }
 
-        // Shows or hides the desktop world and UI cameras.
+        // Shows or hides the desktop world and UI cameras together and remembers the choice for later scenes.
         public void ToggleDesktopView()
         {
-            if (!Vars.DesktopCamera.gameObject.activeSelf) Vars.DesktopCamera.gameObject.SetActive(true);
-            else Vars.DesktopCamera.gameObject.SetActive(false);
+            if (Vars.DesktopCamera == null || Vars.DesktopUICamera == null) return;
 
-            if (!Vars.DesktopUICamera.gameObject.activeSelf) Vars.DesktopUICamera.gameObject.SetActive(true);
-            else if (Vars.DesktopUICamera.gameObject.activeSelf)
-                Vars.DesktopUICamera.gameObject.SetActive(false);
+            bool on = !Vars.DesktopCamera.gameObject.activeSelf;
+            Vars.DesktopCamera.gameObject.SetActive(on);
+            Vars.DesktopUICamera.gameObject.SetActive(on);
+            VRCamera.Patches.CameraConverterP.DesktopViewOn = on;
         }
     }
 }
