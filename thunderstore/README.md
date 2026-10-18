@@ -54,12 +54,12 @@ If VR does not start, open `BepInEx/LogOutput.log` in your profile (mod manager 
 |---|---|
 | Move | (L) stick |
 | Turn | (R) stick left or right |
-| Jump | (R) Cross |
+| Jump | (R) Cross: jump in game, select in menus |
 | Slide / slam | (R) stick click |
 | Dash | (L) Triangle |
-| Shoot | (R) R2 |
+| Shoot | (R) R2: shoot in game, select what the laser points at in menus |
 | Alternate fire | (R) R1 |
-| Punch | (L) L2 |
+| Punch | (L) L2: punch in game, select what the left laser points at in menus |
 | Whiplash | (L) Square |
 | Change hand | (L) L1 |
 | Change weapon variation | (L) stick click |
@@ -73,12 +73,12 @@ If VR does not start, open `BepInEx/LogOutput.log` in your profile (mod manager 
 |---|---|
 | Move | (L) stick |
 | Turn | (R) stick left or right |
-| Jump | (R) A |
+| Jump | (R) A: jump in game, select in menus |
 | Slide / slam | (R) stick click |
 | Dash | (L) Y |
-| Shoot | (R) trigger |
+| Shoot | (R) trigger: shoot in game, select what the laser points at in menus |
 | Alternate fire | (R) grip |
-| Punch | (L) trigger |
+| Punch | (L) trigger: punch in game, select what the left laser points at in menus |
 | Whiplash | (L) X |
 | Change hand | (L) grip |
 | Change weapon variation | (L) stick click |
@@ -88,7 +88,7 @@ If VR does not start, open `BepInEx/LogOutput.log` in your profile (mod manager 
 
 On Quest, the (L) menu button opens the SteamVR menu. Games cannot use it.
 
-In menus, point with either controller and press its trigger to click. The (L) stick moves the selection and the left stick click selects it.
+In menus, point with either controller. Its trigger selects what the laser points at. (R) Cross on PS VR2 or (R) A on Quest selects the highlighted item, and the (L) stick moves the highlight. In menus these buttons do not jump or shoot, also when the menu closes while you hold them. In a shop, (R) Cross or (R) A on a shop button clicks it; anywhere else it jumps.
 
 One flick of the (R) stick up or down switches one weapon. Return the stick to the center before the next flick.
 
