@@ -20,7 +20,7 @@
 - The desktop view toggle (T key) works.
 - Faster start: VRPatcher no longer makes BepInEx rewrite Assembly-CSharp on every start.
 - "Enable Controller Rumble" and "Enable Crosshair" in the config file now work.
-- New option "Finger tracking" (experimental, off by default). It does not work correctly yet. When it is on, the punch arm fingers follow the SteamVR finger data.
+- New option "Finger tracking" (experimental, off by default). It is not tested on a headset yet. When it is on, the punch arm fingers follow the SteamVR finger data.
 - New option "Auto update". "Notify" (default) shows a notice in the main menu when a new release is out. "Download" (opt-in) downloads a signed update and installs it at the next start. "Off" turns the check off.
 - New option "Game blood and oil stains (experimental)", off by default.
 - Thunderstore package for r2modman and Gale. VRPatcher copies the VR game files into `ULTRAKILL_Data` at start-up, so the mod works from a mod manager profile. The zip install works as before.

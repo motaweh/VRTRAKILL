@@ -25,7 +25,7 @@ VRTRAKILL runs through SteamVR (OpenVR) only. Every headset must reach the game 
 
 ### Finger tracking
 
-Finger tracking is experimental and off by default. It does not work correctly yet. To test it, set "Finger tracking" to true under "Controller Settings" in `VRTRAKILL_Config.json`.
+Finger tracking is experimental and off by default. It is not tested on a headset yet. To test it, set "Finger tracking" to true under "Controller Settings" in `VRTRAKILL_Config.json`.
 
 - Only the punch arm (Feedbacker and Knuckleblaster) follows the finger curls, and only while it idles. A punch, a held item and the shop use the game's own animation.
 - Weapon grips, the whiplash and the sandbox arm keep their fixed poses.
