@@ -100,13 +100,12 @@ Mod settings are in `VRTRAKILL_Config.json`, in the mod's folder under `BepInEx/
 
 Once per start the mod asks GitHub for the latest VRTRAKILL release and shows a notice in the main menu when a newer one exists. Nothing is downloaded. Set "Auto update" to "Off" in the config file to turn the check off. In a mod manager install, "Download" works like "Notify". Update the mod in the mod manager.
 
-"Finger tracking" is experimental and off by default. It is not tested on a headset yet. When it is on, the punch arm fingers follow the SteamVR finger data.
+- "Finger tracking": optional cosmetic finger curl on the punch hand, off by default.
 
 ## Known issues
 
 - Index, Vive and WMR have not been played. Their bindings are checked against the driver input profiles only.
 - Left-handed mode is broken.
-- Finger tracking is experimental and off by default. It is not tested on a headset yet. It moves the punch arm fingers only.
 - After an update that changes a default binding, SteamVR can keep the old one. Select the default binding again in the binding screen.
 - Portals seen in a mirror do not render correctly.
 - Whiplash is unreliable through portals.

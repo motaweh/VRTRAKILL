@@ -23,23 +23,6 @@ VRTRAKILL runs through SteamVR (OpenVR) only. Every headset must reach the game 
 - PS VR2 Sense controllers and Meta Quest Touch controllers: played on this game build through SteamVR. Head and hand tracking, the actions in the button map below and the menus with the controller laser are in use.
 - Configured controllers: the same actions are bound, so the same features are expected. Change any binding in SteamVR if one does not suit you.
 
-### Finger tracking
-
-Finger tracking is experimental and off by default. It is not tested on a headset yet. To test it, set "Finger tracking" to true under "Controller Settings" in `VRTRAKILL_Config.json`.
-
-- Only the punch arm (Feedbacker and Knuckleblaster) follows the finger curls, and only while it idles. A punch, a held item and the shop use the game's own animation.
-- Weapon grips, the whiplash and the sandbox arm keep their fixed poses.
-- A controller with no skeleton data, or with the skeleton not bound, keeps the fixed pose.
-- The log shows "Finger tracking: left hand skeleton data received." when data arrives.
-
-| Controller | Skeleton input in driver profile | Skeleton bound in default binding |
-|---|---|---|
-| PS VR2 Sense controllers | yes | yes |
-| Index | yes | yes |
-| Meta Quest Touch controllers | yes | yes |
-| Vive wand | yes | yes |
-| WMR | not checked (driver profile not available) | no |
-
 ## How to launch
 
 ### PlayStation VR2
