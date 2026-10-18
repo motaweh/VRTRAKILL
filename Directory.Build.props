@@ -1,0 +1,12 @@
+<Project>
+  <!-- Game install to compile against. Override with -p:ULTRAKILLDir=... or an ULTRAKILLDir environment variable. -->
+  <PropertyGroup>
+    <ULTRAKILLDir Condition="'$(ULTRAKILLDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\ULTRAKILL</ULTRAKILLDir>
+    <ULTRAKILLManaged>$([MSBuild]::EnsureTrailingSlash('$(ULTRAKILLDir)'))ULTRAKILL_Data\Managed</ULTRAKILLManaged>
+    <BepInExCore>$([MSBuild]::EnsureTrailingSlash('$(ULTRAKILLDir)'))BepInEx\core</BepInExCore>
+  </PropertyGroup>
+  <Target Name="CheckULTRAKILLDir" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="!Exists('$(ULTRAKILLManaged)\Assembly-CSharp.dll')" Text="ULTRAKILL not found at $(ULTRAKILLDir). Set ULTRAKILLDir to the game folder." />
+    <Error Condition="!Exists('$(BepInExCore)\BepInEx.dll')" Text="BepInEx not found in $(BepInExCore). Install BepInEx 5.4.23.5 into the game first." />
+  </Target>
+</Project>

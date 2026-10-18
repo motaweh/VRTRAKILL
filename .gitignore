@@ -362,3 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Unity Project/VRTRAKILL
+# game files never go in the repo; the build reads them from ULTRAKILLDir
+lib/
+*.7z
+globalgamemanagers
+globalgamemanagers.*

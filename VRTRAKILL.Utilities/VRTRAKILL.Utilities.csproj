@@ -34,11 +34,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\lib\BepInEx\0Harmony.dll</HintPath>
+      <HintPath>$(BepInExCore)\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>..\lib\BepInEx\BepInEx.dll</HintPath>
+      <HintPath>$(BepInExCore)\BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -50,51 +50,51 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="Unity.InputSystem">
-      <HintPath>..\lib\Unity\Unity.InputSystem.dll</HintPath>
+      <HintPath>$(ULTRAKILLManaged)\Unity.InputSystem.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\lib\Unity\UnityEngine.dll</HintPath>
+      <HintPath>$(ULTRAKILLManaged)\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>..\lib\Unity\UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>$(ULTRAKILLManaged)\UnityEngine.AnimationModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>..\lib\Unity\UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>$(ULTRAKILLManaged)\UnityEngine.AssetBundleModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
-      <HintPath>..\lib\Unity\UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>$(ULTRAKILLManaged)\UnityEngine.AudioModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\lib\Unity\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(ULTRAKILLManaged)\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>..\lib\Unity\UnityEngine.InputLegacyModule.dll</HintPath>
+      <HintPath>$(ULTRAKILLManaged)\UnityEngine.InputLegacyModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.InputModule">
-      <HintPath>..\lib\Unity\UnityEngine.InputModule.dll</HintPath>
+      <HintPath>$(ULTRAKILLManaged)\UnityEngine.InputModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\lib\Unity\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>$(ULTRAKILLManaged)\UnityEngine.PhysicsModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\lib\Unity\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(ULTRAKILLManaged)\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>..\lib\Unity\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>$(ULTRAKILLManaged)\UnityEngine.UIModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.VRModule">
-      <HintPath>..\lib\Unity\UnityEngine.VRModule.dll</HintPath>
+      <HintPath>$(ULTRAKILLManaged)\UnityEngine.VRModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
