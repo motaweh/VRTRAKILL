@@ -21,7 +21,6 @@
     },
     "Enable movement-based punching": true,
     "MBP Settings": {
-      "Velocity-based punching direction": false,
       "Required speed to punch": 7.5,
       "WHIPLASH: camera-based aiming": false
     },

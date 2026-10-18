@@ -7,13 +7,15 @@ namespace Plugin.Systems.UI.Patches
     [HarmonyPatch]
     internal class CrosshairP
     {
-        // Turns the crosshair into a VR canvas with a crosshair controller and keeps the auto aim offset at zero.
+        // Turns the crosshair into a VR canvas with a crosshair controller, hidden if "Enable Crosshair" is off, and keeps the auto aim offset at zero.
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Crosshair), nameof(Crosshair.Start))]
         static void SetCrosshair(Crosshair __instance)
         {
             Canvas C = __instance.gameObject.AddComponent<Canvas>();
             UIConverter.ConvertCanvas(C, DontAddComponent: true);
+            // this canvas is the mod's own, so turning it off hides the crosshair without touching the game's crosshair logic
+            C.enabled = Vars.Config.CBS.EnableCrosshair;
             // CameraFrustumTargeter.LateUpdate reads this canvas's scaler for its auto-aim offset; a ~0 reference keeps the offset at 0
             __instance.gameObject.AddComponent<CanvasScaler>().referenceResolution = Vector2.zero;
 

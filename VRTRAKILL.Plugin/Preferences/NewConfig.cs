@@ -40,7 +40,6 @@ namespace Plugin.Prefs
         [JsonProperty("MBP Settings")] public _MBP MBP { get; set; }
         public class _MBP
         {
-            [JsonProperty("Velocity-based punching direction")] public bool ToggleVelocity { get; set; } = false;
             [JsonProperty("Required speed to punch")] public float PunchingSpeed { get; set; } = 7.5f;
             [JsonProperty("WHIPLASH: camera-based aiming")] public bool CameraWhiplash { get; set; } = false;
         }
