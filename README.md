@@ -15,7 +15,7 @@ Get the latest release from the [Releases page](../../releases). There are two z
 
 The release also has `SHA256SUMS.txt` and its signature `SHA256SUMS.txt.sig`, which the in-game updater checks.
 
-For r2modman or Gale, use the Thunderstore package `VRTRAKILL-1.0.1.zip` instead. Its install steps are in [thunderstore/README.md](thunderstore/README.md).
+For r2modman or Gale, use the Thunderstore package `VRTRAKILL-1.0.1-thunderstore.zip` instead. Its install steps are in [thunderstore/README.md](thunderstore/README.md).
 
 The zip root is the ULTRAKILL game folder. It contains `BepInEx/`, `ULTRAKILL_Data/` and (in the full zip) `winhttp.dll`, `doorstop_config.ini`, `.doorstop_version` and `changelog.txt`.
 
@@ -148,12 +148,22 @@ Mod settings are in `BepInEx/plugins/VRTRAKILL/VRTRAKILL_Config.json` (turning, 
 
 ## Changes in 1.0.1
 
+- Controls follow the common VR shooter layout (Meta's controller guidance and ULTRAKILL's own gamepad layout). The same logic applies to Index, Vive and WMR.
+- Jump is on Cross on PS VR2 and A on Quest.
+- Dash is on the left stick click.
+- Change weapon variation is on Triangle (PS VR2) or Y (Quest).
+- Whiplash is on L1 or the left grip.
+- Change fist (Feedbacker / Knuckleblaster) is on Square or X.
+- The right stick only turns. It no longer switches weapons. Use the weapon wheel. In menus the right stick still scrolls.
+- One press of Circle (PS VR2) or B (Quest) goes back in menus. In play only a double press pauses. Options still pauses on PS VR2.
+- Menus: Cross on PS VR2 and A on Quest select (the jump button on other controllers). The trigger selects what the laser points at, on either hand.
+- Presses no longer leak from menus into the game. The select buttons do not jump, shoot or punch in a menu, or when the menu closes while you hold them.
+- A small hand turn while you pull the trigger no longer cancels a click on a button in a scrolling list.
+- Rockets, cannonballs and napalm fire from the gun hand.
+- The log records what opens and closes the pause menu.
 - Controllers no longer keep vibrating after a slide, whiplash or nailgun shot.
-- Turning with the right stick no longer switches weapons.
-- One flick of the right stick up or down switches exactly one weapon.
 - A held punch no longer fires on its own while you walk or use the weapon wheel.
 - Punches use stamina and cooldown like in the normal game.
-- Jump moved to Cross on PS VR2 and A on Quest. Change weapon variation and menu select moved to the left stick click.
 - Held buttons are released when the SteamVR menu opens.
 - Jackhammer impact, coin toss, dual wield and parry fixes.
 - The SteamVR NoData errors at startup are gone.
@@ -169,6 +179,7 @@ Mod settings are in `BepInEx/plugins/VRTRAKILL/VRTRAKILL_Config.json` (turning, 
 - New option "Auto update". "Notify" (default) shows a notice in the main menu when a new release is out. "Download" (opt-in) downloads a signed update and installs it at the next start. "Off" turns the check off.
 - New option "Game blood and oil stains (experimental)", off by default.
 - Thunderstore package for r2modman and Gale. VRPatcher copies the VR game files into `ULTRAKILL_Data` at start-up, so the mod works from a mod manager profile. The zip install works as before.
+- After this update, reset SteamVR to the default binding if the buttons still act like before (SteamVR Settings > Controllers > Manage Controller Bindings > ULTRAKILL > Default).
 
 The full list is in [CHANGELOG.md](CHANGELOG.md).
 
