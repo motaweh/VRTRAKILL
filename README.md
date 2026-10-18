@@ -1,35 +1,117 @@
-# VRTRAKILL_FRAUD
+# VRTRAKILL
 
-## 🚨 IMPORTANT: 🚨
-It is neccessary to downgrade Ultrakill to the first fraud hotfix for this to work. You can install that using:
+VR mod for ULTRAKILL, through SteamVR.
 
-`download_depot 1229490 1229491 5628746843149106870`
+This version runs on the current ULTRAKILL on Steam: build 22957324 (Unity 2022.3.29f1). You do not need to downgrade the game. Older VRTRAKILL releases only worked on the version before ULTRA_REVAMP, and the Fraud fork needed a specific depot. This one does not.
 
-In the steam console. 🚨WATCH THE TUTORIAL BELOW!!!🚨
+It was built and tested on build 22957324 only. If Steam updates the game, the mod can break until it gets an update.
 
-If you need help, join the [DISCORD](https://discord.gg/9uxHn2yg3q)!
+## Download
 
-[![Youtube link](https://img.youtube.com/vi/bWkGRw43CUU/0.jpg)](https://www.youtube.com/watch?v=bWkGRw43CUU)
+Get the latest release from the [Releases page](../../releases). There are two zips:
 
-## Intro:
-This is a fork of the VRTRAKILL mod with support for Fraud. If you are looking for ULTRA_REVAMP support, there is a release for that.
-Annoyingly just before I released this beta a hotfix was released that breaks stuff and I don't have time currently to fix it, sorry!
+- `VRTRAKILL-1.0.0-full.zip`: the mod plus BepInEx 5.4.23.5 (x64). Use this one if you have never installed BepInEx.
+- `VRTRAKILL-1.0.0-modonly.zip`: the mod only, for players who already have BepInEx 5.4.23.5.
 
-When recording videos, I'd recommend you record the Steam VR view instead of the game itself.
+The zip root is the ULTRAKILL game folder. It contains `BepInEx/`, `ULTRAKILL_Data/` and (in the full zip) `winhttp.dll`, `doorstop_config.ini`, `.doorstop_version` and `changelog.txt`.
 
-## Known issues:
-- Portals seen in mirrors don't render properly
-- Minor flickering when going through portals
-- Whiplash is buggy through portals
-- Desktop camera would require a third portal renderer
-- Haven't even touched the avatarRig, weapon wheel or 4-S
-- Oil and blood (Except for 7-S) don't render due to the new rendering system
-- HUD sometimes disapears
-- No models of enemies in shop
-- Sooooo many other bugs, I haven't played through the whole thing, it doesn't have nearly as much polish as the previous version
+## Requirements
 
-## Installation:
-Install from the releaes tab on the right. Drag the contents of the ULTRAKILL_COPYTOROOT folder to the root of your game. You should get a message asking if you want to replace the files in the destination, say yes. You will obviously need BepInEx if you haven't already got it.
+- ULTRAKILL on Steam, build 22957324.
+- SteamVR. The mod uses OpenVR only, so every headset goes through SteamVR. The active OpenXR runtime does not matter.
+- A headset from the list below.
 
-## Building:
-Build process is pretty messy, I just got everything into the folders manually and got vs to copy over the dlls when I changed them. I used vscode 2022 so just open the .sln file in the root.
+## Install
+
+1. Close ULTRAKILL.
+2. In Steam, right-click ULTRAKILL, then Manage > Browse local files. This opens the folder that has `ULTRAKILL.exe`.
+3. Extract the zip into that folder.
+4. If Windows asks to replace or merge files, say yes.
+5. Start SteamVR and connect your headset.
+6. Start ULTRAKILL from Steam.
+
+On the first start, `BepInEx/patchers/VRPatcher.dll` edits `ULTRAKILL_Data/globalgamemanagers` to turn on VR. It keeps the original as `globalgamemanagers.vrtrakill.bak`. When a game update replaces that file, the patcher sees the new file and patches it again on the next start.
+
+If VR does not start, read `BepInEx/LogOutput.log`.
+
+To update the mod, extract the new zip over the old install.
+
+### Upgrading from an older VRTRAKILL
+
+Older versions copied files this version does not use. You can delete these from `ULTRAKILL_Data`:
+
+- `Plugins/x86_64/OVRPlugin.dll`
+- `Plugins/x86_64/AudioPluginOculusSpatializer.dll`
+- `Plugins/x86_64/UnityOpenXR.dll`
+- `Plugins/x86_64/openxr_loader.dll`
+- `UnitySubsystems/UnityOpenXR/` (the folder)
+- `Managed/Unity.XR.OpenXR*.dll`
+
+If you downgraded the game for an older release, switch it back to the current version first.
+
+## Headsets
+
+| Headset | Status |
+|---|---|
+| PlayStation VR2 (PC adapter) | Tested |
+| Meta Quest 2, 3, 3S, Pro (Link, Air Link, Steam Link, or Virtual Desktop in SteamVR mode) | Configured, not tested |
+| Valve Index | Configured, not tested |
+| HTC Vive, Vive Pro | Configured, not tested |
+| Windows Mixed Reality | Configured, not tested |
+| HTC Vive Cosmos controllers | Not supported |
+| Logitech VR Ink stylus | Not supported |
+| Hand tracking, OpenXR without SteamVR | Not supported |
+
+"Configured" means the default binding covers every game action and was checked against the SteamVR driver's input profile. Nobody has played with it yet. Reports from Quest, Index, Vive and WMR players are welcome.
+
+Launch steps for each headset and the full button map are in [docs/HEADSETS.md](docs/HEADSETS.md). You can change any binding in SteamVR > Settings > Controllers > Manage Controller Bindings > ULTRAKILL.
+
+Mod settings are in `BepInEx/plugins/VRTRAKILL/VRTRAKILL_Config.json` (turning, deadzone, snap turn, crosshair, punching and more).
+
+## Known issues
+
+- Only PS VR2 has been played. The other bindings are checked on paper only.
+- Vive wand: next / previous weapon is not bound. Use the weapon wheel.
+- The weapon wheel button holds the game's "Previous Variation" key (Q). On Index a short press changes to the previous variation. Bind a key to "Last Used Weapon" in the game's controls to get quick swap on a short press.
+- Left-handed mode is broken.
+- Rumble during play is not confirmed on any controller.
+- Finger tracking does nothing. Hands use fixed poses.
+- After an update that changes a default binding, SteamVR can keep the old one. Select the default binding again in the binding screen.
+
+## Uninstall
+
+1. Close ULTRAKILL.
+2. If you used the full zip, delete `winhttp.dll`, `doorstop_config.ini`, `.doorstop_version`, `changelog.txt` and the `BepInEx` folder from the game folder. If you have other BepInEx mods, delete only `BepInEx/plugins/VRTRAKILL/` and the three files in `BepInEx/patchers/` from this mod (`VRPatcher.dll`, `AssetsTools.NET.dll`, `classdata.tpk`).
+3. Delete the files the zip added under `ULTRAKILL_Data`. They are the same paths as in the zip: the SteamVR and Unity XR DLLs in `Managed/` and `Plugins/x86_64/`, the `StreamingAssets/SteamVR/` folder and the `UnitySubsystems/XRSDKOpenVR/` folder. Also delete `globalgamemanagers.vrtrakill.bak` and `globalgamemanagers.vrtrakill.sha256`.
+4. In Steam, right-click ULTRAKILL > Properties > Installed Files > Verify integrity of game files. This restores the original `globalgamemanagers`.
+
+Steam's verify step does not remove extra files, so do step 3 as well.
+
+## Building from source
+
+<!-- BUILD-NAMES: check these against the repo before release: ULTRAKILLDir, tools/package.ps1, global.json SDK 7.0.400 -->
+
+You need the .NET SDK version pinned in `global.json` (7.0.400) and an installed copy of ULTRAKILL build 22957324. The game's DLLs are not in this repo. The build references them from your game install.
+
+1. Set the `ULTRAKILLDir` MSBuild property to your ULTRAKILL folder (the one with `ULTRAKILL.exe`).
+2. Run `tools/package.ps1`. It builds the solution and writes the full and mod-only zips.
+
+The files that go outside `BepInEx` are in `ULTRAKILL_COPYTOROOT`.
+
+## Credits
+
+- whateverusername0 created VRTRAKILL ([original repo](https://github.com/whateverusername0/VRTRAKILL)). The original README put development on indefinite hold and pointed players to forks for newer game versions. This is one of those forks.
+- Squaresweets (Matthew Collier) made the [VRTRAKILL_FRAUD](https://github.com/Squaresweets/VRTRAKILL_FRAUD) fork. This version builds on it.
+- Guillaume-Lechevallier: the VRPatcher, portal overlay and OpenVR start-up code are ported from the [Guillaume-Lechevallier VRTRAKILL_FRAUD](https://github.com/Guillaume-Lechevallier/VRTRAKILL_FRAUD) fork.
+- Graze, Rokic and Party Wumpus contributed to the original mod.
+- Raicuparta: the globalgamemanagers patcher approach comes from Two Forks VR (MIT).
+
+Updated for build 22957324 by Motaweh.
+
+## License
+
+AGPL-3.0. See [LICENSE.md](LICENSE.md). Modified by Motaweh, 2026.
+
+Third-party files (BepInEx, UnityDoorstop, SteamVR plugin, OpenVR, Unity XR packages, AssetsTools.NET, Newtonsoft.Json and others) keep their own licenses. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+This is a fan project. It is not made by or connected to New Blood. You need your own copy of ULTRAKILL.
