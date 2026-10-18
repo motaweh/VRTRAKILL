@@ -68,16 +68,17 @@ namespace Plugin.Prefs
         public class ModifiedAction
         {
             [JsonProperty("path")] public string LocalPath { get; set; }
+            // a composite (modifier + key) keeps its key in "parts"; it cannot be pressed as one key
+            [JsonProperty("isComposite")] public bool IsComposite { get; set; }
             // Returns the key name of the binding path.
             [JsonIgnore] public string Path => GetPath();
-            // Returns the last part of the binding path, such as "space" from "<Keyboard>/space".
+            // Returns the binding path without its device, such as "space" from "<Keyboard>/space" or "scroll/up" from "<Mouse>/scroll/up".
             public string GetPath()
             {
-                if (LocalPath.Contains("/"))
-                {
-                    string[] Temp = LocalPath.Split('/');
-                    return Temp[Temp.Length - 1];
-                }
+                // the last part alone turned "<Mouse>/scroll/up" into "up", the up arrow key
+                if (LocalPath == null) return string.Empty;
+                if (LocalPath.StartsWith("<") && LocalPath.IndexOf(">/") > 0)
+                    return LocalPath.Substring(LocalPath.IndexOf(">/") + 2);
                 return LocalPath;
             }
             // Creates an action with the given binding path.
@@ -115,7 +116,7 @@ namespace Plugin.Prefs
                         { Modified[Alias.Value] = Modified[Alias.Key]; Modified.Remove(Alias.Key); }
                 Json = Root.ToObject<UKBindings>();
             }
-            catch (System.Exception E) when (E is IOException || E is JsonException)
+            catch (System.Exception E) when (E is IOException || E is JsonException || E is System.UnauthorizedAccessException)
             {
                 Systems.Vars.Log.LogWarning("Unable to read Binds.json, using default keys: " + E.Message);
                 return Binds;
@@ -130,8 +131,10 @@ namespace Plugin.Prefs
                 foreach (PropertyInfo JsonPropInfo in Json.Actions.GetType().GetProperties())
                     if (PropInfo[i].GetCustomAttribute<JsonPropertyAttribute>().PropertyName == JsonPropInfo.GetCustomAttribute<JsonPropertyAttribute>().PropertyName
                     && PropInfo[i].GetValue(Binds) != JsonPropInfo.GetValue(Json.Actions)
-                    && JsonPropInfo.GetValue(Json.Actions) is ModifiedAction[] Saved && Saved.Length > 0) // an unbound action saves as []
-                        PropInfo[i].SetValue(Binds, JsonPropInfo.GetValue(Json.Actions));
+                    && JsonPropInfo.GetValue(Json.Actions) is ModifiedAction[] Saved
+                    && System.Array.FindAll(Saved, A => A != null && !A.IsComposite && !string.IsNullOrEmpty(A.LocalPath)) is ModifiedAction[] Keys
+                    && Keys.Length > 0) // an unbound action saves as []; with only composites the default key stays
+                        PropInfo[i].SetValue(Binds, Keys);
             }
             Json.Actions = Binds;
             return Json.Actions;

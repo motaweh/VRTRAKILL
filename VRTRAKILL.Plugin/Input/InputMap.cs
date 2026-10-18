@@ -130,7 +130,7 @@ namespace Plugin.Systems.Input
             { "backbutton", (MouseButton)3 }, { "forwardbutton", (MouseButton)4 },
 
             { "mousescroll",    (MouseButton)10 },
-            { "scroll",         (MouseButton)10 },
+            { "scroll",         (MouseButton)10 }, { "scroll/up", (MouseButton)10 },
 
             // Empty keys
             { "", null }, { "empty", null }, { "null", null }

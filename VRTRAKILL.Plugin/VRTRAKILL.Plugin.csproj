@@ -192,6 +192,7 @@
     <Compile Include="Input\SVRActionsManager.cs" />
     <Compile Include="Patches\Controllers\A.cs" />
     <Compile Include="Patches\Misc\A.cs" />
+    <Compile Include="Patches\Misc\PatchBinds.cs" />
     <Compile Include="Patches\Controllers\PatchControllerAdder.cs" />
     <Compile Include="Patches\Controllers\PatchControllerHaptics.cs" />
     <Compile Include="Patches\Misc\PatchDiscord.cs" />
