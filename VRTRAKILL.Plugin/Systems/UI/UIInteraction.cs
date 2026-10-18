@@ -17,8 +17,10 @@ namespace Plugin.Systems.UI
         public static SteamVR_Input_Sources ActiveHand = SteamVR_Input_Sources.RightHand;
         public static bool HasHit { get; private set; }
         public static Vector3 HitPoint { get; private set; }
+        // true while the laser is on a button or other item, not on a HUD graphic
+        public static bool OverItem { get; private set; }
 
-        private const float DragAngle = 1.5f, NavPress = .6f, NavRelease = .35f, NavDelay = .4f, NavRepeat = .15f;
+        private const float DragAngle = 4f, NavPress = .6f, NavRelease = .35f, NavDelay = .4f, NavRepeat = .15f;
 
         private EventSystem ES;
         private PointerEventData Pointer;
@@ -41,7 +43,7 @@ namespace Plugin.Systems.UI
             if (Cam == null) Cam = GetComponent<Camera>();
         }
 
-        // Moves the laser to the active hand, handles hover, press, drag and release, and handles stick navigation in menus.
+        // Moves the laser to the active hand, handles hover, press, drag and release, and handles stick navigation and jump select in menus.
         public void LateUpdate()
         {
             if (EventSystem.current == null || Cam == null) return;
@@ -70,7 +72,7 @@ namespace Plugin.Systems.UI
             if (IsMenu)
             {
                 Navigate();
-                if (SteamVR_Actions._default.ChangeWeaponVariation.GetStateDown(SteamVR_Input_Sources.Any)) Submit();
+                if (SteamVR_Actions._default.Jump.GetStateDown(SteamVR_Input_Sources.Any) && SVRActionsManager.JumpSelects) Submit();
                 Scroll();
             }
             else NavHeld = false;
@@ -124,11 +126,12 @@ namespace Plugin.Systems.UI
             return First.gameObject;
         }
 
-        // Moves the hover to a new target and, in menus, selects it.
+        // Moves the hover to a new target, records whether it is an item and, in menus, selects it.
         private void UpdateHover(GameObject Target)
         {
             if (Target == Hovered) return;
             HoverMuted = false;
+            OverItem = Target != null && (Target.GetComponentInParent<Selectable>() != null || Target.GetComponentInParent<ControllerPointer>() != null);
             SetHover(Target);
 
             // pointing at an item also selects it, so the stick and confirm continue from there
@@ -240,12 +243,14 @@ namespace Plugin.Systems.UI
             Pointer.pointerDrag = null;
         }
 
-        // Returns true on the frame the hand presses shoot or punch.
+        // Returns true on the frame the hand presses shoot or punch, or, for the laser hand outside menus, presses jump on a shop item.
         private static bool TriggerDown(SteamVR_Input_Sources Hand)
-            => SteamVR_Actions._default.Shoot.GetStateDown(Hand) || SteamVR_Actions._default.Punch.GetStateDown(Hand);
-        // Returns true while the hand holds shoot or punch.
+            => SteamVR_Actions._default.Shoot.GetStateDown(Hand) || SteamVR_Actions._default.Punch.GetStateDown(Hand)
+            || (Hand == ActiveHand && !IsMenu && SVRActionsManager.JumpSelects && SteamVR_Actions._default.Jump.GetStateDown(SteamVR_Input_Sources.Any));
+        // Returns true while the hand holds shoot or punch, or, for the laser hand outside menus, holds a jump that clicks.
         private static bool TriggerHeld(SteamVR_Input_Sources Hand)
-            => SteamVR_Actions._default.Shoot.GetState(Hand) || SteamVR_Actions._default.Punch.GetState(Hand);
+            => SteamVR_Actions._default.Shoot.GetState(Hand) || SteamVR_Actions._default.Punch.GetState(Hand)
+            || (Hand == ActiveHand && !IsMenu && SVRActionsManager.JumpSelects && SteamVR_Actions._default.Jump.GetState(SteamVR_Input_Sources.Any));
         #endregion
 
         #region Stick navigation
