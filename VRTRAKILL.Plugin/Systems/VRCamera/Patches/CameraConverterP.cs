@@ -17,17 +17,24 @@ namespace Plugin.Systems.VRCamera.Patches
         // null until the desktop view is toggled; then the toggle state carries over to the next scene
         public static bool? DesktopViewOn;
 
-        // Sets up the main camera for VR and creates the left and right eye cameras.
+        // Sets up the main camera for VR and creates the left and right eye cameras; logs and returns if there is no camera yet.
         public static void SetupEyeCameras()
         {
-            CameraController cc = CameraController.Instance;
+            // PortalManagerV2.OnEnable can run before CameraController registers or sets cam (Start, CheckAspectRatio)
+            CameraController cc = Vars.Registered<CameraController>() ?? Object.FindAnyObjectByType<CameraController>();
+            if (cc != null && cc.cam == null) cc.cam = cc.GetComponent<Camera>();
+            if (cc == null || cc.cam == null)
+            {
+                Vars.Log.LogWarning("No camera controller when the portal manager started; VR eye cameras not created.");
+                return;
+            }
 
             cc.cam.nearClipPlane = 0.01f;
             cc.cam.stereoTargetEye = StereoTargetEyeMask.None;
 
             // render the AlwaysOnTop layer (hands)
             cc.cam.cullingMask |= 1 << (int)Layers.AlwaysOnTop;
-            cc.hudCamera.enabled = false;
+            if (cc.hudCamera != null) cc.hudCamera.enabled = false;
 
             leftEye = new GameObject("Left", typeof(Camera)).GetComponent<Camera>();
             VRTRAKILL.Utilities.Unity.CopyCameraValues(leftEye, cc.cam);
@@ -112,6 +119,7 @@ namespace Plugin.Systems.VRCamera.Patches
         {
             // the platformer camera is handled by CrashBandicrootCCP; leave its eyes there
             if (__instance.platformerCamera) return;
+            if (leftEye == null || rightEye == null) return;
             // back from 4-S or Clash mode: return the eyes to the FPS player
             if (__instance == CameraController.Instance && leftEye.transform.parent != __instance.transform.parent)
             {
@@ -119,7 +127,7 @@ namespace Plugin.Systems.VRCamera.Patches
                 rightEye.transform.SetParent(__instance.transform.parent);
             }
 
-            if (!__instance.player) { __instance.nm = NewMovement.Instance; __instance.player = __instance.nm.gameObject; }
+            if (!__instance.player && Vars.Registered<NewMovement>() is NewMovement NM) { __instance.nm = NM; __instance.player = NM.gameObject; }
 
             __instance.rotationX = -VRControllerLocations.Instance.headRot.eulerAngles.x;
             __instance.rotationY = VRControllerLocations.Instance.headRot.eulerAngles.y + InputVars.TurnOffset;
@@ -133,7 +141,8 @@ namespace Plugin.Systems.VRCamera.Patches
         // Places a transform at a pose relative to the player body, with turn and gravity applied, then moves it through crossed portals.
         public static void PortalAwareSetTransformFromBody(Transform t, Vector3 localPosition, Quaternion worldRotation, bool hands = false)
         {
-            CameraController cc = CameraController.Instance;
+            CameraController cc = Vars.Registered<CameraController>();
+            if (cc == null || cc.transform.parent == null) return;
             Quaternion parentRot =
                 cc.gravityRotation *
                 Quaternion.AngleAxis(InputVars.TurnOffset, Vector3.up);
@@ -150,8 +159,9 @@ namespace Plugin.Systems.VRCamera.Patches
         // Moves a transform through any portal crossed between the player and the transform.
         public static void MoveFromPlayerThroughPortals(Transform t)
         {
-            CameraController cc = CameraController.Instance;
-            PortalManagerV2 pm = PortalManagerV2.Instance;
+            CameraController cc = Vars.Registered<CameraController>();
+            PortalManagerV2 pm = Vars.Registered<PortalManagerV2>();
+            if (cc == null || cc.transform.parent == null || pm == null || pm.Scene == null) return;
             PortalScene Scene = pm.Scene;
 
             PortalHandle portalHandle;
