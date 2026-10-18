@@ -1,0 +1,9 @@
+{
+  "name": "VRTRAKILL",
+  "version_number": "1.0.1",
+  "website_url": "https://github.com/motaweh/VRTRAKILL",
+  "description": "VR mod for ULTRAKILL through SteamVR. Runs on the current Steam build 22957324. A fork of whateverusername0's VRTRAKILL.",
+  "dependencies": [
+    "BepInEx-BepInExPack-5.4.2305"
+  ]
+}
