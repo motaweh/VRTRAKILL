@@ -20,7 +20,6 @@ It was built and tested on build 22957324 only. If Steam updates the game, the m
   - [Meta Quest Touch controllers](#meta-quest-touch-controllers)
 - [Changes in 1.0.1](#changes-in-101)
 - [Updates](#updates)
-- [Known issues](#known-issues)
 - [Uninstall](#uninstall)
 - [Building from source](#building-from-source)
 - [Credits](#credits)
@@ -216,21 +215,6 @@ The `"Auto update"` setting in `VRTRAKILL_Config.json` controls what happens:
 In a mod manager install (r2modman, Gale), `"Download"` works like `"Notify"`. Update the mod in the mod manager.
 
 An install only writes to `BepInEx/plugins/VRTRAKILL/`, `BepInEx/patchers/` and the mod's folders under `ULTRAKILL_Data`. A zip with any other path is rejected. Files that are not in the new zip are left in place. If an install fails, that version is not downloaded again until you delete `BepInEx/VRTRAKILL_update/failed_<version>.txt`. To uninstall the updater's files, delete `BepInEx/VRTRAKILL_update/`.
-
-## Known issues
-
-- Index, Vive and WMR have not been played. Their bindings are checked against the driver input profiles only.
-- The weapon wheel button holds the game's "Previous Variation" key (Q). Bind a key to "Last Used Weapon" in the game's controls to get quick swap.
-- Left-handed mode is broken.
-- After an update that changes a default binding, SteamVR can keep the old one. Select the default binding again in the binding screen.
-- Portals seen in a mirror do not render correctly.
-- Portals can flicker for a moment when you go through them.
-- Whiplash is unreliable through portals.
-- Oil stains do not show, and blood stains are missing in most levels. The mod turns off the game's compute shader stain path before each frame. Setting "Game blood and oil stains (experimental)" to true in the config file turns it back on. This is not tested in a headset and may tint the view red, which is probably why it was turned off.
-- The desktop view (T key, off by default) skips the game's post-processing, and portals look wrong in it.
-- 4-S and Clash mode have not been played in VR yet. The pause menu does not show in the headset while you are in them.
-- The VR body ("Enable VRAvatar" in the config file) is off by default and has not been tested.
-- The shop weapon and enemy previews and the late HUD conversion are not yet confirmed in the headset.
 
 ## Uninstall
 

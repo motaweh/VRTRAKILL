@@ -116,17 +116,6 @@ Once per start the mod asks GitHub for the latest VRTRAKILL release and shows a 
 
 - "Finger tracking": optional cosmetic finger curl on the punch hand, off by default.
 
-## Known issues
-
-- Index, Vive and WMR have not been played. Their bindings are checked against the driver input profiles only.
-- Left-handed mode is broken.
-- After an update that changes a default binding, SteamVR can keep the old one. Select the default binding again in the binding screen.
-- Portals seen in a mirror do not render correctly.
-- Whiplash is unreliable through portals.
-- A future ULTRAKILL update can break the mod.
-
-The full list is on the [GitHub page](https://github.com/motaweh/VRTRAKILL).
-
 ## Uninstall
 
 1. Remove VRTRAKILL in your mod manager.
