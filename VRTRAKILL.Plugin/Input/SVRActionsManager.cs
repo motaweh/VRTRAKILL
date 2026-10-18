@@ -7,8 +7,8 @@ namespace Plugin.Systems.Input
 {
     internal static class SVRActionsManager
     {
-        // Returns a new Windows input simulator for keyboard and mouse events.
-        private static InputSimulator InpSim => new InputSimulator();
+        // one Windows input simulator for all keyboard and mouse events; a new one per event allocated three objects
+        private static readonly InputSimulator InpSim = new InputSimulator();
 
         public static bool
             Jump = false,

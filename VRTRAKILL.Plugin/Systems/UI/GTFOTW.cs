@@ -28,9 +28,8 @@ namespace Plugin.Systems.UI
         // Fades the warning in while the head is inside level geometry and out after it leaves, with a new random text each time.
         public void Update()
         {
-            if (VRTRAKILL.Utilities.Unity.DetectCollisions(DetectorTransform.position, .1f, (int)Layers.Environment) > 0)
-                ShouldShow = true;
-            else ShouldShow = false;
+            // CheckSphere does not allocate the collider array that OverlapSphere did every frame
+            ShouldShow = Physics.CheckSphere(DetectorTransform.position, .1f, 1 << (int)Layers.Environment, QueryTriggerInteraction.Ignore);
 
             if (ShouldShow)
             {

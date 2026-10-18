@@ -29,11 +29,12 @@ internal class VRArmControllerBase : MonoBehaviour
     {
         if (Arm != null && OffsetPos == Vector3.zero) OffsetPos = ResolveOffsetPos();
     }
+    private SkinnedMeshRenderer ArmMesh;
     // Hides the arm mesh while the whiplash model is shown.
     public virtual void LateUpdate()
     {
-        if (HookArm.Instance != null && HookArm.Instance.model != null && HookArm.Instance.model.activeSelf)
-            Arm.GameObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
-        else Arm.GameObject.GetComponentInChildren<SkinnedMeshRenderer>().enabled = true;
+        if (ArmMesh == null) ArmMesh = Arm.GameObject.GetComponentInChildren<SkinnedMeshRenderer>();
+        if (ArmMesh == null) return;
+        ArmMesh.enabled = !(HookArm.Instance != null && HookArm.Instance.model != null && HookArm.Instance.model.activeSelf);
     }
 }

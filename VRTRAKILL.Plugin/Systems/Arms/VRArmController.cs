@@ -6,10 +6,12 @@ namespace Plugin.Systems.Arms;
 internal class VRArmController : VRArmControllerBase
 {
     public Transform RawTarget { get; set; }
+    private bool IsHookArm;
     // Picks the hand the arm follows: the gun hand for left handed or sandbox arms, else the arm hand.
     public override void Start()
     {
         base.Start();
+        IsHookArm = gameObject.HasComponent<HookArm>();
 
         if (Vars.Config.Controllers.LeftHanded || gameObject.HasComponent<Sandbox.Arm.SandboxArm>())
         { Target = Vars.DominantHand.transform; RawTarget = Vars.NDHC.transform; }
@@ -21,7 +23,7 @@ internal class VRArmController : VRArmControllerBase
     {
         if (Vars.IsMainMenu || Arm == null) return;
 
-        if (!gameObject.HasComponent<HookArm>()) base.LateUpdate();
+        if (!IsHookArm) base.LateUpdate();
         Arm.GameObject.position = Target.position;
         Arm.GameObject.rotation = Target.rotation;
 

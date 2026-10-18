@@ -26,6 +26,7 @@ namespace Plugin.Systems.Controllers
             => Hand == SteamVR_Input_Sources.LeftHand ? Left : Hand == SteamVR_Input_Sources.RightHand ? Right : null;
 
         LineRenderer LR; Vector3 EndPosition;
+        bool IsGunHand;
         // Returns the crosshair distance from the config.
         public float DefaultLength => Vars.Config.CBS.CrosshairDistance;
 
@@ -91,6 +92,7 @@ namespace Plugin.Systems.Controllers
 
             // with "Draw controller models" off there is no Model child
             RenderModel ??= transform.Find("Model")?.gameObject;
+            IsGunHand = gameObject.HasComponent<VRGunsSystem>();
 
             if (Vars.Config.UIInteraction.ControllerLines.Enabled)
                 SetupControllerLines();
@@ -103,7 +105,8 @@ namespace Plugin.Systems.Controllers
             else
                 CameraConverterP.PortalAwareSetTransformFromBody(transform, VRControllerLocations.Instance.rightPos, VRControllerLocations.Instance.rightRot, true);
 
-            VRGunsController.Instance.LateUpdate(); // waiting for its own LateUpdate leaves the gun a frame behind the hand
+            // waiting for its own LateUpdate leaves the gun a frame behind the hand; only the gun hand moves the guns
+            if (IsGunHand && Vars.Registered<VRGunsController>() is VRGunsController Guns) Guns.LateUpdate();
 
             // controller-based ui interaction
             if (Vars.Config.UIInteraction.ControllerBased) CPRaycast();

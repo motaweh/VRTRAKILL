@@ -11,6 +11,7 @@ namespace Plugin.Systems.UI
         // A magic number which gives us the most accurate center
         Vector3 Offset = new Vector3(-.2f, -2.75f, 0);
         Transform Target; // Where crosshair will point from
+        GameObject LastWeapon; bool AimFromWeapon; // the GetComponent results for the current weapon
 
         // Places the crosshair ahead of the view while frozen without controller UI, else ahead of the current gun.
         public void LateUpdate()
@@ -19,11 +20,15 @@ namespace Plugin.Systems.UI
                 transform.position = Vars.MainCamera.transform.position + (Vars.MainCamera.transform.forward * Length * .25f) + Offset;
             else
             {
-                if (GunControl.Instance != null)
+                if (Vars.Registered<GunControl>() is GunControl Guns)
                 {
-                    if (GunControl.Instance.currentWeapon?.GetComponent<RocketLauncher>() || GunControl.Instance.currentWeapon?.GetComponent<ShotgunHammer>())
-                        Target = GunControl.Instance.currentWeapon.transform;
-                    else Target = GunControl.Instance.transform;
+                    GameObject Weapon = Guns.currentWeapon;
+                    if (Weapon != LastWeapon)
+                    {
+                        LastWeapon = Weapon;
+                        AimFromWeapon = Weapon != null && (Weapon.GetComponent<RocketLauncher>() || Weapon.GetComponent<ShotgunHammer>());
+                    }
+                    Target = AimFromWeapon ? Weapon.transform : Guns.transform;
                 }
                 else Target = Vars.DominantHand.transform;
 

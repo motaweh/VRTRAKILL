@@ -6,6 +6,9 @@ internal class VRGunsController : MonoSingleton<VRGunsController>
 {
     public Camera TargeterCamera;
 
+    // Registers this as the instance, so readers can use Vars.Registered instead of Instance, which auto-creates a hand-less copy.
+    public void Awake() => MakeCurrent();
+
     // Creates the hidden targeter camera on the guns and gives it to the frustum targeter.
     public void Start()
     {

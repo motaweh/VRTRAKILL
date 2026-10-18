@@ -59,16 +59,17 @@ namespace Plugin.Systems
         #endregion
 
         #region Cameras
-        private static Camera _MainCamera;
+        private static Camera _MainCamera; private static int _MainCameraSearchFrame = -1;
         public static Vector3 punchDirection;
 
-        // Returns the camera under "Main Camera", found once and then cached.
+        // Returns the camera under "Main Camera", found once and then cached; while there is none it searches at most once per frame.
         public static Camera MainCamera
         {
             get
             {
-                if (_MainCamera == null)
+                if (_MainCamera == null && _MainCameraSearchFrame != Time.frameCount)
                 {
+                    _MainCameraSearchFrame = Time.frameCount;
                     _MainCamera = GameObject.Find("Main Camera")?.gameObject.GetComponentInChildren<Camera>();
                     return _MainCamera;
                 }

@@ -7,11 +7,12 @@ namespace Plugin.Systems.UI
         // Returns true while the player is frozen.
         private bool ShouldHide => Vars.IsPlayerFrozen;
 
+        private Canvas Canvas;
         // Hides the canvas while the player is frozen.
         public void Update()
         {
-            if (ShouldHide) gameObject.GetComponent<Canvas>().enabled = false;
-            else gameObject.GetComponent<Canvas>().enabled = true;
+            if (Canvas == null) Canvas = gameObject.GetComponent<Canvas>();
+            if (Canvas != null) Canvas.enabled = !ShouldHide;
         }
     }
 }

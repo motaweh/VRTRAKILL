@@ -28,7 +28,8 @@ namespace Plugin.Systems
         public static void LoadAllCustomAssets()
         {
             AssetBundle Assets = LoadBundle("vrtrakillassetbundle");
-            VRig = Object.Instantiate(LoadAsset<GameObject>(Assets, "V1/V1.prefab"), DefaultPos, DefaultRot);
+            // only the opt-in VR body uses the V1 rig template
+            VRig = Vars.Config.EnableVRBody ? Object.Instantiate(LoadAsset<GameObject>(Assets, "V1/V1.prefab"), DefaultPos, DefaultRot) : null;
             VHead = LoadAsset<GameObject>(Assets, "V1/V1_Head.prefab");
 
             HandPose_Shotgun = Object.Instantiate(LoadAsset<GameObject>(Assets, "Arms/Feedbacker/Hand_Shotgun.prefab"), DefaultPos, DefaultRot);

@@ -43,8 +43,12 @@ namespace Plugin.Systems.UI
         private int ActiveChildren()
         {
             int Sig = 17;
-            foreach (Transform Child in transform)
+            // an index loop; foreach over a Transform allocates an enumerator
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                Transform Child = transform.GetChild(i);
                 if (Child.gameObject.activeSelf) Sig = Sig * 31 + Child.GetInstanceID();
+            }
             return Sig;
         }
 
