@@ -65,5 +65,12 @@ namespace Plugin.Systems.UI.Patches
             // makes blood splatters bigger for aesthetic reasons
             __instance.transform.localScale *= 10;
         }
+        // Keeps the shop preview cameras mono; they draw the weapon and enemy models into a render texture, not the headset.
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(SmileRenderer), nameof(SmileRenderer.Setup))]
+        static void MonoPreviewCamera(SmileRenderer __instance)
+        {
+            if (__instance.cam != null) __instance.cam.stereoTargetEye = StereoTargetEyeMask.None;
+        }
     }
 }
