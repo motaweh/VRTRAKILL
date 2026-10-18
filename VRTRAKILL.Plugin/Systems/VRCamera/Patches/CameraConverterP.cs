@@ -47,6 +47,8 @@ namespace Plugin.Systems.VRCamera.Patches
             rightEye.stereoTargetEye = StereoTargetEyeMask.Right;
 
             SetupDesktopCameras(cc);
+
+            if (PendingHeadMaterial != null) { AddHead(PendingHeadMaterial); PendingHeadMaterial = null; }
         }
         // Creates the monitor-only world and UI cameras on the left eye, shown when the desktop view is on.
         static void SetupDesktopCameras(CameraController cc)
@@ -236,12 +238,11 @@ namespace Plugin.Systems.VRCamera.Patches
             return false;
         }
 
-        // Adds the VR head to the left eye and removes the player model renderers.
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(PlayerAnimations), nameof(PlayerAnimations.Start))]
-        static void RemovePlayerModel(PlayerAnimations __instance)
+        // the player model material for a head whose eye camera did not exist yet
+        static Material PendingHeadMaterial;
+        // Adds the VR head, with the player model's material, to the left eye.
+        static void AddHead(Material PlayerMaterial)
         {
-            // VR head
             GameObject head = GameObject.Instantiate(Assets.VHead, leftEye.transform);
             head.transform.localPosition = new Vector3(0, 0, -0.07f);
             head.transform.localScale *= 2f;
@@ -249,7 +250,19 @@ namespace Plugin.Systems.VRCamera.Patches
             foreach (Transform t in head.GetComponentsInChildren<Transform>(true))
                 t.gameObject.layer = LayerMask.NameToLayer("Portal");
             // reuse the player model's material for the correct unlit look
-            head.GetComponentInChildren<SkinnedMeshRenderer>().material = __instance.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
+            head.GetComponentInChildren<SkinnedMeshRenderer>().material = PlayerMaterial;
+        }
+
+        // Adds the VR head to the left eye, or after the eyes exist, and removes the player model renderers.
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(PlayerAnimations), nameof(PlayerAnimations.Start))]
+        static void RemovePlayerModel(PlayerAnimations __instance)
+        {
+            // read before the renderers are destroyed below
+            Material PlayerMaterial = __instance.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
+            // leftEye can still be the previous scene's destroyed eye when this Start runs before PortalManagerV2.OnEnable
+            if (leftEye != null) AddHead(PlayerMaterial);
+            else PendingHeadMaterial = PlayerMaterial;
 
             __instance.GetComponentsInChildren<SkinnedMeshRenderer>(true).ToList().ForEach(x => UnityEngine.Object.Destroy(x));
             __instance.GetComponentsInChildren<MeshRenderer>(true).ToList().ForEach(x => UnityEngine.Object.Destroy(x));
