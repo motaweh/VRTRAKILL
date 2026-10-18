@@ -7,7 +7,7 @@ VRTRAKILL runs through SteamVR (OpenVR) only. Every headset must reach the game 
 | Headset / controller | SteamVR controller type | Status | Default binding |
 |---|---|---|---|
 | PlayStation VR2 / Sense controllers | `playstation_vr2_sense` | Tested on hardware | `bindings_playstation_vr2_sense.json` |
-| Meta Quest 2, 3, 3S, Pro / Touch (Link, Air Link, Steam Link, Virtual Desktop) | `oculus_touch` | Configured, not tested | `bindings_oculus_touch.json` |
+| Meta Quest 2, 3, 3S, Pro / Touch (through SteamVR) | `oculus_touch` | Tested on hardware | `bindings_oculus_touch.json` |
 | Valve Index / Index controllers (also Virtual Desktop with "Emulate Index controllers") | `knuckles` | Configured, not tested | `bindings_knuckles.json` |
 | HTC Vive, Vive Pro / Vive wands | `vive_controller` | Configured, not tested | `bindings_vive_controller.json` |
 | Windows Mixed Reality / motion controllers | `holographic_controller` | Configured, not tested | `bindings_holographic_controller.json` |
@@ -20,7 +20,7 @@ VRTRAKILL runs through SteamVR (OpenVR) only. Every headset must reach the game 
 
 ### What works
 
-- PS VR2: the only controller the mod has been played with on this game build. Head and hand tracking, the actions in the button map below and the menus with the controller laser are in use.
+- PS VR2 and Quest Touch: played on this game build through SteamVR. Head and hand tracking, the actions in the button map below and the menus with the controller laser are in use.
 - Configured controllers: the same actions are bound, so the same features are expected. Change any binding in SteamVR if one does not suit you.
 
 ### Finger tracking
@@ -42,11 +42,14 @@ The mod does not read finger (skeleton) data. Hands use fixed poses on every con
 2. Start SteamVR.
 3. Start ULTRAKILL from Steam.
 
-### Quest with Quest Link or Air Link
-1. Start the Meta Quest Link app on the PC.
-2. In the headset, turn on Link or Air Link.
-3. Start SteamVR (from Steam on the desktop, or from the Link desktop). Keep it running.
-4. Start ULTRAKILL from Steam.
+### Quest with Link (cable)
+1. Install the Meta Horizon Link app from https://www.meta.com/quest/setup/ (Quest Link (PC), Download software) and sign in with your Meta account.
+2. Connect the headset with a USB-C cable that supports USB 3.
+3. In the headset, open Quick Settings, then Link, and accept.
+4. Start SteamVR on the PC. Keep it running.
+5. Start ULTRAKILL from Steam.
+
+Air Link (the same steps over Wi-Fi), Virtual Desktop and Steam Link below are not tested with this mod.
 
 The game uses OpenVR, so it always goes through SteamVR, even if Meta is the active OpenXR runtime.
 
@@ -99,7 +102,8 @@ While the weapon wheel is open, the weapon wheel scroll stick points at a weapon
 
 ## Known issues
 
-- Only PS VR2 is tested on hardware. Quest, Index, Vive and WMR bindings are checked against driver input profiles only.
+- PS VR2 and Quest are tested on hardware. Index, Vive and WMR bindings are checked against driver input profiles only.
+- Quest: the (L) menu button opens the SteamVR menu. Games cannot use it, so pause is a double tap of (R) B.
 - Vive wand: next / previous weapon is not bound. The right trackpad already turns, and a scroll there would also fire on every up or down click. Use the weapon wheel.
 - WMR: the binding was checked against Valve's WMR example binding and ALVR's WMR controller profile, not against Microsoft's own driver profile.
 - The weapon wheel button presses the key the game uses for "Last Used Weapon". The game has no keyboard key for it by default, so the mod presses the "Previous Variation" key (Q) instead, which opens the wheel when held. On Index a short press therefore changes to the previous variation. Bind a keyboard key to "Last Used Weapon" in the game's controls to get quick swap on a short press.
@@ -111,13 +115,6 @@ While the weapon wheel is open, the weapon wheel scroll stick points at a weapon
 
 ## Upgrading an older install
 
-Earlier versions copied files that the mod does not use. You can delete them from `ULTRAKILL_Data`:
-
-- `Plugins/x86_64/OVRPlugin.dll`
-- `Plugins/x86_64/AudioPluginOculusSpatializer.dll`
-- `Plugins/x86_64/UnityOpenXR.dll`
-- `Plugins/x86_64/openxr_loader.dll`
-- `UnitySubsystems/UnityOpenXR/` (the folder)
-- `Managed/Unity.XR.OpenXR*.dll`
+Extract the new zip over the old install. Files from older versions can stay.
 
 If SteamVR keeps an old binding, open the binding screen above and select the default binding again.

@@ -34,27 +34,37 @@ On the first start, `BepInEx/patchers/VRPatcher.dll` edits `ULTRAKILL_Data/globa
 
 If VR does not start, read `BepInEx/LogOutput.log`.
 
-To update the mod, extract the new zip over the old install.
+To update the mod, or to upgrade from an older VRTRAKILL, extract the new zip over the old install. Files from older versions can stay; this version starts VR through OpenVR only and does not load them.
 
-### Upgrading from an older VRTRAKILL
+If you downgraded the game for an older release, switch it back to the current version in Steam first (right-click ULTRAKILL > Properties > Betas, and select None).
 
-Older versions copied files this version does not use. You can delete these from `ULTRAKILL_Data`:
+## Setting up your headset
 
-- `Plugins/x86_64/OVRPlugin.dll`
-- `Plugins/x86_64/AudioPluginOculusSpatializer.dll`
-- `Plugins/x86_64/UnityOpenXR.dll`
-- `Plugins/x86_64/openxr_loader.dll`
-- `UnitySubsystems/UnityOpenXR/` (the folder)
-- `Managed/Unity.XR.OpenXR*.dll`
+### PlayStation VR2
 
-If you downgraded the game for an older release, switch it back to the current version first.
+1. You need the PlayStation VR2 PC adapter, a PC with Windows 10 or 11 (64-bit), a graphics card with a DisplayPort 1.4 output, a free USB 3.0 port, and Bluetooth 4.0 or later for the Sense controllers.
+2. Connect the PC adapter to the PC: the DisplayPort cable directly to the graphics card, and the USB cable directly to the PC (no hub or extension cable).
+3. Install the free "PlayStation VR2 App" from the Steam store.
+4. Run its setup. It connects the adapter, pairs the Sense controllers over Bluetooth and sets up your play area.
+5. SteamVR starts with the headset. If it does not, start SteamVR.
+6. Start ULTRAKILL.
+
+### Meta Quest
+
+1. Install the Meta Horizon Link app on the PC. Go to https://www.meta.com/quest/setup/, find Quest Link (PC), click Download software and run the installer. Sign in with your Meta account.
+2. Connect the headset to the PC with a good USB-C cable that supports USB 3.
+3. In the headset, open Quick Settings, then Link, and accept.
+4. Start SteamVR on the PC.
+5. Start ULTRAKILL.
+
+Air Link and Virtual Desktop (in SteamVR mode) also connect a Quest over Wi-Fi, but the Link steps above are the documented path. The wireless options have not been tested with this mod.
 
 ## Headsets
 
 | Headset | Status |
 |---|---|
 | PlayStation VR2 (PC adapter) | Tested |
-| Meta Quest 2, 3, 3S, Pro (Link, Air Link, Steam Link, or Virtual Desktop in SteamVR mode) | Configured, not tested |
+| Meta Quest 2, 3, 3S, Pro (through SteamVR) | Tested |
 | Valve Index | Configured, not tested |
 | HTC Vive, Vive Pro | Configured, not tested |
 | Windows Mixed Reality | Configured, not tested |
@@ -62,15 +72,63 @@ If you downgraded the game for an older release, switch it back to the current v
 | Logitech VR Ink stylus | Not supported |
 | Hand tracking, OpenXR without SteamVR | Not supported |
 
-"Configured" means the default binding covers every game action and was checked against the SteamVR driver's input profile. Nobody has played with it yet. Reports from Quest, Index, Vive and WMR players are welcome.
+"Tested" means it was played on hardware through SteamVR. "Configured" means the default binding covers every game action and was checked against the SteamVR driver's input profile. Nobody has played with it yet. Reports from Index, Vive and WMR players are welcome.
 
-Launch steps for each headset and the full button map are in [docs/HEADSETS.md](docs/HEADSETS.md). On Quest, jump is (R) A; on PS VR2, jump is (R) cross. On both, change weapon variation (and select in menus) is the left stick click. You can change any binding in SteamVR > Settings > Controllers > Manage Controller Bindings > ULTRAKILL.
+## Controls
+
+(R) is the right controller, (L) is the left controller. You can change any binding in SteamVR > Settings > Controllers > Manage Controller Bindings > ULTRAKILL.
+
+### PS VR2 Sense
+
+| Action | Button |
+|---|---|
+| Move | (L) stick |
+| Turn | (R) stick left or right |
+| Jump | (R) Cross |
+| Slide / slam | (R) stick click |
+| Dash | (L) Triangle |
+| Shoot | (R) R2 |
+| Alternate fire | (R) R1 |
+| Punch | (L) L2 |
+| Whiplash | (L) Square |
+| Change hand | (L) L1 |
+| Change weapon variation | (L) stick click |
+| Next / previous weapon | (R) stick flick up or down |
+| Weapon wheel | Hold (R) Circle, aim with the (L) stick, let go to switch |
+| Pause / back | (R) Options, or double tap (R) Circle |
+
+### Meta Quest Touch
+
+| Action | Button |
+|---|---|
+| Move | (L) stick |
+| Turn | (R) stick left or right |
+| Jump | (R) A |
+| Slide / slam | (R) stick click |
+| Dash | (L) Y |
+| Shoot | (R) trigger |
+| Alternate fire | (R) grip |
+| Punch | (L) trigger |
+| Whiplash | (L) X |
+| Change hand | (L) grip |
+| Change weapon variation | (L) stick click |
+| Next / previous weapon | (R) stick flick up or down |
+| Weapon wheel | Hold (R) B, aim with the (L) stick, let go to switch |
+| Pause / back | Double tap (R) B |
+
+On Quest, the (L) menu button opens the SteamVR menu. Games cannot use it.
+
+In menus, point with either controller and press its trigger to click. The (L) stick moves the selection and the left stick click selects it.
+
+One flick of the (R) stick up or down switches one weapon. Return the stick to the center before the next flick.
+
+Maps for Index, Vive and WMR, and launch steps for other connections, are in [docs/HEADSETS.md](docs/HEADSETS.md).
 
 Mod settings are in `BepInEx/plugins/VRTRAKILL/VRTRAKILL_Config.json` (turning, deadzone, snap turn, crosshair, punching and more).
 
 ## Known issues
 
-- Only PS VR2 has been played. The other bindings are checked on paper only.
+- Index, Vive and WMR have not been played. Their bindings are checked against the driver input profiles only.
 - Vive wand: next / previous weapon is not bound. Use the weapon wheel.
 - The weapon wheel button holds the game's "Previous Variation" key (Q). On Index a short press changes to the previous variation. Bind a key to "Last Used Weapon" in the game's controls to get quick swap on a short press.
 - Left-handed mode is broken.
@@ -89,11 +147,10 @@ Mod settings are in `BepInEx/plugins/VRTRAKILL/VRTRAKILL_Config.json` (turning, 
 ## Uninstall
 
 1. Close ULTRAKILL.
-2. If you used the full zip, delete `winhttp.dll`, `doorstop_config.ini`, `.doorstop_version`, `changelog.txt` and the `BepInEx` folder from the game folder. If you have other BepInEx mods, delete only `BepInEx/plugins/VRTRAKILL/` and the three files in `BepInEx/patchers/` from this mod (`VRPatcher.dll`, `AssetsTools.NET.dll`, `classdata.tpk`).
-3. Delete the files the zip added under `ULTRAKILL_Data`. They are the same paths as in the zip: the SteamVR and Unity XR DLLs in `Managed/` and `Plugins/x86_64/`, the `StreamingAssets/SteamVR/` folder and the `UnitySubsystems/XRSDKOpenVR/` folder. Also delete `globalgamemanagers.vrtrakill.bak` and `globalgamemanagers.vrtrakill.sha256`.
-4. In Steam, right-click ULTRAKILL > Properties > Installed Files > Verify integrity of game files. This restores the original `globalgamemanagers`.
+2. If no other mods use BepInEx, delete the `BepInEx` folder and the doorstop files `winhttp.dll`, `doorstop_config.ini` and `.doorstop_version` from the game folder. If you have other BepInEx mods, keep those and delete only `BepInEx/plugins/VRTRAKILL/` and this mod's three files in `BepInEx/patchers/` (`VRPatcher.dll`, `AssetsTools.NET.dll`, `classdata.tpk`).
+3. In Steam, right-click ULTRAKILL > Properties > Installed Files > Verify integrity of game files. This restores the original `globalgamemanagers`, which turns VR off.
 
-Steam's verify step does not remove extra files, so do step 3 as well.
+The other files the zip added under `ULTRAKILL_Data` can stay. Only the mod starts OpenVR, so without it they are not used.
 
 ## Building from source
 
