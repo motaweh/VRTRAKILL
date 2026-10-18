@@ -106,10 +106,10 @@ namespace VRTRAKILL.Utilities
             IEnumerable<Type> Q = GetTypes(_Namespaces);
             foreach (Type T in Q) try { Harmony.PatchAll(T); } catch { Log.LogError($"Nullref with type {T}"); }
         }
-        // Applies one patch type.
+        // Applies one patch type and logs its full name.
         public void Patch(Type _T)
         {
-            Log.LogInfo($"Patching Type \"{nameof(_T)}\"...");
+            Log.LogInfo($"Patching Type \"{_T.FullName}\"...");
             Harmony.PatchAll(_T);
         }
         // Applies each given patch type.
