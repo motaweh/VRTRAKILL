@@ -55,9 +55,10 @@ namespace Plugin.Systems.Controllers
             SetControllers();
         }
 
-        // Shows the controller model when no arms are spawned or in the main menu.
+        // Shows the controller model when no arms are spawned or in the main menu, if the controller has a model.
         private void SetControllers()
         {
+            if (CC.RenderModel == null) return;
             FistControl Fists = FistControl.Instance;
             bool NoArms = Fists != null && Fists.spawnedArms.Count == 0;
             if ((NoArms && !Vars.IsPlayerFrozen) || (NoArms && !Fists.activated) || Vars.IsMainMenu)

@@ -17,9 +17,10 @@ namespace Plugin.Systems.Controllers
             CC = gameObject.GetComponent<VRControllersSystem>();
             GunOffset = CC.GunOffset;
         }
-        // Finds the controller and sandbox hand models and hides them.
+        // Finds the controller and sandbox hand models and hides them, if the controller has a model.
         public void Start()
         {
+            if (CC.RenderModel == null || CC.RenderModel.transform.childCount < 2) return;
             RM = CC.RenderModel.transform.GetChild(0).gameObject;
             SandboxHandRM = CC.RenderModel.transform.GetChild(1).gameObject;
             RM.SetActive(false);

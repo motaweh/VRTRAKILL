@@ -83,13 +83,14 @@ namespace Plugin.Systems.Controllers
             }
         }
 
-        // Finds the model, sets up the offsets, registers the hand and adds the laser if enabled.
+        // Sets up the offsets, registers the hand, finds the model if there is one and adds the laser if enabled.
         public void Start()
         {
-            RenderModel = RenderModel ?? transform.Find("Model").gameObject;
-
             SetupOffsets();
             if (source == SteamVR_Input_Sources.LeftHand) Left = this; else Right = this;
+
+            // with "Draw controller models" off there is no Model child
+            RenderModel ??= transform.Find("Model")?.gameObject;
 
             if (Vars.Config.UIInteraction.ControllerLines.Enabled)
                 SetupControllerLines();
@@ -109,7 +110,7 @@ namespace Plugin.Systems.Controllers
             if (Vars.Config.UIInteraction.ControllerLines.Enabled) DrawControllerLines();
 
             // controller model
-            if (Vars.Config.Controllers.DrawControllers)
+            if (Vars.Config.Controllers.DrawControllers && RenderModel != null)
             {
                 RenderModel.transform.localPosition = RenderModelOffsetPos;
                 RenderModel.transform.localRotation = Quaternion.Euler(RenderModelOffsetEulerAngles);
